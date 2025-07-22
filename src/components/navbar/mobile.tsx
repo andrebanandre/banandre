@@ -21,7 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { SidebarItem } from "@/types";
-import { docsConfig } from "@/config/docs.config";
+import { blogConfig } from "@/config/blog.config";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -53,7 +53,7 @@ export default function MobileNav() {
         </div>
         <Separator className="my-2" />
         <div className="flex flex-col">
-          {docsConfig.map((item) => (
+          {blogConfig.map((item) => (
             <MobileSidebarItem key={item.title} item={item} setOpen={setOpen} />
           ))}
         </div>

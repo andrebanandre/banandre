@@ -13,9 +13,9 @@ const computedFields = <T extends { slug: string }>(data: T) => ({
   slugAsParams: data.slug.split("/").slice(1).join("/"),
 });
 
-export const docs = defineCollection({
-  name: "Docs",
-  pattern: "docs/**/*.mdx",
+export const blog = defineCollection({
+  name: "Blog",
+  pattern: "blog/**/*.mdx",
   schema: s
     .object({
       slug: s.path(),
@@ -42,7 +42,7 @@ export default defineConfig({
     name: "[name]-[hash:6].[ext]",
     clean: true,
   },
-  collections: { docs },
+  collections: { blog },
   mdx: {
     rehypePlugins: [
       rehypeSlug,

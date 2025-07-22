@@ -1,34 +1,34 @@
 import { Book, FileText, Home, ScrollText, GitFork } from "lucide-react";
 import type { SidebarItem } from "@/types";
 
-export const docsConfig: SidebarItem[] = [
+export const blogConfig: SidebarItem[] = [
   {
-    title: "Documentation",
-    href: "/docs",
+    title: "Blog",
+    href: "/blog",
     icon: Book,
     items: [],
   },
   {
     title: "Installation",
-    href: "/docs/installation",
+    href: "/blog/installation",
     icon: FileText,
     items: [],
   },
   {
     title: "Components",
-    href: "/docs/components",
+    href: "/blog/components",
     icon: Home,
     items: [],
   },
   {
     title: "License",
-    href: "/docs/license",
+    href: "/blog/license",
     icon: ScrollText,
     items: [],
   },
   {
     title: "Contribute",
-    href: "/docs/contribute",
+    href: "/blog/contribute",
     icon: GitFork,
     items: [],
   },

@@ -6,7 +6,7 @@ export const marketingConfig: NavItem[] = [
     href: "/",
   },
   {
-    title: "Documentation",
-    href: "/docs",
+    title: "Blog",
+    href: "/blog",
   },
 ];

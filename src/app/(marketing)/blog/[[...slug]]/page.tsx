@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { docs } from "#site/content";
+import { blog } from "#site/content";
 
 import type { Metadata } from "next";
 import Balancer from "react-wrap-balancer";
@@ -23,7 +23,7 @@ type DocPageProps = {
 async function getDocFromParams({ params }: { params: Promise<DocPageProps> }) {
   const parameters = await params;
   const slug = parameters.slug?.join("/") || "";
-  const doc = docs.find((doc) => doc.slugAsParams === slug);
+  const doc = blog.find((doc) => doc.slugAsParams === slug);
 
   if (!doc) {
     return null;
@@ -71,7 +71,7 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<
   { slug: string[] }[]
 > {
-  return docs.map((doc) => ({
+  return blog.map((doc) => ({
     slug: doc.slugAsParams.split("/"),
   }));
 }

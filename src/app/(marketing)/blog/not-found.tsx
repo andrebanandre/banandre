@@ -35,7 +35,7 @@ export default function NotFound() {
         <CardFooter className="pt-6 border-t border-dashed mt-6">
           <div className="w-full space-y-2">
             <Button variant="outline" className="w-full rounded-none border-dashed" asChild>
-              <Link href="/docs">$ cd /docs</Link>
+              <Link href="/blog">$ cd /blog</Link>
             </Button>
             <Button variant="outline" className="w-full rounded-none border-dashed" asChild>
               <Link href="/">$ cd /home</Link>

@@ -6,7 +6,7 @@ import { type DialogProps, DialogTitle } from "@radix-ui/react-dialog";
 import { CircleIcon, FileIcon, MoonIcon, SunIcon } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Fuse, { type FuseResultMatch } from "fuse.js";
-import { docs } from "#site/content";
+import { blog } from "#site/content";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -90,9 +90,9 @@ export function CommandMenu({ ...props }: DialogProps) {
 
   const fuseMarketing = new Fuse(marketingConfig.filter((navitem) => !navitem.external), fuseOptions);
 
-  const docsWithHeadings = docs.map(doc => ({
+  const docsWithHeadings = blog.map(doc => ({
     title: doc.title,
-    href: `/docs/${doc.slugAsParams}`,
+    href: `/blog/${doc.slugAsParams}`,
     description: doc.description,
     toc: doc.toc,
   }));

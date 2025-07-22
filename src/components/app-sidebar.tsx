@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { docsConfig } from "@/config/docs.config";
+import { blogConfig } from "@/config/blog.config";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -21,10 +21,10 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Docs</SidebarGroupLabel>
+          <SidebarGroupLabel>Blog</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {docsConfig.map((item) => (
+              {blogConfig.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={item.href === pathname}>
                     <Link href={item.href ?? ""}>

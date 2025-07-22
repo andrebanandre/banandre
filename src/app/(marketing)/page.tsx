@@ -19,7 +19,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
           <Button size="lg" className="w-full" asChild>
-            <Link href="/docs" className="gap-2">
+            <Link href="/blog" className="gap-2">
               <BookText size={20} />
               View Documentation
               <ArrowRight size={16} className="ml-auto" />
