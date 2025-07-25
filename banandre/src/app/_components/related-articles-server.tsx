@@ -1,4 +1,4 @@
-import { getAllBlogPosts, type BlogMetadata } from '../../lib/blog-utils'
+import { getAllBlogPosts } from '../../lib/blog-utils'
 import { RelatedArticlesClient } from './related-articles'
 
 interface RelatedArticlesProps {
