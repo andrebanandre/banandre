@@ -1,6 +1,7 @@
 import { useMDXComponents as getThemeComponents } from 'nextra-theme-blog';
 import { useMDXComponents as getNextraComponents } from 'nextra/mdx-components'
 import { TOC } from './app/_components/toc'
+import { InlineTags } from './app/_components/tag'
 import Link from 'next/link';
 
 const components = {
@@ -34,12 +35,37 @@ const components = {
     h6: (props: Record<string, unknown>) => (
       <h6 className='scroll-m-20 text-base font-semibold tracking-tight text-gray-300 mt-4 mb-2' {...props} />
     ),
-    p: (props: Record<string, unknown>) => (
-      <p 
-        className='text-gray-200 leading-relaxed text-lg mb-6 [&:not(:first-child)]:mt-6'
-        {...props} 
-      />
-    ),
+    p: (props: Record<string, unknown>) => {
+      // Check if this paragraph contains tags in the format "**Tags:** #tag1 #tag2"
+      const children = props.children
+      
+      // Handle case where children is an array with strong element and text
+      if (Array.isArray(children) && children.length >= 2) {
+        const firstChild = children[0]
+        const secondChild = children[1]
+        
+        // Check if first child is a strong element with "Tags:" and second is hashtag text
+        if (firstChild && typeof firstChild === 'object' && 'props' in firstChild && 
+            firstChild.props && firstChild.props.children === 'Tags:' &&
+            typeof secondChild === 'string' && secondChild.includes('#')) {
+          // Reconstruct the full text for InlineTags component
+          const fullText = `**Tags:**${secondChild}`
+          return <InlineTags>{fullText}</InlineTags>
+        }
+      }
+      
+      // Handle case where children is a single string (fallback)
+      if (typeof children === 'string' && children.includes('**Tags:**')) {
+        return <InlineTags>{children}</InlineTags>
+      }
+      
+      return (
+        <p 
+          className='text-gray-200 leading-relaxed text-lg mb-6 [&:not(:first-child)]:mt-6'
+          {...props} 
+        />
+      )
+    },
     ol: (props: Record<string, unknown>) => (
       <ol className='my-8 ml-8 list-decimal space-y-3 text-gray-200 [&>li]:text-lg' {...props} />
     ),
@@ -58,9 +84,15 @@ const components = {
     em: (props: Record<string, unknown>) => (
       <em className='italic text-[var(--accent)] font-medium' {...props} />
     ),
-    strong: (props: Record<string, unknown>) => (
-      <strong className='font-bold text-white bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
-    ),
+    strong: (props: Record<string, unknown>) => {
+      // Check if this strong element contains tags
+      const children = props.children as string
+      if (typeof children === 'string' && children.startsWith('Tags:')) {
+        // Find the next text node that contains hashtags
+        return <strong className='font-bold text-white bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+      }
+      return <strong className='font-bold text-white bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+    },
     a: ({ href, children, ...props }: { href: string, children: React.ReactNode, props: Record<string, unknown> }) => {
       const className = 'font-bold text-[var(--accent)] underline decoration-2 underline-offset-4 hover:text-white hover:bg-[var(--accent)] hover:bg-opacity-20 transition-all duration-200 px-1 py-0.5 rounded brutalist-link';
       if (href?.startsWith('/')) {

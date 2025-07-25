@@ -1,6 +1,7 @@
 'use client'
  
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import type { PageMapItem } from 'nextra'
 import { Anchor } from 'nextra/components'
 import { normalizePages } from 'nextra/normalize-pages'
@@ -31,6 +32,21 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
         <ul
           className="space-y-2"
         >
+          <li>
+            <Link
+              href="/tags"
+              className={`
+                flex items-center py-3 px-4 rounded-none border-l-4 transition-all duration-200 cursor-pointer
+                ${pathname === '/tags' 
+                  ? 'bg-[var(--accent)] bg-opacity-20 border-[var(--accent)] text-[var(--accent)]'
+                  : 'border-transparent text-gray-300 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--accent)]'
+                }
+              `}
+            >
+              <ReaderIcon className="w-4 h-4 mr-3 text-[var(--accent)]" />
+              <span className="flex-1 font-medium uppercase tracking-wide text-sm">Tags</span>
+            </Link>
+          </li>
           {docsDirectories.map((item, index) => (
             <SidebarItem key={item.route || index} item={item} index={index} pathname={pathname} />
           ))}
@@ -40,6 +56,7 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function SidebarItem({ item, index, pathname }: { item: any, index: number, pathname: string }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const route = item.route || ('href' in item ? (item.href as string) : '')
@@ -92,6 +109,7 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
         <ul
           className="ml-6 mt-2 space-y-1 border-l-2 border-gray-600 pl-4"
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {item.children.map((child: any, childIndex: number) => (
             <SidebarItem 
               key={child.route || childIndex} 
