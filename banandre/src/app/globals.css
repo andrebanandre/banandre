@@ -1,0 +1,210 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700;900&display=swap');
+
+:root {
+  --background: #181818;
+  --foreground: #ffffff;
+  --accent: #f0d300;
+  --accent-hover: #e6c400;
+  --accent-foreground: #181818;
+  --muted: #2a2a2a;
+  --border: #333333;
+  --card: #1e1e1e;
+  --radius: 0.375rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Force dark mode - no light mode allowed */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+}
+
+/* Custom text selection with accent color */
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+::-moz-selection {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Brutalist scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+}
+
+/* Remove default focus outlines and add custom ones */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Custom utility classes */
+.brutalist-border {
+  border: 3px solid var(--foreground);
+  box-shadow: 6px 6px 0px var(--accent);
+}
+
+.brutalist-border-accent {
+  border: 3px solid var(--accent);
+  box-shadow: 6px 6px 0px var(--foreground);
+}
+
+.text-shadow-brutal {
+  text-shadow: 4px 4px 0px var(--accent);
+}
+
+.text-shadow-subtle {
+  text-shadow: 2px 2px 0px rgba(240, 211, 0, 0.3);
+}
+
+/* Animations for motion library */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-accent {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* Typography styles */
+.display-title {
+  font-weight: 900;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  .brutalist-border,
+  .brutalist-border-accent {
+    border-width: 2px;
+    box-shadow: 3px 3px 0px var(--accent);
+  }
+}
+
+/* Hero section components */
+.hero-container {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4rem;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+@media (min-width: 768px) {
+  .hero-container {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+}
+
+.hero-image {
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .hero-image {
+    height: 60vh;
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--background), transparent, transparent);
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+}
+
+.hero-badge {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.5rem 1.5rem;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.hero-description {
+  color: #d1d5db;
+  font-size: 1.125rem;
+  max-width: 42rem;
+}
