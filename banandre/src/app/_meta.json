@@ -1,0 +1,11 @@
+{
+  "demo": "Demo",
+  "docs": {
+    "title": "Documentation",
+    "hidden": true
+  },
+  "tags": {
+    "title": "Tags",
+    "hidden": true
+  }
+} 

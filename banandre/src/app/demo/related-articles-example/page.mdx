@@ -1,0 +1,56 @@
+# Related Articles Demo
+
+This page demonstrates the RelatedArticles component that shows related content based on shared tags.
+
+## How it works
+
+The RelatedArticles component:
+
+- **Analyzes tags** from the current post
+- **Finds similar posts** based on shared tags  
+- **Ranks by similarity** (more shared tags = higher priority)
+- **Displays horizontally** with smooth framer-motion animations
+- **Follows brutalist design** with your custom styling
+
+## Features
+
+- 🏷️ **Tag-based matching** - finds posts with similar topics
+- 🎯 **Smart ranking** - prioritizes posts with more shared tags
+- 📱 **Responsive design** - horizontal scroll on all devices
+- ⚡ **Smooth animations** - powered by framer-motion
+- 🎨 **Brutalist styling** - matches your design system
+- 🚀 **Performance optimized** - only loads related content
+
+## Usage Examples
+
+### In MDX files (Easy way)
+```mdx
+<RelatedArticlesMDX 
+  tags="AI,Design,Brutalism" 
+  slug="/demo/related-articles-example"
+  maxArticles={4} 
+/>
+```
+
+### In React components (Advanced way)
+```tsx
+<RelatedArticles 
+  currentSlug="/demo/related-articles-example"
+  currentTags={["AI", "Design", "Brutalism"]}
+  maxArticles={6}
+/>
+```
+
+## Demo Section
+
+Here's the RelatedArticles component in action, looking for posts with similar tags:
+
+<RelatedArticlesMDX 
+  tags="Demo,Brutalism" 
+  slug="/demo/related-articles-example"
+  maxArticles={4} 
+/>
+
+> **Note:** If you don't see related articles below, it means there are no other posts with matching tags yet. Create more posts with the tags `#Demo` or `#Brutalism` to see the component in action!
+
+**Tags:** #Demo #AI #Design #Brutalism 

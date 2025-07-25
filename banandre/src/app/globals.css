@@ -56,6 +56,7 @@ body {
 /* Brutalist scrollbar */
 ::-webkit-scrollbar {
   width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -69,6 +70,27 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-hover);
+}
+
+/* Horizontal scrollbar for related articles */
+.related-articles-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.related-articles-scroll::-webkit-scrollbar-track {
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.related-articles-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 0;
+  border: 1px solid var(--foreground);
+}
+
+.related-articles-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+  box-shadow: 2px 2px 0px var(--foreground);
 }
 
 /* Remove default focus outlines and add custom ones */
@@ -85,6 +107,21 @@ body {
 .brutalist-border {
   border: 3px solid var(--foreground);
   box-shadow: 6px 6px 0px var(--accent);
+}
+
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .brutalist-border-accent {
@@ -207,4 +244,281 @@ body {
   color: #d1d5db;
   font-size: 1.125rem;
   max-width: 42rem;
+}
+
+/* Nextra Search Component Overrides - More Specific Selectors */
+/* Target all possible search component selectors */
+[data-nextra-search],
+.nextra-search,
+[role="combobox"],
+[data-headlessui-state] {
+  position: relative !important;
+}
+
+/* Search input styling - multiple selectors to catch all cases */
+[data-nextra-search] input,
+.nextra-search input,
+[role="combobox"] input,
+[data-headlessui-state] input,
+.search-input,
+input[type="search"],
+input[placeholder*="Search"] {
+  background: var(--card) !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 8px 12px !important;
+  width: 100% !important;
+  font-size: 14px !important;
+}
+
+/* Placeholder styling */
+[data-nextra-search] input::placeholder,
+.nextra-search input::placeholder,
+[role="combobox"] input::placeholder,
+input[placeholder*="Search"]::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* Focus states */
+[data-nextra-search] input:focus,
+.nextra-search input:focus,
+[role="combobox"] input:focus,
+input[placeholder*="Search"]:focus {
+  border-color: var(--accent-hover) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(240, 211, 0, 0.2) !important;
+}
+
+/* Search results dropdown - multiple selectors */
+[data-nextra-search] [role="listbox"],
+.nextra-search [role="listbox"],
+[role="combobox"] [role="listbox"],
+[data-headlessui-state] [role="listbox"],
+.search-results,
+.search-dropdown {
+  background: var(--card) !important;
+  border: 2px solid var(--accent) !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0px var(--accent) !important;
+  margin-top: 4px !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+}
+
+/* Search result items - multiple selectors */
+[data-nextra-search] [role="option"],
+.nextra-search [role="option"],
+[role="combobox"] [role="option"],
+[data-headlessui-state] [role="option"],
+.search-result,
+.search-item {
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 12px 16px !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+/* Hover and selected states */
+[data-nextra-search] [role="option"]:hover,
+[data-nextra-search] [role="option"][aria-selected="true"],
+.nextra-search [role="option"]:hover,
+.nextra-search [role="option"][aria-selected="true"],
+[role="combobox"] [role="option"]:hover,
+[role="combobox"] [role="option"][aria-selected="true"],
+.search-result:hover,
+.search-item:hover {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  font-weight: 700 !important;
+}
+
+/* Last item no border */
+[data-nextra-search] [role="option"]:last-child,
+.nextra-search [role="option"]:last-child,
+[role="combobox"] [role="option"]:last-child,
+.search-result:last-child,
+.search-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Search result text */
+[data-nextra-search] [role="option"] span,
+.nextra-search [role="option"] span,
+[role="combobox"] [role="option"] span,
+.search-result span,
+.search-item span {
+  color: inherit !important;
+  font-weight: inherit !important;
+}
+
+/* Search result description */
+[data-nextra-search] [role="option"] div,
+.nextra-search [role="option"] div,
+[role="combobox"] [role="option"] div,
+.search-result div,
+.search-item div {
+  color: #9ca3af !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+}
+
+[data-nextra-search] [role="option"]:hover div,
+[data-nextra-search] [role="option"][aria-selected="true"] div,
+.nextra-search [role="option"]:hover div,
+.nextra-search [role="option"][aria-selected="true"] div,
+[role="combobox"] [role="option"]:hover div,
+[role="combobox"] [role="option"][aria-selected="true"] div,
+.search-result:hover div,
+.search-item:hover div {
+  color: var(--accent-foreground) !important;
+  opacity: 0.8 !important;
+}
+
+/* Loading and error states */
+[data-loading="true"],
+[data-error="true"],
+.search-loading,
+.search-error {
+  color: var(--accent) !important;
+  font-weight: 600 !important;
+}
+
+[data-error="true"],
+.search-error {
+  color: #ef4444 !important;
+}
+
+/* Empty state */
+[data-empty="true"],
+.search-empty {
+  color: #9ca3af !important;
+  font-style: italic !important;
+  padding: 16px !important;
+  text-align: center !important;
+}
+
+/* Mobile search adjustments */
+@media (max-width: 768px) {
+  [data-nextra-search] [role="listbox"],
+  .nextra-search [role="listbox"],
+  [role="combobox"] [role="listbox"],
+  .search-results,
+  .search-dropdown {
+    position: fixed !important;
+    top: 80px !important;
+    left: 16px !important;
+    right: 16px !important;
+    max-height: 60vh !important;
+    z-index: 1000 !important;
+  }
+}
+
+/* Global search overrides - highest specificity */
+*[class*="search"] input,
+*[data-*="search"] input,
+*[role="combobox"] input {
+  background: var(--card) !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--foreground) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+*[class*="search"] input:focus,
+*[data-*="search"] input:focus,
+*[role="combobox"] input:focus {
+  border-color: var(--accent-hover) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(240, 211, 0, 0.2) !important;
+}
+
+/* Override any framework styles */
+.nextra-search,
+[data-nextra-search] {
+  all: unset;
+  display: block !important;
+  position: relative !important;
+}
+
+.nextra-search *,
+[data-nextra-search] * {
+  box-sizing: border-box !important;
+}
+
+/* Custom search wrapper styles */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-search-input {
+  width: 100% !important;
+  padding: 8px 12px !important;
+  background: var(--card) !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-search-input::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+.custom-search-input:focus {
+  border-color: var(--accent-hover) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(240, 211, 0, 0.2) !important;
+}
+
+/* Target the actual input inside the search component */
+.search-wrapper input,
+.search-wrapper [role="combobox"] input,
+.search-wrapper [data-nextra-search] input {
+  width: 100% !important;
+  padding: 8px 12px !important;
+  background: var(--card) !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.search-wrapper input::placeholder,
+.search-wrapper [role="combobox"] input::placeholder,
+.search-wrapper [data-nextra-search] input::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+.search-wrapper input:focus,
+.search-wrapper [role="combobox"] input:focus,
+.search-wrapper [data-nextra-search] input:focus {
+  border-color: var(--accent-hover) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(240, 211, 0, 0.2) !important;
 }

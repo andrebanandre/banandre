@@ -19,6 +19,8 @@ export interface BlogMetadata {
   slug: string
   tags: string[]
   date?: string
+  similarityScore?: number
+  sharedTags?: string[]
 }
 
 // Extract tags from MDX content (both frontmatter and inline tags)

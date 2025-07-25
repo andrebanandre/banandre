@@ -7,6 +7,37 @@ import { Anchor } from 'nextra/components'
 import { normalizePages } from 'nextra/normalize-pages'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronRightIcon, FileIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { motion, easeInOut, easeOut } from 'framer-motion'
+
+// Meta configuration to control sidebar visibility
+const META_CONFIG = {
+  demo: "Demo",
+  docs: { title: "Documentation", hidden: true },
+  tags: { title: "Tags", hidden: true }
+}
+
+// Function to filter pages based on _meta.json configuration
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function filterPagesByMeta(pages: any[]): any[] {
+  return pages.filter(page => {
+    const pageName = page.name || page.route?.split('/').pop() || ''
+    
+    // Check if page is hidden in meta config
+    if (META_CONFIG[pageName as keyof typeof META_CONFIG]) {
+      const metaItem = META_CONFIG[pageName as keyof typeof META_CONFIG]
+      if (typeof metaItem === 'object' && metaItem.hidden) {
+        return false
+      }
+    }
+    
+    // Recursively filter children
+    if (page.children) {
+      page.children = filterPagesByMeta(page.children)
+    }
+    
+    return true
+  })
+}
  
 export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
   const pathname = usePathname()
@@ -15,44 +46,83 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
     route: pathname
   })
 
+  // Filter the pages based on _meta.json configuration
+  const filteredDirectories = filterPagesByMeta(docsDirectories)
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: easeOut,
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: easeOut
+      }
+    }
+  }
+
+  const titleVariants = {
+    hover: {
+      scale: 1.02,
+      color: "var(--accent)",
+      transition: {
+        duration: 0.3,
+        ease: easeInOut
+      }
+    }
+  }
+
   return (
-    <aside
+    <motion.aside
       className="w-80 bg-[var(--card)] border-r-4 border-[var(--accent)] p-6 overflow-y-auto hidden lg:block"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
     >
-      <div
+      <motion.div
         className="mb-8"
+        variants={headerVariants}
       >
-        <h2 className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-2 text-shadow-subtle">
+        <motion.h2 
+          className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-2 text-shadow-subtle"
+          variants={titleVariants}
+          whileHover="hover"
+        >
           Navigation
-        </h2>
-                  <div className="h-1 bg-[var(--accent)] w-16"></div>
-      </div>
+        </motion.h2>
+        <motion.div 
+          className="h-1 bg-[var(--accent)] w-16"
+          initial={{ width: 0 }}
+          animate={{ width: 64 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: easeOut }}
+        />
+      </motion.div>
 
       <nav>
-        <ul
+        <motion.ul
           className="space-y-2"
+          variants={containerVariants}
         >
-          <li>
-            <Link
-              href="/tags"
-              className={`
-                flex items-center py-3 px-4 rounded-none border-l-4 transition-all duration-200 cursor-pointer
-                ${pathname === '/tags' 
-                  ? 'bg-[var(--accent)] bg-opacity-20 border-[var(--accent)] text-[var(--accent)]'
-                  : 'border-transparent text-gray-300 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--accent)]'
-                }
-              `}
-            >
-              <ReaderIcon className="w-4 h-4 mr-3 text-[var(--accent)]" />
-              <span className="flex-1 font-medium uppercase tracking-wide text-sm">Tags</span>
-            </Link>
-          </li>
-          {docsDirectories.map((item, index) => (
+          {filteredDirectories.map((item, index) => (
             <SidebarItem key={item.route || index} item={item} index={index} pathname={pathname} />
           ))}
-        </ul>
+        </motion.ul>
       </nav>
-    </aside>
+    </motion.aside>
   )
 }
 
@@ -70,56 +140,160 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
     }
   }
 
+  // Animation variants
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: easeOut
+      }
+    }
+  }
+
+  const linkVariants = {
+    hover: {
+      x: 5,
+      transition: {
+        duration: 0.2,
+        ease: easeInOut
+      }
+    }
+  }
+
+  const iconVariants = {
+    hover: {
+      scale: 1.1,
+      rotate: 5,
+      transition: {
+        duration: 0.2,
+        ease: easeInOut
+      }
+    }
+  }
+
+  const chevronVariants = {
+    expanded: { rotate: 90 },
+    collapsed: { rotate: 0 }
+  }
+
+  const childrenVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        duration: 0.3,
+        ease: easeOut,
+        staggerChildren: 0.05
+      }
+    }
+  }
+
   return (
-    <li>
-      <div
+    <motion.li
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
+    >
+      <motion.div
         className={`
-          flex items-center py-3 px-4 rounded-none border-l-4 transition-all duration-200 cursor-pointer
+          flex items-center py-2 transition-colors duration-200 cursor-pointer group
           ${isActive 
-                    ? 'bg-[var(--accent)] bg-opacity-20 border-[var(--accent)] text-[var(--accent)]'
-        : 'border-transparent text-gray-300 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--accent)]'
+            ? 'text-[var(--accent)]'
+            : 'text-gray-400 hover:text-[var(--accent)]'
           }
         `}
         onClick={toggleExpanded}
+        variants={linkVariants}
+        whileHover="hover"
       >
         {hasChildren ? (
           <>
-            <ReaderIcon className="w-4 h-4 mr-3 text-[var(--accent)]" />
+            <motion.div
+              variants={iconVariants}
+              whileHover="hover"
+            >
+              <ReaderIcon
+                className={`
+                  w-4 h-4 mr-3
+                  ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                `}
+              />
+            </motion.div>
             <span className="flex-1 font-medium uppercase tracking-wide text-sm">{title}</span>
-            {isExpanded ? (
-              <ChevronDownIcon className="w-4 h-4 text-[var(--accent)]" />
-            ) : (
-              <ChevronRightIcon className="w-4 h-4 text-[var(--accent)]" />
-            )}
+            <motion.div
+              initial={false}
+              animate={isExpanded ? "expanded" : "collapsed"}
+              variants={chevronVariants}
+              transition={{ duration: 0.3, ease: easeInOut }}
+            >
+              {isExpanded ? (
+                <ChevronDownIcon
+                  className={`
+                    w-4 h-4
+                    ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                  `}
+                />
+              ) : (
+                <ChevronRightIcon
+                  className={`
+                    w-4 h-4
+                    ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                  `}
+                />
+              )}
+            </motion.div>
           </>
         ) : (
           <>
-            <FileIcon className="w-4 h-4 mr-3 text-[var(--accent)]" />
+            <motion.div
+              variants={iconVariants}
+              whileHover="hover"
+            >
+              <FileIcon
+                className={`
+                  w-4 h-4 mr-3
+                  ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                `}
+              />
+            </motion.div>
             <Anchor 
               href={route} 
-              className="flex-1 font-medium uppercase tracking-wide text-sm text-decoration-none hover:text-[var(--accent)]"
+              className="flex-1 font-medium uppercase tracking-wide text-sm text-decoration-none"
             >
               {title}
             </Anchor>
           </>
         )}
-      </div>
+      </motion.div>
 
-      {hasChildren && isExpanded && (
-        <ul
-          className="ml-6 mt-2 space-y-1 border-l-2 border-gray-600 pl-4"
+      {hasChildren && (
+        <motion.ul
+          className="ml-6 mt-2 space-y-3"
+          initial="hidden"
+          animate={isExpanded ? "visible" : "hidden"}
+          variants={childrenVariants}
         >
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {item.children.map((child: any, childIndex: number) => (
-            <SidebarItem 
-              key={child.route || childIndex} 
-              item={child} 
-              index={childIndex} 
-              pathname={pathname} 
-            />
+            <motion.div
+              key={child.route || childIndex}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + childIndex * 0.05, duration: 0.3 }}
+            >
+              <SidebarItem 
+                item={child} 
+                index={childIndex} 
+                pathname={pathname} 
+              />
+            </motion.div>
           ))}
-        </ul>
+        </motion.ul>
       )}
-    </li>
+    </motion.li>
   )
 }

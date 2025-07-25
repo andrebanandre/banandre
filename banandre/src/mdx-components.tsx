@@ -2,6 +2,7 @@ import { useMDXComponents as getThemeComponents } from 'nextra-theme-blog';
 import { useMDXComponents as getNextraComponents } from 'nextra/mdx-components'
 import { TOC } from './app/_components/toc'
 import { InlineTags } from './app/_components/tag'
+import { RelatedArticles, RelatedArticlesMDX } from './app/_components/related-articles-server'
 import Link from 'next/link';
 
 const components = {
@@ -179,6 +180,10 @@ const components = {
         {...props}
       />
     ),
+
+    // Related Articles components
+    RelatedArticles,
+    RelatedArticlesMDX,
   };
   
 
