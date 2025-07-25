@@ -134,7 +134,6 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             >
               <div className="relative search-wrapper">
                 <Search 
-                  className="custom-search-input"
                   placeholder="Search BANANDRE..."
                   emptyResult="No results found."
                   errorText="Search failed to load."
