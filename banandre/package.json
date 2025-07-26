@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "pagefind --site .next/server/app --output-path out/_pagefind"
+    "postbuild": "pagefind --site .next/server/app --output-path build/_pagefind"
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.2",

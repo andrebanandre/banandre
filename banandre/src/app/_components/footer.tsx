@@ -235,7 +235,7 @@ export function Footer() {
                   whileFocus="focus"
                 />
                 <motion.button
-                  className="px-4 py-2 bg-[var(--accent)] text-[var(--accent-foreground)] font-bold text-sm uppercase hover:bg-[var(--accent-hover)] transition-colors duration-200"
+                  className="px-4 py-2 bg-[var(--accent)] text-[var(--accent-foreground)] font-bold text-sm uppercase hover:bg-[var(--accent-hover)] transition-colors duration-200 rounded-md"
                   variants={buttonVariants}
                   whileHover="hover"
                   whileTap="tap"

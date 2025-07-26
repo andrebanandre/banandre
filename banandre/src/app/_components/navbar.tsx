@@ -8,17 +8,23 @@ import type { FC } from 'react'
 import { useState } from 'react'
 import { HamburgerMenuIcon, Cross1Icon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { motion, easeInOut, easeOut } from 'framer-motion'
+import { SidebarItem, filterPagesByMeta } from './sidebar-item'
  
 export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   
-  const { topLevelNavbarItems } = normalizePages({
+  const { topLevelNavbarItems, docsDirectories } = normalizePages({
     list: pageMap,
     route: pathname
   })
 
+  // Filter the sidebar pages based on _meta.json configuration
+  const filteredSidebarItems = filterPagesByMeta(docsDirectories)
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+
+  const closeMenu = () => setIsMenuOpen(false)
 
   // Animation variants
   const containerVariants = {
@@ -110,7 +116,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             >
               <Anchor href="/" className="text-decoration-none">
                 <motion.div 
-                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-2 cursor-pointer"
+                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded cursor-pointer"
                 variants={logoVariants}
                   whileHover="hover"
                 >
@@ -182,7 +188,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             >
               <motion.button
                 onClick={toggleMenu}
-                className="inline-flex items-center justify-center p-2 text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 transition-colors duration-200"
+                className="inline-flex items-center justify-center p-2 text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200"
                 aria-label="Toggle menu"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -238,6 +244,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
               </div>
             </motion.div>
 
+            {/* Top Level Navigation Items */}
             {topLevelNavbarItems.map((item, index) => {
               const route = item.route || ('href' in item ? item.href! : '')
               const isActive = pathname === route
@@ -256,13 +263,38 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
                         ? 'bg-[var(--accent)] text-[var(--accent-foreground)] brutalist-border' 
                         : 'text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10'
                       }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={closeMenu}
                   >
                     {item.title}
                   </Anchor>
                 </motion.div>
               )
             })}
+
+            {/* Sidebar Navigation Items */}
+            {filteredSidebarItems.length > 0 && (
+              <>
+                <motion.div
+                  variants={mobileItemVariants}
+                  className="pt-6 mt-6 border-t-2 border-[var(--accent)] border-opacity-30"
+                >
+                  <h3 className="text-[var(--accent)] font-black text-lg uppercase tracking-wide mb-4 px-4">
+                    Navigation
+                  </h3>
+                </motion.div>
+                
+                {filteredSidebarItems.map((item, index) => (
+                  <SidebarItem
+                    key={item.route || index}
+                    item={item}
+                    index={index}
+                    pathname={pathname}
+                    isMobile={true}
+                    onItemClick={closeMenu}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </motion.div>
       </motion.div>

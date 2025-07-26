@@ -49,7 +49,6 @@ export function RelatedArticlesClient({ relatedPosts }: RelatedArticlesClientPro
                   ease: "easeOut"
                 }}
                 whileHover={{ 
-                  y: -8,
                   transition: { duration: 0.2 }
                 }}
                 style={{ scrollSnapAlign: 'start' }}
@@ -91,7 +90,7 @@ export function RelatedArticlesClient({ relatedPosts }: RelatedArticlesClientPro
                               {post.sharedTags.slice(0, 3).map((tag) => (
                                 <span 
                                   key={tag}
-                                  className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--accent)] px-2 py-1 font-bold uppercase"
+                                  className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
                                 >
                                   #{tag}
                                 </span>

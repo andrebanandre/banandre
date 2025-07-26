@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMDXComponents as getThemeComponents } from 'nextra-theme-blog';
 import { useMDXComponents as getNextraComponents } from 'nextra/mdx-components'
 import { TOC } from './app/_components/toc'
@@ -58,6 +59,37 @@ const components = {
       // Handle case where children is a single string (fallback)
       if (typeof children === 'string' && children.includes('**Tags:**')) {
         return <InlineTags>{children}</InlineTags>
+      }
+      
+      // Check if the children contain any paragraph elements to avoid nesting
+      const hasNestedParagraphs = React.Children.toArray(children as React.ReactNode).some(child => {
+        if (typeof child === 'object' && child !== null && 'type' in child) {
+          return child.type === 'p' || (typeof child.type === 'string' && child.type.toLowerCase() === 'p')
+        }
+        return false
+      })
+      
+      // Check if any of the children have className that suggests they're already styled paragraphs
+      const hasStyledParagraphs = React.Children.toArray(children as React.ReactNode).some(child => {
+        if (typeof child === 'object' && child !== null && 'props' in child && child.props) {
+          const className = (child.props as { className?: string }).className
+          return typeof className === 'string' && (
+            className.includes('hero-description') || 
+            className.includes('leading-relaxed') ||
+            className.includes('text-lg')
+          )
+        }
+        return false
+      })
+      
+      // If we have nested paragraphs or styled paragraphs, render a div instead
+      if (hasNestedParagraphs || hasStyledParagraphs) {
+        return (
+          <div 
+            className='leading-relaxed text-lg mb-6 [&:not(:first-child)]:mt-6'
+            {...props} 
+          />
+        )
       }
       
       return (

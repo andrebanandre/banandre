@@ -82,7 +82,7 @@ export default async function TagPage({ params }: TagPageProps) {
                         {post.tags.map((tag) => (
                           <span 
                             key={tag}
-                            className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--accent)] px-2 py-1 font-bold uppercase"
+                            className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
                           >
                             #{tag}
                           </span>
