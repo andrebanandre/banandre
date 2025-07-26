@@ -1,10 +1,10 @@
 import React from 'react';
-import { useMDXComponents as getThemeComponents } from 'nextra-theme-blog';
 import { useMDXComponents as getNextraComponents } from 'nextra/mdx-components'
 import { TOC } from './app/_components/toc'
 import { InlineTags } from './app/_components/tag'
 import { RelatedArticles, RelatedArticlesMDX } from './app/_components/related-articles-server'
 import Link from 'next/link';
+import Image from 'next/image';
 
 const components = {
     h1: (props: Record<string, unknown>) => (
@@ -206,12 +206,19 @@ const components = {
     ),
 
     // Custom image wrapper
-    img: (props: Record<string, unknown>) => (
-      <img
-        className='my-8 w-full h-auto brutalist-border'
-        {...props}
-      />
-    ),
+    img: (props: Record<string, unknown>) => {
+      const { src, alt, ...restProps } = props;
+      return (
+        <Image
+          src={src as string}
+          alt={alt as string || ""}
+          width={800}
+          height={600}
+          className='my-8 w-full h-auto brutalist-border'
+          {...restProps}
+        />
+      );
+    },
 
     // Related Articles components
     RelatedArticles,
@@ -234,8 +241,7 @@ const defaultComponents = getNextraComponents({
     }
   })
 
-// Get the default MDX components
-const themeComponents = getThemeComponents();
+
 
 // Merge components
 export function useMDXComponents(componentsFromProps: Record<string, unknown>) {

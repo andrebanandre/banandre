@@ -97,7 +97,7 @@ export default function HomePage() {
                 title: "Future-Forward",
                 description: "While others catch up, we're already building tomorrow. Join us at the forefront of AI evolution."
               }
-            ].map((feature, index) => (
+            ].map((feature) => (
               <div
                 key={feature.title}
                 className="text-center"
@@ -147,7 +147,7 @@ export default function HomePage() {
                 excerpt: "Exploring the next frontier of AI development and what it means for humanity.",
                 href: "/docs"
               }
-            ].map((post, index) => (
+            ].map((post) => (
               <div
                 key={post.title}
               >

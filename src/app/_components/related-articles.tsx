@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { type BlogMetadata } from '../../lib/blog-utils'
 
 interface RelatedArticlesClientProps {
@@ -61,9 +62,11 @@ export function RelatedArticlesClient({ relatedPosts }: RelatedArticlesClientPro
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <img 
+                        <Image 
                           src={post.image} 
                           alt={post.title}
+                          width={320}
+                          height={128}
                           className="w-full h-32 object-cover brutalist-border"
                         />
                       </motion.div>

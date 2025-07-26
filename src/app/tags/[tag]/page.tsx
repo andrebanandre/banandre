@@ -1,5 +1,6 @@
 import { getPostsByTag, getAllTags, parseTagFromUrl } from '../../../lib/blog-utils'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Tag } from '../../_components/tag'
 
@@ -59,9 +60,11 @@ export default async function TagPage({ params }: TagPageProps) {
               <Link href={post.slug} className="block">
                 <div className="flex flex-col gap-4">
                   {post.image && (
-                    <img 
+                    <Image 
                       src={post.image} 
                       alt={post.title}
+                      width={800}
+                      height={192}
                       className="w-full h-48 object-cover brutalist-border"
                     />
                   )}

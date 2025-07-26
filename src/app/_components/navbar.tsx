@@ -245,7 +245,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             </motion.div>
 
             {/* Top Level Navigation Items */}
-            {topLevelNavbarItems.map((item, index) => {
+            {topLevelNavbarItems.map((item) => {
               const route = item.route || ('href' in item ? item.href! : '')
               const isActive = pathname === route
               

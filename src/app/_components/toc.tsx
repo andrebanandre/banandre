@@ -113,27 +113,7 @@ export function TOC({ toc }: { toc: Heading[] }) {
     }
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: 10 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.4,
-        ease: easeOut
-      }
-    }
-  }
 
-  const linkVariants = {
-    hover: {
-      x: 5,
-      transition: {
-        duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
 
   return (
     <>

@@ -1,7 +1,5 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-import type { PageMapItem } from 'nextra'
 import { Anchor } from 'nextra/components'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronRightIcon, FileIcon, ReaderIcon } from '@radix-ui/react-icons'
@@ -14,9 +12,17 @@ const META_CONFIG = {
   tags: { title: "Tags", hidden: true }
 }
 
+interface PageItem {
+  name?: string
+  route?: string
+  title?: string
+  href?: string
+  children?: PageItem[]
+  [key: string]: unknown
+}
+
 // Function to filter pages based on _meta.json configuration
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function filterPagesByMeta(pages: any[]): any[] {
+export function filterPagesByMeta(pages: PageItem[]): PageItem[] {
   return pages.filter(page => {
     const pageName = page.name || page.route?.split('/').pop() || ''
     
@@ -38,7 +44,7 @@ export function filterPagesByMeta(pages: any[]): any[] {
 }
 
 interface SidebarItemProps {
-  item: any
+  item: PageItem
   index: number
   pathname: string
   isMobile?: boolean
@@ -57,7 +63,7 @@ export function SidebarItem({
   const [isExpanded, setIsExpanded] = useState(false)
   const route = item.route || ('href' in item ? (item.href as string) : '')
   const { title } = item
-  const hasChildren = 'children' in item && item.children?.length > 0
+  const hasChildren = 'children' in item && item.children && item.children.length > 0
   const isActive = pathname === route
 
   const toggleExpanded = () => {
@@ -212,7 +218,7 @@ export function SidebarItem({
             animate={isExpanded ? "visible" : "hidden"}
             variants={childrenVariants}
           >
-            {item.children.map((child: any, childIndex: number) => (
+            {item.children!.map((child: PageItem, childIndex: number) => (
               <motion.div
                 key={child.route || childIndex}
                 initial={{ opacity: 0, x: -10 }}
@@ -323,7 +329,7 @@ export function SidebarItem({
           animate={isExpanded ? "visible" : "hidden"}
           variants={childrenVariants}
         >
-          {item.children.map((child: any, childIndex: number) => (
+          {item.children!.map((child: PageItem, childIndex: number) => (
             <motion.div
               key={child.route || childIndex}
               initial={{ opacity: 0, x: -10 }}
