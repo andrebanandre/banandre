@@ -119,6 +119,7 @@ body {
 .brutalist-border {
   border: 3px solid var(--foreground);
   box-shadow: 6px 6px 0px var(--accent);
+  border-radius: 0.375rem;
 }
 
 /* Text truncation utilities */
@@ -139,6 +140,7 @@ body {
 .brutalist-border-accent {
   border: 3px solid var(--accent);
   box-shadow: 6px 6px 0px var(--foreground);
+  border-radius: 0.375rem;
 }
 
 .text-shadow-brutal {
@@ -191,6 +193,7 @@ body {
   .brutalist-border-accent {
     border-width: 2px;
     box-shadow: 3px 3px 0px var(--accent);
+    border-radius: 0.25rem;
   }
 }
 

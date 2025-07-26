@@ -98,7 +98,7 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
         variants={headerVariants}
       >
         <motion.h2 
-          className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-2 text-shadow-subtle"
+          className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-6 text-shadow-subtle"
           variants={titleVariants}
           whileHover="hover"
         >
@@ -114,7 +114,7 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
 
       <nav>
         <motion.ul
-          className="space-y-2"
+          className="space-y-3"
           variants={containerVariants}
         >
           {filteredDirectories.map((item, index) => (
@@ -142,12 +142,13 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
 
   // Animation variants
   const itemVariants = {
-    hidden: { opacity: 0, x: -10 },
+    hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.4,
+        delay: 0.3 + index * 0.1,
+        duration: 0.5,
         ease: easeOut
       }
     }
@@ -194,16 +195,18 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
 
   return (
     <motion.li
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
+      variants={itemVariants}
     >
       <motion.div
         className={`
-          flex items-center py-2 transition-colors duration-200 cursor-pointer group
+          text-sm font-medium flex items-center group transition-all duration-200 py-2 px-3 rounded-md cursor-pointer
           ${isActive 
-            ? 'text-[var(--accent)]'
-            : 'text-gray-400 hover:text-[var(--accent)]'
+            ? 'bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-bold' 
+            : 'hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]'
+          }
+          ${!isActive 
+            ? 'text-white' 
+            : ''
           }
         `}
         onClick={toggleExpanded}
@@ -218,8 +221,8 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
             >
               <ReaderIcon
                 className={`
-                  w-4 h-4 mr-3
-                  ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                  w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
+                  ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
                 `}
               />
             </motion.div>
@@ -234,14 +237,14 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
                 <ChevronDownIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                    ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
                   `}
                 />
               ) : (
                 <ChevronRightIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                    ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
                   `}
                 />
               )}
@@ -255,8 +258,8 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
             >
               <FileIcon
                 className={`
-                  w-4 h-4 mr-3
-                  ${isActive ? 'text-white' : 'text-[var(--accent)] group-hover:text-white'}
+                  w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
+                  ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
                 `}
               />
             </motion.div>
@@ -272,7 +275,7 @@ function SidebarItem({ item, index, pathname }: { item: any, index: number, path
 
       {hasChildren && (
         <motion.ul
-          className="ml-6 mt-2 space-y-3"
+          className="ml-4 mt-2 space-y-3"
           initial="hidden"
           animate={isExpanded ? "visible" : "hidden"}
           variants={childrenVariants}

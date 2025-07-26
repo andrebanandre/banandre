@@ -90,12 +90,12 @@ const components = {
       const children = props.children as string
       if (typeof children === 'string' && children.startsWith('Tags:')) {
         // Find the next text node that contains hashtags
-        return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+        return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded-md' {...props} />
       }
-      return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+      return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded-md' {...props} />
     },
     a: ({ href, children, ...props }: { href: string, children: React.ReactNode, props: Record<string, unknown> }) => {
-      const className = 'font-bold text-[var(--accent)] underline decoration-2 underline-offset-4 hover:text-[var(--blue-accent)] hover:bg-[var(--accent)] hover:bg-opacity-20 transition-all duration-200 px-1 py-0.5 rounded brutalist-link';
+      const className = 'font-bold text-[var(--accent)] underline decoration-2 underline-offset-4 hover:text-[var(--blue-accent)] hover:bg-[var(--accent)] hover:bg-opacity-20 transition-all duration-200 px-1 py-0.5 rounded-md brutalist-link';
       if (href?.startsWith('/')) {
         return (
           <Link href={href} className={className} {...props}>
@@ -153,14 +153,14 @@ const components = {
     // Custom code block styling
     pre: (props: Record<string, unknown>) => (
       <pre
-        className='my-8 overflow-x-auto rounded-none bg-black border-2 border-[var(--accent)] p-6 text-sm font-mono'
+        className='my-8 overflow-x-auto rounded-md bg-black border-2 border-[var(--accent)] p-6 text-sm font-mono'
         {...props}
       />
     ),
 
     code: (props: Record<string, unknown>) => (
       <code 
-        className='rounded px-2 py-1 font-mono text-sm text-[var(--accent)] font-bold'
+        className='rounded-md px-2 py-1 font-mono text-sm text-[var(--accent)] font-bold'
         {...props}
       />
     ),

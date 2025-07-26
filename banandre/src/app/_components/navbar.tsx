@@ -116,14 +116,6 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
                 >
                   BANANDRE
                 </motion.div>
-                <motion.div 
-                  className="text-xs text-gray-400 uppercase tracking-widest font-mono"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  AI • INSIGHTS • FUTURE
-                </motion.div>
               </Anchor>
             </motion.div>
 
