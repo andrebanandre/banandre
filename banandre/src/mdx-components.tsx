@@ -62,17 +62,17 @@ const components = {
       
       return (
         <p 
-          className='text-gray-200 leading-relaxed text-lg mb-6 [&:not(:first-child)]:mt-6'
+          className='leading-relaxed text-lg mb-6 [&:not(:first-child)]:mt-6'
           {...props} 
         />
       )
     },
     ol: (props: Record<string, unknown>) => (
-      <ol className='my-8 ml-8 list-decimal space-y-3 text-gray-200 [&>li]:text-lg' {...props} />
+      <ol className='my-8 ml-8 list-decimal space-y-3 [&>li]:text-lg' {...props} />
     ),
     ul: (props: Record<string, unknown>) => (
       <ul 
-        className='my-8 ml-8 list-none space-y-3 text-gray-200'
+        className='my-8 ml-8 list-none space-y-3 '
         {...props} 
       />
     ),
@@ -90,12 +90,12 @@ const components = {
       const children = props.children as string
       if (typeof children === 'string' && children.startsWith('Tags:')) {
         // Find the next text node that contains hashtags
-        return <strong className='font-bold text-white bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+        return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
       }
-      return <strong className='font-bold text-white bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
+      return <strong className='font-bold text-[var(--blue-accent)] bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded' {...props} />
     },
     a: ({ href, children, ...props }: { href: string, children: React.ReactNode, props: Record<string, unknown> }) => {
-      const className = 'font-bold text-[var(--accent)] underline decoration-2 underline-offset-4 hover:text-white hover:bg-[var(--accent)] hover:bg-opacity-20 transition-all duration-200 px-1 py-0.5 rounded brutalist-link';
+      const className = 'font-bold text-[var(--accent)] underline decoration-2 underline-offset-4 hover:text-[var(--blue-accent)] hover:bg-[var(--accent)] hover:bg-opacity-20 transition-all duration-200 px-1 py-0.5 rounded brutalist-link';
       if (href?.startsWith('/')) {
         return (
           <Link href={href} className={className} {...props}>
@@ -125,27 +125,27 @@ const components = {
       </div>
     ),
   
-    thead: (props: Record<string, unknown>) => <thead className='bg-[var(--accent)] text-black' {...props} />,
+    thead: (props: Record<string, unknown>) => <thead className='bg-[var(--accent)] text-[var(--blue-accent)]' {...props} />,
     tbody: (props: Record<string, unknown>) => <tbody {...props} />,
     tr: (props: Record<string, unknown>) => (
-              <tr className='border-b-2 border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 transition-colors duration-200' {...props} />
+      <tr className='border-b-2 border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200' {...props} />
     ),
     th: (props: Record<string, unknown>) => (
       <th
-        className='border-r-2 border-black px-6 py-4 text-left font-black uppercase tracking-wide text-black [&[align=center]]:text-center [&[align=right]]:text-right'
+        className='border-r-2 border-[var(--blue-accent)] px-6 py-4 text-left font-black uppercase tracking-wide text-[var(--blue-accent)] [&[align=center]]:text-center [&[align=right]]:text-right'
         {...props}
       />
     ),
     td: (props: Record<string, unknown>) => (
       <td
-        className='border-r-2 border-[var(--border)] px-6 py-4 text-left text-gray-200 font-medium [&[align=center]]:text-center [&[align=right]]:text-right'
+        className='border-r-2 border-[var(--border)] px-6 py-4 text-left font-medium [&[align=center]]:text-center [&[align=right]]:text-right'
         {...props}
       />
     ),
   
     blockquote: (props: Record<string, unknown>) => (
       <blockquote 
-        className='my-12 border-l-8 border-[var(--accent)] bg-[var(--muted)] pl-8 pr-6 py-6 italic text-xl text-gray-200 font-medium brutalist-border-accent'
+        className='my-12 border-l-8 border-[var(--accent)] bg-[var(--muted)] pl-8 pr-6 py-6 italic text-xl  font-medium brutalist-border-accent'
         {...props} 
       />
     ),

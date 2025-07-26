@@ -144,7 +144,7 @@ export function RelatedArticlesClient({ relatedPosts }: RelatedArticlesClientPro
           >
             <Link 
               href="/tags"
-              className="inline-block px-6 py-3 bg-[var(--accent)] text-black font-bold uppercase tracking-wider hover:bg-white transition-colors brutalist-border hover:shadow-[4px_4px_0px_var(--accent)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
+              className="inline-block px-6 py-3 bg-[var(--accent)] text-[var(--blue-accent)] font-bold uppercase tracking-wider hover:bg-white transition-colors brutalist-border hover:shadow-[4px_4px_0px_var(--accent)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
             >
               View All Tags
             </Link>

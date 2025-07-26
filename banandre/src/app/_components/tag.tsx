@@ -23,13 +23,13 @@ export function Tag({ tag, className = '', showHash = true }: TagProps) {
         inline-block
         px-3 py-1
         bg-[var(--accent)]
-        text-black
+        text-[var(--blue-accent)]
         font-bold
         text-sm
         uppercase
         tracking-wider
         hover:bg-white
-        hover:text-black
+        hover:text-[var(--blue-accent)]
         transition-all
         duration-200
         brutalist-border

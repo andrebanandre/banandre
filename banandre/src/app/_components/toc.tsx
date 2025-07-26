@@ -267,20 +267,29 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
                   onClick={(e) => handleClick(e, item.id)}
                   className={`
                     text-sm font-medium flex items-center group transition-all duration-200 py-2 px-3 rounded-md
+
+                    ${item.depth === 2 ? 'font-bold' : 
+                      item.depth === 3 ? 'ml-4' : 
+                      'ml-8'}
                     ${isActive 
-                      ? 'bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--accent)] font-bold' 
-                      : 'hover:bg-[var(--accent)] hover:bg-opacity-10'
+                      ? 'bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-bold' 
+                      : 'hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]'
                     }
-                    ${item.depth === 2 ? 'text-white font-bold' : 
-                      item.depth === 3 ? 'text-gray-300 ml-4' : 
-                      'text-gray-400 ml-8'}
+                    ${!isActive 
+                      ? item.depth === 2 
+                        ? 'text-white' 
+                        : item.depth === 3 
+                          ? 'text-gray-300' 
+                          : 'text-gray-400' 
+                      : ''
+                    }
                   `}
                   variants={linkVariants}
                   whileHover="hover"
                 >
                   <motion.span 
                     className={`mr-2 group-hover:translate-x-1 transition-transform duration-200 ${
-                      isActive ? 'text-[var(--accent)]' : 'text-[var(--accent)]'
+                      isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'
                     }`}
                     whileHover={{ rotate: 90 }}
                     transition={{ duration: 0.3 }}

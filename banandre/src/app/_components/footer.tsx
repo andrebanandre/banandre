@@ -41,6 +41,17 @@ export function Footer() {
     }
   }
 
+  const brandTextVariants = {
+    hover: {
+      scale: 1.05,
+      rotate: 2,
+      transition: {
+        duration: 0.3,
+        ease: easeInOut
+      }
+    }
+  }
+
   const linkVariants = {
     hover: {
       x: 5,
@@ -95,12 +106,9 @@ export function Footer() {
           >
             <div>
               <motion.div 
-                className="text-white font-black text-3xl uppercase tracking-wider text-shadow-brutal mb-2"
-                whileHover={{ 
-                  scale: 1.02,
-                  textShadow: "0 0 20px var(--accent)"
-                }}
-                transition={{ duration: 0.3 }}
+                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-2 cursor-pointer"
+                variants={brandTextVariants}
+                whileHover="hover"
               >
                 BANANDRE
               </motion.div>

@@ -110,8 +110,8 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             >
               <Anchor href="/" className="text-decoration-none">
                 <motion.div 
-                  className="text-white font-black text-2xl md:text-3xl uppercase tracking-wider text-shadow-brutal"
-                  variants={logoVariants}
+                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-2 cursor-pointer"
+                variants={logoVariants}
                   whileHover="hover"
                 >
                   BANANDRE
