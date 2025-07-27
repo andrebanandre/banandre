@@ -5,6 +5,7 @@ import type { FC, ReactNode } from 'react'
 import { NextraTheme } from './_components/nextra-theme'
 import HotjarScript from './_components/hotjar-script'
 import './globals.css'
+import './sidebar.css'
 import 'nextra-theme-blog/style.css'
 
 export const metadata: Metadata = {

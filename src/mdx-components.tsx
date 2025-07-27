@@ -241,7 +241,7 @@ const defaultComponents = getNextraComponents({
       return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
           <div 
-            className="flex-1 px-6 md:px-12 py-8 lg:py-16 max-w-4xl mx-auto lg:mx-0"
+            className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0"
           >
             {children}
           </div>

@@ -125,61 +125,58 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
               </Anchor>
             </motion.div>
 
-            {/* Search Bar */}
-            <motion.div 
-              className="hidden md:block flex-1 max-w-md mx-8"
-              variants={itemVariants}
-            >
-              <div className="relative search-wrapper">
+            <div className="flex items-center space-x-8">
+              {/* Search Bar */}
+              <motion.div 
+                className="hidden md:block flex-1 max-w-md mx-8"
+                variants={itemVariants}
+              >
                 <Search 
-                  placeholder="Search BANANDRE..."
+                  placeholder="Search..."
                   emptyResult="No results found."
                   errorText="Search failed to load."
                   loading="Searching..."
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10">
-                  <MagnifyingGlassIcon className="w-4 h-4 text-[var(--accent)]" />
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* Desktop Navigation */}
-            <motion.div 
-              className="hidden md:block"
-              variants={itemVariants}
-            >
-              <div className="flex items-baseline space-x-8">
-                {topLevelNavbarItems.map((item, index) => {
-                  const route = item.route || ('href' in item ? item.href! : '')
-                  const isActive = pathname === route
-                  
-                  return (
-                    <motion.div
-                      key={route}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
-                    >
+              {/* Desktop Navigation */}
+              <motion.div 
+                className="hidden md:block"
+                variants={itemVariants}
+              >
+                <div className="flex items-baseline space-x-8">
+                  {topLevelNavbarItems.map((item, index) => {
+                    const route = item.route || ('href' in item ? item.href! : '')
+                    const isActive = pathname === route
+                    
+                    return (
                       <motion.div
-                        variants={navItemVariants}
-                        whileHover="hover"
+                        key={route}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                       >
-                        <Anchor 
-                          href={route} 
-                          className={`px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 text-decoration-none brutalist-link
-                            ${isActive 
-                              ? 'bg-[var(--accent)] text-[var(--accent-foreground)] brutalist-border' 
-                              : 'text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10'
-                            }`}
+                        <motion.div
+                          variants={navItemVariants}
+                          whileHover="hover"
                         >
-                          {item.title}
-                        </Anchor>
+                          <Anchor 
+                            href={route} 
+                            className={`px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 text-decoration-none brutalist-link
+                              ${isActive 
+                                ? 'bg-[var(--accent)] text-[var(--accent-foreground)] brutalist-border' 
+                                : 'text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10'
+                              }`}
+                          >
+                            {item.title}
+                          </Anchor>
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </motion.div>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            </div>
 
             {/* Mobile menu button */}
             <motion.div 
@@ -230,18 +227,13 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
               variants={mobileItemVariants}
               className="mb-4"
             >
-              <div className="relative search-wrapper">
-                <Search 
-                  className="custom-search-input"
-                  placeholder="Search BANANDRE..."
-                  emptyResult="No results found."
-                  errorText="Search failed to load."
-                  loading="Searching..."
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10">
-                  <MagnifyingGlassIcon className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-              </div>
+              <Search 
+                className="custom-search-input"
+                placeholder="Search BANANDRE..."
+                emptyResult="No results found."
+                errorText="Search failed to load."
+                loading="Searching..."
+              />
             </motion.div>
 
             {/* Top Level Navigation Items */}
