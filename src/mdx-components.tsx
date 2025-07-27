@@ -148,29 +148,39 @@ const components = {
         </a>
       );
     },
-  
+    
     table: (props: Record<string, unknown>) => (
-      <div 
-        className='my-12 w-full overflow-x-auto'
-      >
-        <table className='w-full brutalist-border bg-[var(--card)]' {...props} />
+      <div className='my-12 w-full md:overflow-x-auto'>
+        <table className='w-full max-md:block brutalist-border bg-[var(--card)]' {...props} />
       </div>
     ),
   
-    thead: (props: Record<string, unknown>) => <thead className='bg-[var(--accent)] text-[var(--blue-accent)]' {...props} />,
-    tbody: (props: Record<string, unknown>) => <tbody {...props} />,
-    tr: (props: Record<string, unknown>) => (
-      <tr className='border-b-2 border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200' {...props} />
+    thead: (props: Record<string, unknown>) => (
+      <thead className='max-md:hidden md:table-header-group bg-[var(--accent)] text-[var(--blue-accent)]' {...props} />
     ),
+  
+    tbody: (props: Record<string, unknown>) => <tbody className='max-md:block md:table-row-group' {...props} />,
+  
+    tr: (props: Record<string, unknown>) => (
+      <tr
+        className='max-md:block max-md:mb-4 max-md:border-2 max-md:border-[var(--border)] md:table-row md:border-b-2 md:border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200'
+        {...props}
+      />
+    ),
+  
     th: (props: Record<string, unknown>) => (
       <th
         className='border-r-2 border-[var(--blue-accent)] px-6 py-4 text-left font-black uppercase tracking-wide text-[var(--blue-accent)] [&[align=center]]:text-center [&[align=right]]:text-right'
         {...props}
       />
     ),
+  
     td: (props: Record<string, unknown>) => (
       <td
-        className='border-r-2 border-[var(--border)] px-6 py-4 text-left font-medium [&[align=center]]:text-center [&[align=right]]:text-right'
+        className='max-md:block max-md:p-4 max-md:text-right max-md:border-b max-md:border-[var(--border)] 
+                   md:table-cell md:border-r-2 md:px-6 md:py-4 md:text-left
+                   max-md:before:content-[attr(data-label)] max-md:before:float-left max-md:before:font-bold max-md:before:uppercase
+                   [&&[align=center]]:text-center [&&[align=right]]:text-right'
         {...props}
       />
     ),
@@ -185,7 +195,7 @@ const components = {
     // Custom code block styling
     pre: (props: Record<string, unknown>) => (
       <pre
-        className='my-8 overflow-x-auto rounded-md bg-black border-2 border-[var(--accent)] p-6 text-sm font-mono'
+        className='my-8 rounded-md bg-black border-2 border-[var(--accent)] p-4 md:p-6 text-sm font-mono whitespace-pre-wrap break-words'
         {...props}
       />
     ),
