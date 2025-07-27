@@ -53,9 +53,9 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   }
 
   const logoVariants = {
-    hover: {
-      scale: 1.02,
-      textShadow: "0 0 20px var(--accent)",
+      hover: {
+      scale: 1.05,
+      rotate: 2,
       transition: {
         duration: 0.3,
         ease: easeInOut
@@ -119,6 +119,9 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
                 className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded cursor-pointer"
                 variants={logoVariants}
                   whileHover="hover"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1 + 3 * 0.1, duration: 0.5 }}
                 >
                   BANANDRE
                 </motion.div>

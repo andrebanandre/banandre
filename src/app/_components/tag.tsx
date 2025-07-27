@@ -116,7 +116,7 @@ export function TagList({ tags, className = '' }: TagListProps) {
           variants={itemVariants}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
+          transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
         >
           <Tag tag={tag} />
         </motion.div>
