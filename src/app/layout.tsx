@@ -5,6 +5,14 @@ import type { FC, ReactNode } from 'react'
 import { NextraTheme } from './_components/nextra-theme'
 import './globals.css'
 import 'nextra-theme-blog/style.css'
+import Hotjar from '@hotjar/browser'
+
+const siteId = 6476280;
+const hotjarVersion = 6;
+
+if (typeof window !== 'undefined') {
+  Hotjar.init(siteId, hotjarVersion);
+}
 
 export const metadata: Metadata = {
   title: {
