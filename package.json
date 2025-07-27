@@ -11,13 +11,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "pagefind --site .next/server/app --output-path build/_pagefind"
+    "postbuild": "next-sitemap && pagefind --site build --output-path build/_pagefind"
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.2",
     "framer-motion": "^12.23.9",
     "gray-matter": "^4.0.3",
     "next": "15.4.3",
+    "next-sitemap": "^4.2.3",
     "nextra": "^4.2.17",
     "nextra-theme-blog": "^4.2.17",
     "react": "19.1.0",
