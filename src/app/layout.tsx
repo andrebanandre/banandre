@@ -21,7 +21,9 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
     <html lang="en" dir="ltr">
       <Head faviconGlyph="✦" />
       <body style={{ margin: 0 }}>
-        <NextraTheme pageMap={pageMap}>{children}</NextraTheme>
+        <NextraTheme pageMap={pageMap}>
+          {children}
+          </NextraTheme>
         <HotjarScript />
       </body>
     </html>

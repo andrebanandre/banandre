@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { ListBulletIcon, Cross1Icon } from '@radix-ui/react-icons'
 import type { Heading } from 'nextra'
 import { motion, easeInOut, easeOut } from 'framer-motion'
+import { EditOnGitHubLink } from './edit-on-github-link'
 
 export function TOC({ toc }: { toc: Heading[] }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -216,7 +217,7 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 h-full flex flex-col">
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -231,7 +232,7 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
         </motion.h3>
       </motion.div>
 
-      <nav>
+      <nav className="flex-1">
         <ul className="space-y-3">
           {toc.map((item: Heading, index: number) => {
             const isActive = activeId === item.id
@@ -284,6 +285,16 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
           })}
         </ul>
       </nav>
+
+      {/* Edit on GitHub Link - Always at the bottom */}
+      <motion.div
+        className="mt-auto pt-6 border-t border-[var(--accent)] border-opacity-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
+      >
+        <EditOnGitHubLink />
+      </motion.div>
     </div>
   )
 }
