@@ -168,6 +168,9 @@ tbody tr:hover {
   padding: 1rem !important;
   transition: all 0.2s ease-in-out;
 }
+.nextra-search-results a > div {
+  color: white !important;
+}
 
 .nextra-search-results a:hover {
   background-color: var(--accent) !important;
