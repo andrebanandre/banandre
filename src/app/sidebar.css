@@ -155,49 +155,32 @@ tbody tr:hover {
   margin-top: 0.5rem !important;
 }
 
-.nextra-search-results .nextra-search-result {
+.nextra-search-results {
   border-bottom: 1px solid var(--border) !important;
 }
 
-.nextra-search-results .nextra-search-result:last-child {
+.nextra-search-results:last-child {
   border-bottom: none !important;
 }
 
-.nextra-search-results .nextra-search-result a {
+.nextra-search-results a {
   color: white !important;
   padding: 1rem !important;
   transition: all 0.2s ease-in-out;
 }
 
-.nextra-search-results .nextra-search-result a:hover {
+.nextra-search-results a:hover {
   background-color: var(--accent) !important;
   color: var(--blue-accent) !important;
 }
 
-.nextra-search-results .nextra-search-result a.selected {
+.nextra-search-results a.selected {
   background-color: var(--accent) !important;
   color: var(--blue-accent) !important;
 }
 
-.nextra-search-results .nextra-search-result-title {
-  font-weight: bold;
-  color: white !important;
-}
 
-.nextra-search-results .nextra-search-result a.selected .nextra-search-result-title {
-  color: var(--blue-accent) !important;
-}
-
-.nextra-search-results .nextra-search-result-content {
-  color: #9ca3af !important;
-}
-
-.nextra-search-results .nextra-search-result a.selected .nextra-search-result-content {
-  color: var(--blue-accent) !important;
-  opacity: 0.8;
-}
-
-.nextra-search-results .nextra-search-result-content mark {
+.nextra-search-results mark {
   background-color: var(--blue-accent) !important;
   color: var(--accent) !important;
 }
