@@ -3,6 +3,31 @@ import { LandingBlogGrid } from './_components/landing-blog-grid'
 import { AllTagsDisplay } from './_components/all-tags'
 import Link from 'next/link'
 import { ArrowRightIcon } from '@radix-ui/react-icons'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Banandre - No One Cares About Code',
+  description: 'A brutalist blog about coding, technology, and everything in between. Raw, unfiltered thoughts on software development.',
+  keywords: ['coding', 'programming', 'software development', 'technology', 'blog'],
+  authors: [{ name: 'Banandre' }],
+  creator: 'Banandre',
+  publisher: 'Banandre',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: 'Banandre - No One Cares About Code',
+    description: 'A brutalist blog about coding, technology, and everything in between.',
+    type: 'website',
+    siteName: 'Banandre',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Banandre - No One Cares About Code',
+    description: 'A brutalist blog about coding, technology, and everything in between.',
+  },
+}
 
 export default async function HomePage() {
 

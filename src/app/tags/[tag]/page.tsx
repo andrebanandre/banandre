@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Tag } from '../../_components/tag'
+import type { Metadata } from 'next'
 
 interface TagPageProps {
   params: Promise<{
@@ -16,6 +17,49 @@ export async function generateStaticParams() {
   return tags.map(({ tag }) => ({
     tag: tag.toLowerCase().replace(/[^a-z0-9]/g, '')
   }))
+}
+
+export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+  try {
+    const { tag: urlTag } = await params
+    const displayTag = parseTagFromUrl(urlTag)
+    const posts = await getPostsByTag(displayTag)
+    
+    const title = `#${displayTag} - Banandre`
+    const description = `Articles tagged with ${displayTag}. ${posts.length} article${posts.length !== 1 ? 's' : ''} found.`
+    
+    console.log('Generating metadata for tag:', displayTag, 'with', posts.length, 'posts')
+    
+    return {
+      title,
+      description,
+      keywords: [displayTag, 'coding', 'programming', 'software development', 'technology', 'blog'],
+      authors: [{ name: 'Banandre' }],
+      creator: 'Banandre',
+      publisher: 'Banandre',
+      robots: {
+        index: true,
+        follow: true,
+      },
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+        siteName: 'Banandre',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      },
+    }
+  } catch (error) {
+    console.error('Error generating metadata:', error)
+    return {
+      title: 'Tag - Banandre',
+      description: 'Articles by tag',
+    }
+  }
 }
 
 export default async function TagPage({ params }: TagPageProps) {
