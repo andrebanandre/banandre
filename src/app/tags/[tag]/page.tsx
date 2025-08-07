@@ -28,8 +28,6 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
     const title = `#${displayTag} - Banandre`
     const description = `Articles tagged with ${displayTag}. ${posts.length} article${posts.length !== 1 ? 's' : ''} found.`
     
-    console.log('Generating metadata for tag:', displayTag, 'with', posts.length, 'posts')
-    
     return {
       title,
       description,
