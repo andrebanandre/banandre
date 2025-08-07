@@ -3,7 +3,7 @@ import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import type { FC, ReactNode } from 'react'
 import { NextraTheme } from './_components/nextra-theme'
-import HotjarScript from './_components/hotjar-script'
+import GoogleAnalytics from './_components/google-analytics'
 import './globals.css'
 import './sidebar.css'
 import 'nextra-theme-blog/style.css'
@@ -11,7 +11,7 @@ import 'nextra-theme-blog/style.css'
 export const metadata: Metadata = {
   title: {
     absolute: '',
-    template: '%s - Nextra'
+    template: '%s - Banandre'
   }
 }
  
@@ -24,7 +24,7 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
         <NextraTheme pageMap={pageMap}>
           {children}
           </NextraTheme>
-        <HotjarScript />
+        <GoogleAnalytics />
       </body>
     </html>
   )

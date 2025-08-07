@@ -250,10 +250,6 @@ body {
   margin-bottom: 1rem;
 }
 
-.hero-title {
-  color: var(--foreground);
-  margin-bottom: 1rem;
-}
 
 .hero-description {
   color: #d1d5db;

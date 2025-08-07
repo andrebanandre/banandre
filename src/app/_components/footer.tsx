@@ -121,10 +121,10 @@ export function Footer() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
-                AI • INSIGHTS • FUTURE
+                NO ONE CARES ABOUT CODE
               </motion.div>
             </div>
-            <motion.p 
+            {/* <motion.p 
               className="text-gray-300 text-sm leading-relaxed max-w-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -132,7 +132,7 @@ export function Footer() {
             >
               Exploring the intersection of artificial intelligence and human creativity. 
               Bold insights for a bold future.
-            </motion.p>
+            </motion.p> */}
           </motion.div>
 
           {/* Quick Links */}
@@ -140,7 +140,7 @@ export function Footer() {
             className="space-y-6"
             variants={itemVariants}
           >
-            <motion.h3 
+            {/* <motion.h3 
               className="text-white font-bold text-lg uppercase tracking-wide"
               whileHover={{ color: "var(--accent)" }}
               transition={{ duration: 0.3 }}
@@ -177,7 +177,7 @@ export function Footer() {
                   </motion.a>
                 </motion.li>
               ))}
-            </ul>
+            </ul> */}
           </motion.div>
 
           {/* Connect Section */}
@@ -194,10 +194,10 @@ export function Footer() {
             </motion.h3>
             <div className="flex space-x-4">
               {[
-                { icon: GitHubLogoIcon, href: '#', label: 'GitHub' },
-                { icon: TwitterLogoIcon, href: '#', label: 'Twitter' },
-                { icon: LinkedInLogoIcon, href: '#', label: 'LinkedIn' },
-                { icon: RocketIcon, href: '#', label: 'Newsletter' }
+                { icon: GitHubLogoIcon, href: 'https://github.com/latyaodessa/banandre', label: 'GitHub' },
+                { icon: TwitterLogoIcon, href: 'https://x.com/andre_banandre', label: 'X' },
+                // { icon: LinkedInLogoIcon, href: '#', label: 'LinkedIn' },
+                // { icon: RocketIcon, href: '#', label: 'Newsletter' }
               ].map((social, index) => (
                 <motion.a
                   key={social.label}
@@ -209,6 +209,8 @@ export function Footer() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <social.icon className="w-5 h-5" />
                 </motion.a>
@@ -216,7 +218,7 @@ export function Footer() {
             </div>
             
             {/* Newsletter Signup */}
-            <motion.div
+            {/* <motion.div
               className="mt-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -246,7 +248,7 @@ export function Footer() {
                   Join
                 </motion.button>
               </div>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
 
@@ -262,10 +264,10 @@ export function Footer() {
             whileHover={{ color: "var(--accent)" }}
             transition={{ duration: 0.3 }}
           >
-            © {currentYear} BANANDRE. All rights reserved.
+            {currentYear} BANANDRE
           </motion.div>
           <div className="flex items-center space-x-6 text-sm">
-            <motion.a 
+            {/* <motion.a 
               href="/privacy" 
               className="text-gray-400 hover:text-[var(--accent)] transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
@@ -280,7 +282,7 @@ export function Footer() {
               transition={{ duration: 0.2 }}
             >
               Terms of Service
-            </motion.a>
+            </motion.a> */}
             <motion.div 
               className="text-gray-500 font-mono text-xs"
               animate={{ 
@@ -293,7 +295,7 @@ export function Footer() {
                 ease: "easeInOut"
               }}
             >
-              Built with ⚡ & 🍌
+              Built with 🍌
             </motion.div>
           </div>
         </motion.div>

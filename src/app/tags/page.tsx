@@ -9,7 +9,7 @@ export default async function TagsPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-12">
           <h1 className="display-title text-white mb-4 text-shadow-brutal">
-            All Tags
+            All Articles
           </h1>
           <p className="text-gray-200 text-lg">
             Explore articles by topic. Click on any tag to see related content.

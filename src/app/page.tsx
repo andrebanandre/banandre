@@ -15,12 +15,10 @@ export default async function HomePage() {
             {/* Main Blog Title */}
             <div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight mb-2">
-                BLOG
+                BANANDRE
               </h1>
               <p className="text-sm md:text-base text-gray-400 uppercase tracking-wider">
-                NAVIGATING A WORLD OF<br />
-                SHIFTING TRENDS<br />
-                AND TRADITIONS
+                NO ONE CARES ABOUT CODE
               </p>
             </div>
 
@@ -28,7 +26,7 @@ export default async function HomePage() {
             <div className="hidden md:block">
               <Link href="/tags">
                 <button className="bg-[var(--muted)] text-white px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-all duration-200 flex items-center space-x-2">
-                  <span>Read Our Blog</span>
+                  <span>All Articles</span>
                   <ArrowRightIcon className="w-4 h-4" />
                 </button>
               </Link>
@@ -36,14 +34,14 @@ export default async function HomePage() {
           </div>
 
           {/* Navigation Bar like in screenshot */}
-          <div className="border-t-2 border-b-2 border-white py-2 mb-8">
+          {/* <div className="border-t-2 border-b-2 border-white py-2 mb-8">
             <div className="flex flex-wrap gap-6 text-white text-sm font-bold uppercase tracking-wider">
               <Link href="/" className="hover:text-[var(--accent)] transition-colors">Home</Link>
               <Link href="/demo" className="hover:text-[var(--accent)] transition-colors">Editorial</Link>
               <Link href="/docs" className="hover:text-[var(--accent)] transition-colors">Essentials</Link>
               <Link href="/tags" className="hover:text-[var(--accent)] transition-colors">Blog</Link>
             </div>
-          </div>
+          </div> */}
 
           {/* Tag categories from actual blog posts */}
           <div className="mb-8">

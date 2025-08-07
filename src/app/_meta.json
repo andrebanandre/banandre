@@ -1,7 +1,7 @@
 {
-  "demo": "Demo",
+  "index": "Index",
   "docs": {
-    "title": "Documentation",
+    "title": "Index",
     "hidden": true
   },
   "tags": {

@@ -115,16 +115,27 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
               variants={itemVariants}
             >
               <Anchor href="/" className="text-decoration-none">
-                <motion.div 
-                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded cursor-pointer"
+              <div>
+              <motion.div 
+                className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-2 cursor-pointer"
                 variants={logoVariants}
-                  whileHover="hover"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1 + 3 * 0.1, duration: 0.5 }}
-                >
-                  BANANDRE
-                </motion.div>
+                whileHover="hover"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1 + 3 * 0.1, duration: 0.5 }}
+              >
+                BANANDRE
+              </motion.div>
+              <motion.div 
+                className="text-xs text-gray-400 uppercase tracking-widest font-mono"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+              >
+                NO ONE CARES ABOUT CODE
+              </motion.div>
+            </div>
+                
               </Anchor>
             </motion.div>
 

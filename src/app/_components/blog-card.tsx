@@ -111,8 +111,8 @@ export function BlogCard({ post, featured = false, size = 'medium' }: BlogCardPr
                   {post.tags.slice(0, 3).map((tag) => (
                     <span 
                       key={tag}
-                      className="inline-block bg-[var(--accent)] bg-opacity-20 text-[var(--accent)] px-2 py-1 text-xs font-bold uppercase whitespace-nowrap"
-                    >
+                      className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
+                      >
                       #{tag}
                     </span>
                   ))}
