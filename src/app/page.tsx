@@ -1,61 +1,56 @@
-
-import { LandingBlogGrid } from './_components/landing-blog-grid'
-import { AllTagsDisplay } from './_components/all-tags'
-import Link from 'next/link'
-import { ArrowRightIcon } from '@radix-ui/react-icons'
-import type { Metadata } from 'next'
+import { LandingBlogGrid } from "./_components/landing-blog-grid";
+import { AllTagsDisplay } from "./_components/all-tags";
+import { ThreeTitle } from "./_components/three-title-client";
+import Link from "next/link";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Banandre - No One Cares About Code',
-  description: 'A brutalist blog about coding, technology, and everything in between. Raw, unfiltered thoughts on software development.',
-  keywords: ['coding', 'programming', 'software development', 'technology', 'blog'],
-  authors: [{ name: 'Banandre' }],
-  creator: 'Banandre',
-  publisher: 'Banandre',
+  title: "Banandre - No One Cares About Code",
+  description:
+    "A brutalist blog about coding, technology, and everything in between. Raw, unfiltered thoughts on software development.",
+  keywords: ["coding", "programming", "software development", "technology", "blog"],
+  authors: [{ name: "Banandre" }],
+  creator: "Banandre",
+  publisher: "Banandre",
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'Banandre - No One Cares About Code',
-    description: 'A brutalist blog about coding, technology, and everything in between.',
-    type: 'website',
-    siteName: 'Banandre',
+    title: "Banandre - No One Cares About Code",
+    description: "A brutalist blog about coding, technology, and everything in between.",
+    type: "website",
+    siteName: "Banandre",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Banandre - No One Cares About Code',
-    description: 'A brutalist blog about coding, technology, and everything in between.',
+    card: "summary_large_image",
+    title: "Banandre - No One Cares About Code",
+    description: "A brutalist blog about coding, technology, and everything in between.",
   },
-}
+};
 
 export default async function HomePage() {
-
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header Section - Like screenshot */}
       <section className="py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
-            {/* Main Blog Title */}
-            <div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight mb-2">
-                BANANDRE
-              </h1>
-              <p className="text-sm md:text-base text-gray-400 uppercase tracking-wider">
-                NO ONE CARES ABOUT CODE
-              </p>
+            {/* Three.js Title */}
+            <div className="flex-1">
+              <ThreeTitle />
             </div>
 
             {/* Read Our Blog Button */}
-            <div className="hidden md:block">
+            {/* <div className="hidden md:block ml-8">
               <Link href="/tags">
                 <button className="bg-[var(--muted)] text-white px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-all duration-200 flex items-center space-x-2">
                   <span>All Articles</span>
                   <ArrowRightIcon className="w-4 h-4" />
                 </button>
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Navigation Bar like in screenshot */}
@@ -88,5 +83,5 @@ export default async function HomePage() {
       {/* Main Blog Grid - The Primary Content */}
       <LandingBlogGrid />
     </div>
-  )
+  );
 }
