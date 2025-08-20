@@ -5,6 +5,7 @@ import { InlineTags, TagList } from "./app/_components/tag";
 import { RelatedArticles, RelatedArticlesMDX } from "./app/_components/related-articles-server";
 import Link from "next/link";
 import Image from "next/image";
+import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
 
 // Extend the Nextra metadata type with blog-specific properties
 interface BlogNextraMetadata {
@@ -309,6 +310,11 @@ const defaultComponents = getNextraComponents({
               </h5>
             </div>
           </div>
+          {blogMetadata.date && (
+            <div className="mb-6 text-sm text-gray-400 font-light tracking-wide opacity-75">
+              {formatDateForLocale(blogMetadata.date, getUserPreferredLocale())}
+            </div>
+          )}
           {children}
           {blogMetadata.tags && <TagList tags={blogMetadata.tags} />}
           {blogMetadata.tags && (
