@@ -3,7 +3,6 @@ import { useMDXComponents as getNextraComponents } from "nextra/mdx-components";
 import { TOC } from "./app/_components/toc";
 import { InlineTags, TagList } from "./app/_components/tag";
 import { RelatedArticles, RelatedArticlesMDX } from "./app/_components/related-articles-server";
-import { BlogHero } from "./app/_components/blog-hero";
 import Link from "next/link";
 import Image from "next/image";
 
