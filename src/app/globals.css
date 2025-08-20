@@ -174,7 +174,7 @@ body {
 /* Typography styles */
 .display-title {
   font-weight: 900;
-  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-size: clamp(2.5rem, 8vw, 4rem);
   line-height: 0.9;
   letter-spacing: -0.01em;
   text-transform: uppercase;
