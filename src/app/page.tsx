@@ -1,6 +1,6 @@
 import { LandingBlogGrid } from "./_components/landing-blog-grid";
 import { AllTagsDisplay } from "./_components/all-tags";
-import { ThreeTitle } from "./_components/three-title-client";
+import { FallingBananasTitle } from "./_components/falling-bananas";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
@@ -37,9 +37,9 @@ export default async function HomePage() {
       <section className="py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
-            {/* Three.js Title */}
+            {/* Falling Bananas Title */}
             <div className="flex-1">
-              <ThreeTitle />
+              <FallingBananasTitle />
             </div>
 
             {/* Read Our Blog Button */}
