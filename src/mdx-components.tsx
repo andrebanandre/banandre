@@ -213,7 +213,7 @@ const components = {
 
   tr: (props: Record<string, unknown>) => (
     <tr
-      className="max-md:block max-md:mb-4 max-md:border-2 max-md:border-[var(--border)] md:table-row md:border-b-2 md:border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200"
+      className="max-md:block max-md:mb-4 max-md:border-2 max-md:border-[var(--border)] md:table-row md:border-b-2 md:border-[var(--border)] even:bg-[var(--muted)] hover:bg-[var(--accent)] hover:bg-opacity-10 text-white transition-colors duration-200"
       {...props}
     />
   ),
