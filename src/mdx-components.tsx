@@ -289,7 +289,6 @@ const defaultComponents = getNextraComponents({
   wrapper({ children, toc, metadata }) {
     // Cast metadata to our extended type
     const blogMetadata = metadata as BlogNextraMetadata;
-    console.log("wrapper props:", { children, toc, metadata: blogMetadata });
     return (
       <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
         <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">
