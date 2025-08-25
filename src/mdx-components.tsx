@@ -7,12 +7,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
 
-// Extend the Nextra metadata type with blog-specific properties
 interface BlogNextraMetadata {
   title: string;
   description?: string | null;
   image?: string;
   tags?: string[];
+  categories?: string[];
   slug?: string;
   date?: string;
   filePath: string;
@@ -287,8 +287,8 @@ const components = {
 
 const defaultComponents = getNextraComponents({
   wrapper({ children, toc, metadata }) {
-    // Cast metadata to our extended type
     const blogMetadata = metadata as BlogNextraMetadata;
+
     return (
       <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
         <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">
@@ -331,11 +331,9 @@ const defaultComponents = getNextraComponents({
   },
 });
 
-// Merge components
 export function useMDXComponents(componentsFromProps: Record<string, unknown>) {
   return {
     ...defaultComponents,
-    // ...themeComponents,
     ...components,
     ...componentsFromProps,
   };

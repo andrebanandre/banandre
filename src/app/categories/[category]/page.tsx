@@ -9,6 +9,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Category } from "../../_components/category";
 import type { Metadata } from "next";
+import {
+  generateCategoryPageSchema,
+  generateBreadcrumbSchema,
+  safeJsonLdStringify,
+} from "../../../lib/json-ld";
+import { Head } from "nextra/components";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -82,86 +88,110 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  return (
-    <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-12">
-          <Link
-            href="/categories"
-            className="text-[var(--accent)] hover:text-white transition-colors mb-4 inline-block"
-          >
-            ← Back to all categories
-          </Link>
+  // Generate JSON-LD schemas
+  const categorySchema = generateCategoryPageSchema(displayCategory, posts);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Categories", url: "/categories" },
+    { name: displayCategory, url: `/categories/${urlCategory}` },
+  ]);
 
-          <div className="flex items-center gap-4 mb-6">
-            <h1 className="display-title text-white text-shadow-brutal">Category:</h1>
-            <Category category={displayCategory} />
+  return (
+    <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: safeJsonLdStringify(categorySchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: safeJsonLdStringify(breadcrumbSchema),
+          }}
+        />
+      </Head>
+      <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <Link
+              href="/categories"
+              className="text-[var(--accent)] hover:text-white transition-colors mb-4 inline-block"
+            >
+              ← Back to all categories
+            </Link>
+
+            <div className="flex items-center gap-4 mb-6">
+              <h1 className="display-title text-white text-shadow-brutal">Category:</h1>
+              <Category category={displayCategory} />
+            </div>
+
+            <p className="text-gray-200 text-lg">
+              {posts.length} article{posts.length !== 1 ? "s" : ""} found
+            </p>
           </div>
 
-          <p className="text-gray-200 text-lg">
-            {posts.length} article{posts.length !== 1 ? "s" : ""} found
-          </p>
-        </div>
+          <div className="grid gap-8">
+            {posts.map((post) => (
+              <article
+                key={post.slug}
+                className="bg-[var(--card)] brutalist-border p-6 hover:bg-[var(--muted)] transition-colors group"
+              >
+                <Link href={post.slug} className="block">
+                  <div className="flex flex-col gap-4">
+                    {post.image && (
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        width={800}
+                        height={192}
+                        className="w-full h-48 object-cover brutalist-border"
+                      />
+                    )}
 
-        <div className="grid gap-8">
-          {posts.map((post) => (
-            <article
-              key={post.slug}
-              className="bg-[var(--card)] brutalist-border p-6 hover:bg-[var(--muted)] transition-colors group"
-            >
-              <Link href={post.slug} className="block">
-                <div className="flex flex-col gap-4">
-                  {post.image && (
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      width={800}
-                      height={192}
-                      className="w-full h-48 object-cover brutalist-border"
-                    />
-                  )}
+                    <div>
+                      <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-[var(--accent)] transition-colors">
+                        {post.title}
+                      </h2>
 
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-[var(--accent)] transition-colors">
-                      {post.title}
-                    </h2>
+                      {post.description && <p className="text-gray-300 mb-4">{post.description}</p>}
 
-                    {post.description && <p className="text-gray-300 mb-4">{post.description}</p>}
+                      <div className="flex flex-wrap gap-2">
+                        {post.categories.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {post.categories.map((category) => (
+                              <span
+                                key={category}
+                                className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
+                              >
+                                {category}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
-                    <div className="flex flex-wrap gap-2">
-                      {post.categories.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {post.categories.map((category) => (
-                            <span
-                              key={category}
-                              className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
-                            >
-                              {category}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-xs bg-[var(--muted)] bg-opacity-50 text-[var(--foreground)] px-2 py-1 font-bold uppercase"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                        {post.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {post.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="text-xs bg-[var(--muted)] bg-opacity-50 text-[var(--foreground)] px-2 py-1 font-bold uppercase"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </article>
-          ))}
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
