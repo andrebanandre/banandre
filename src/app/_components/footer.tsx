@@ -1,10 +1,15 @@
-'use client'
+"use client";
 
-import { GitHubLogoIcon, TwitterLogoIcon, LinkedInLogoIcon, RocketIcon } from '@radix-ui/react-icons'
-import { motion, easeInOut, easeOut } from 'framer-motion'
+import {
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+  LinkedInLogoIcon,
+  RocketIcon,
+} from "@radix-ui/react-icons";
+import { motion, easeInOut, easeOut } from "framer-motion";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   // Animation variants
   const containerVariants = {
@@ -13,10 +18,10 @@ export function Footer() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -25,10 +30,10 @@ export function Footer() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   const socialIconVariants = {
     hover: {
@@ -36,10 +41,10 @@ export function Footer() {
       rotate: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const brandTextVariants = {
     hover: {
@@ -47,46 +52,46 @@ export function Footer() {
       rotate: 2,
       transition: {
         duration: 0.3,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const linkVariants = {
     hover: {
       x: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const inputVariants = {
     focus: {
       scale: 1.02,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const buttonVariants = {
     hover: {
       scale: 1.05,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
+        ease: easeInOut,
+      },
     },
     tap: {
       scale: 0.95,
       transition: {
-        duration: 0.1
-      }
-    }
-  }
+        duration: 0.1,
+      },
+    },
+  };
 
   return (
     <motion.footer
@@ -98,14 +103,10 @@ export function Footer() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          
           {/* Brand Section */}
-          <motion.div
-            className="space-y-6"
-            variants={itemVariants}
-          >
+          <motion.div className="space-y-6" variants={itemVariants}>
             <div>
-              <motion.div 
+              <motion.div
                 className="inline-block text-[var(--blue-accent)] font-black text-3xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-2 cursor-pointer"
                 variants={brandTextVariants}
                 whileHover="hover"
@@ -115,7 +116,7 @@ export function Footer() {
               >
                 BANANDRE
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="text-xs text-gray-400 uppercase tracking-widest font-mono"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -136,10 +137,7 @@ export function Footer() {
           </motion.div>
 
           {/* Quick Links */}
-          <motion.div
-            className="space-y-6"
-            variants={itemVariants}
-          >
+          <motion.div className="space-y-6" variants={itemVariants}>
             {/* <motion.h3 
               className="text-white font-bold text-lg uppercase tracking-wide"
               whileHover={{ color: "var(--accent)" }}
@@ -181,11 +179,8 @@ export function Footer() {
           </motion.div>
 
           {/* Connect Section */}
-          <motion.div
-            className="space-y-6"
-            variants={itemVariants}
-          >
-            <motion.h3 
+          <motion.div className="space-y-6" variants={itemVariants}>
+            <motion.h3
               className="text-white font-bold text-lg uppercase tracking-wide"
               whileHover={{ color: "var(--accent)" }}
               transition={{ duration: 0.3 }}
@@ -194,9 +189,17 @@ export function Footer() {
             </motion.h3>
             <div className="flex space-x-4">
               {[
-                { icon: GitHubLogoIcon, href: 'https://github.com/latyaodessa/banandre', label: 'GitHub' },
-                { icon: TwitterLogoIcon, href: 'https://x.com/andre_banandre', label: 'X' },
-                // { icon: LinkedInLogoIcon, href: '#', label: 'LinkedIn' },
+                {
+                  icon: GitHubLogoIcon,
+                  href: "https://github.com/andrebanandre/banandre",
+                  label: "GitHub",
+                },
+                { icon: TwitterLogoIcon, href: "https://x.com/andre_banandre", label: "X" },
+                {
+                  icon: LinkedInLogoIcon,
+                  href: "https://www.linkedin.com/in/andrii-fedorenko-65905863/",
+                  label: "LinkedIn",
+                },
                 // { icon: RocketIcon, href: '#', label: 'Newsletter' }
               ].map((social, index) => (
                 <motion.a
@@ -216,7 +219,7 @@ export function Footer() {
                 </motion.a>
               ))}
             </div>
-            
+
             {/* Newsletter Signup */}
             {/* <motion.div
               className="mt-8"
@@ -259,7 +262,7 @@ export function Footer() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4, duration: 0.6 }}
         >
-          <motion.div 
+          <motion.div
             className="text-gray-400 text-sm font-mono"
             whileHover={{ color: "var(--accent)" }}
             transition={{ duration: 0.3 }}
@@ -283,16 +286,16 @@ export function Footer() {
             >
               Terms of Service
             </motion.a> */}
-            <motion.div 
+            <motion.div
               className="text-gray-500 font-mono text-xs"
-              animate={{ 
+              animate={{
                 opacity: [0.5, 1, 0.5],
-                scale: [1, 1.05, 1]
+                scale: [1, 1.05, 1],
               }}
-              transition={{ 
+              transition={{
                 duration: 3,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut",
               }}
             >
               Built with 🍌
@@ -301,5 +304,5 @@ export function Footer() {
         </motion.div>
       </div>
     </motion.footer>
-  )
+  );
 }

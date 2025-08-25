@@ -1,5 +1,5 @@
 import { LandingBlogGrid } from "./_components/landing-blog-grid";
-import { AllTagsDisplay } from "./_components/all-tags";
+import { AllCategoriesDisplay } from "./_components/all-categories";
 import { FallingBananasTitle } from "./_components/falling-bananas";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
@@ -63,16 +63,16 @@ export default async function HomePage() {
             </div>
           </div> */}
 
-          {/* Tag categories from actual blog posts */}
+          {/* Category navigation from actual blog posts */}
           <div className="mb-8">
-            <AllTagsDisplay />
+            <AllCategoriesDisplay />
           </div>
 
           {/* Mobile button */}
           <div className="md:hidden">
-            <Link href="/tags">
+            <Link href="/categories">
               <button className="bg-[var(--muted)] text-white px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-all duration-200 flex items-center space-x-2 w-full justify-center">
-                <span>Read Our Blog</span>
+                <span>Browse Categories</span>
                 <ArrowRightIcon className="w-4 h-4" />
               </button>
             </Link>

@@ -5,7 +5,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 
 export function EditOnGitHubLink() {
   const pathname = usePathname()
-  const editUrl = `https://github.com/latyaodessa/banandre/blob/main/src/app${pathname}/page.mdx`
+  const editUrl = `https://github.com/andrebanandre/banandre/blob/main/src/app${pathname}/page.mdx`
 
   return (
     <a

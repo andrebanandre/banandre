@@ -1,20 +1,20 @@
-'use client'
- 
-import { usePathname } from 'next/navigation'
-import type { PageMapItem } from 'nextra'
-import { normalizePages } from 'nextra/normalize-pages'
-import { motion, easeOut, easeInOut } from 'framer-motion'
-import { SidebarItem, filterPagesByMeta } from './sidebar-item'
+"use client";
+
+import { usePathname } from "next/navigation";
+import type { PageMapItem } from "nextra";
+import { normalizePages } from "nextra/normalize-pages";
+import { motion, easeOut, easeInOut } from "framer-motion";
+import { SidebarItem, filterPagesByMeta } from "./sidebar-item";
 
 export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const { docsDirectories } = normalizePages({
     list: pageMap,
-    route: pathname
-  })
+    route: pathname || "/",
+  });
 
   // Filter the pages based on _meta.json configuration
-  const filteredDirectories = filterPagesByMeta(docsDirectories)
+  const filteredDirectories = filterPagesByMeta(docsDirectories);
 
   // Animation variants
   const containerVariants = {
@@ -25,10 +25,10 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
       transition: {
         duration: 0.6,
         ease: easeOut,
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   const headerVariants = {
     hidden: { opacity: 0, y: -10 },
@@ -37,10 +37,10 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   const titleVariants = {
     hover: {
@@ -48,10 +48,10 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
       color: "var(--accent)",
       transition: {
         duration: 0.3,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   return (
     <motion.aside
@@ -60,18 +60,15 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.div
-        className="mb-8"
-        variants={headerVariants}
-      >
-        <motion.h2 
+      <motion.div className="mb-8" variants={headerVariants}>
+        <motion.h2
           className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-6 text-shadow-subtle"
           variants={titleVariants}
           whileHover="hover"
         >
           Navigation
         </motion.h2>
-        <motion.div 
+        <motion.div
           className="h-1 bg-[var(--accent)] w-16"
           initial={{ width: 0 }}
           animate={{ width: 64 }}
@@ -80,15 +77,17 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
       </motion.div>
 
       <nav>
-        <motion.ul
-          className="space-y-3"
-          variants={containerVariants}
-        >
+        <motion.ul className="space-y-3" variants={containerVariants}>
           {filteredDirectories.map((item, index) => (
-            <SidebarItem key={item.route || index} item={item} index={index} pathname={pathname} />
+            <SidebarItem
+              key={item.route || index}
+              item={item}
+              index={index}
+              pathname={pathname || "/"}
+            />
           ))}
         </motion.ul>
       </nav>
     </motion.aside>
-  )
+  );
 }
