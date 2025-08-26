@@ -5,6 +5,7 @@ import { InlineTags, TagList } from "./app/_components/tag";
 import { RelatedArticles, RelatedArticlesMDX } from "./app/_components/related-articles-server";
 import Link from "next/link";
 import Image from "next/image";
+import Head from "next/head";
 import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
 
 interface BlogNextraMetadata {
@@ -288,45 +289,128 @@ const components = {
 const defaultComponents = getNextraComponents({
   wrapper({ children, toc, metadata }) {
     const blogMetadata = metadata as BlogNextraMetadata;
+    
+    // Generate social metadata
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://banandre.com';
+    const currentUrl = blogMetadata.slug ? `${baseUrl}/blog/${blogMetadata.slug}` : baseUrl;
+    const imageUrl = blogMetadata.image ? 
+      (blogMetadata.image.startsWith('http') ? blogMetadata.image : `${baseUrl}${blogMetadata.image}`) : 
+      `${baseUrl}/banana.png`;
+    const publishedDate = blogMetadata.date ? new Date(blogMetadata.date).toISOString() : new Date().toISOString();
 
     return (
-      <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
-        <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">
-          <div className="hero-container">
-            <img
-              src={blogMetadata.image}
-              alt={blogMetadata.title}
-              className="hero-image brutalist-border"
-            />
-            <div className="hero-overlay" />
-            <div className="hero-content">
-              <h1 className="scroll-m-20 display-title text-white mb-8 mt-12 first:mt-0 text-shadow-brutal">
-                {blogMetadata.title}
-              </h1>
-
-              <h5 className="scroll-m-20 text-lg font-semibold tracking-tight text-white mt-6 mb-2">
-                {blogMetadata.description}
-              </h5>
-            </div>
-          </div>
-          {blogMetadata.date && (
-            <div className="mb-6 text-sm text-gray-400 font-light tracking-wide opacity-75">
-              {formatDateForLocale(blogMetadata.date, getUserPreferredLocale())}
-            </div>
+      <>
+        <Head>
+          {/* Open Graph Meta Tags */}
+          <meta property="og:type" content="article" />
+          <meta property="og:title" content={blogMetadata.title} />
+          <meta property="og:description" content={blogMetadata.description || ''} />
+          <meta property="og:image" content={imageUrl} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:url" content={currentUrl} />
+          <meta property="og:site_name" content="Banandre" />
+          <meta property="article:published_time" content={publishedDate} />
+          <meta property="article:author" content="Banandre" />
+          {blogMetadata.tags && blogMetadata.tags.map((tag, index) => (
+            <meta key={index} property="article:tag" content={tag} />
+          ))}
+          {blogMetadata.categories && (
+            <meta property="article:section" content={blogMetadata.categories[0]} />
           )}
-          {children}
-          {blogMetadata.tags && <TagList tags={blogMetadata.tags} />}
+
+          {/* Twitter Card Meta Tags */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@banandre" />
+          <meta name="twitter:creator" content="@banandre" />
+          <meta name="twitter:title" content={blogMetadata.title} />
+          <meta name="twitter:description" content={blogMetadata.description || ''} />
+          <meta name="twitter:image" content={imageUrl} />
+
+          {/* Additional SEO Meta Tags */}
+          <meta name="author" content="Banandre" />
+          <meta name="publisher" content="Banandre" />
           {blogMetadata.tags && (
-            <RelatedArticlesMDX
-              tags={blogMetadata.tags.join(",")}
-              slug={blogMetadata.slug}
-              maxArticles={4}
-            />
+            <meta name="keywords" content={blogMetadata.tags.join(', ')} />
           )}
-        </div>
+          <link rel="canonical" href={currentUrl} />
 
-        <TOC toc={toc} />
-      </div>
+          {/* Schema.org JSON-LD */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BlogPosting",
+                "headline": blogMetadata.title,
+                "description": blogMetadata.description,
+                "image": imageUrl,
+                "url": currentUrl,
+                "datePublished": publishedDate,
+                "dateModified": publishedDate,
+                "author": {
+                  "@type": "Person",
+                  "name": "Banandre",
+                  "url": baseUrl
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "Banandre",
+                  "url": baseUrl,
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": `${baseUrl}/banana.png`
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": currentUrl
+                },
+                ...(blogMetadata.tags && { "keywords": blogMetadata.tags.join(', ') }),
+                ...(blogMetadata.categories && { "about": blogMetadata.categories[0] })
+              })
+            }}
+          />
+        </Head>
+        
+        <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
+          <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">
+            <div className="hero-container">
+              <img
+                src={blogMetadata.image}
+                alt={blogMetadata.title}
+                className="hero-image brutalist-border"
+              />
+              <div className="hero-overlay" />
+              <div className="hero-content">
+                <h1 className="scroll-m-20 display-title text-white mb-8 mt-12 first:mt-0 text-shadow-brutal">
+                  {blogMetadata.title}
+                </h1>
+
+                <h5 className="scroll-m-20 text-lg font-semibold tracking-tight text-white mt-6 mb-2">
+                  {blogMetadata.description}
+                </h5>
+              </div>
+            </div>
+            {blogMetadata.date && (
+              <div className="mb-6 text-sm text-gray-400 font-light tracking-wide opacity-75">
+                {formatDateForLocale(blogMetadata.date, getUserPreferredLocale())}
+              </div>
+            )}
+            {children}
+            {blogMetadata.tags && <TagList tags={blogMetadata.tags} />}
+            {blogMetadata.tags && (
+              <RelatedArticlesMDX
+                tags={blogMetadata.tags.join(",")}
+                slug={blogMetadata.slug}
+                maxArticles={4}
+              />
+            )}
+          </div>
+
+          <TOC toc={toc} />
+        </div>
+      </>
     );
   },
 });

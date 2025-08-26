@@ -14,11 +14,62 @@ import "./globals.css";
 import "./sidebar.css";
 import "nextra-theme-blog/style.css";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://banandre.com';
+
 export const metadata: Metadata = {
   title: {
     absolute: "",
     template: "%s - Banandre",
+    default: "Banandre - Software Engineering Insights & AI Analysis",
   },
+  description: "Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.",
+  authors: [{ name: 'Banandre', url: baseUrl }],
+  creator: 'Banandre',
+  publisher: 'Banandre',
+  metadataBase: new URL(baseUrl),
+  openGraph: {
+    type: 'website',
+    title: 'Banandre - Software Engineering Insights & AI Analysis',
+    description: 'Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.',
+    url: baseUrl,
+    siteName: 'Banandre',
+    images: [
+      {
+        url: '/banana.png',
+        width: 1200,
+        height: 630,
+        alt: 'Banandre - Software Engineering Insights',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@banandre',
+    creator: '@banandre',
+    title: 'Banandre - Software Engineering Insights & AI Analysis',
+    description: 'Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.',
+    images: ['/banana.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  keywords: [
+    'software engineering',
+    'artificial intelligence',
+    'programming',
+    'technology insights',
+    'software architecture',
+    'AI development',
+    'tech analysis'
+  ],
 };
 
 const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
