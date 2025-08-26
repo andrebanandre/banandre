@@ -1,5 +1,6 @@
 import { getAllCategories } from "../../lib/blog-utils";
 import { Category } from "../_components/category";
+import { siteConfig } from "../config";
 
 export default async function CategoriesPage() {
   const categories = await getAllCategories();

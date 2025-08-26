@@ -1,21 +1,20 @@
-import { getAllTags } from '../../lib/blog-utils'
-import { Tag } from '../_components/tag'
+import { getAllTags } from "../../lib/blog-utils";
+import { Tag } from "../_components/tag";
+import { siteConfig } from "../config";
 
 export default async function TagsPage() {
-  const tags = await getAllTags()
-  
+  const tags = await getAllTags();
+
   return (
     <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
       <div className="max-w-4xl mx-auto">
         <div className="mb-12">
-          <h1 className="display-title text-white mb-4 text-shadow-brutal">
-            All Articles
-          </h1>
+          <h1 className="display-title text-white mb-4 text-shadow-brutal">All Articles</h1>
           <p className="text-gray-200 text-lg">
             Explore articles by topic. Click on any tag to see related content.
           </p>
         </div>
-        
+
         <div className="grid gap-6 md:gap-8">
           {tags.length === 0 ? (
             <div className="text-center py-12">
@@ -33,23 +32,19 @@ export default async function TagsPage() {
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-12 pt-8 border-t-2 border-[var(--accent)]">
-                <h2 className="text-2xl font-bold text-white mb-4 uppercase">
-                  Tag Statistics
-                </h2>
+                <h2 className="text-2xl font-bold text-white mb-4 uppercase">Tag Statistics</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {tags.map(({ tag, count }) => (
-                    <div 
+                    <div
                       key={tag}
                       className="bg-[var(--card)] brutalist-border p-4 hover:bg-[var(--muted)] transition-colors"
                     >
                       <div className="flex justify-between items-center">
-                        <span className="text-[var(--accent)] font-bold uppercase">
-                          #{tag}
-                        </span>
+                        <span className="text-[var(--accent)] font-bold uppercase">#{tag}</span>
                         <span className="text-white font-bold">
-                          {count} article{count !== 1 ? 's' : ''}
+                          {count} article{count !== 1 ? "s" : ""}
                         </span>
                       </div>
                     </div>
@@ -61,5 +56,5 @@ export default async function TagsPage() {
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

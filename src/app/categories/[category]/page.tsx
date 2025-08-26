@@ -15,6 +15,7 @@ import {
   safeJsonLdStringify,
 } from "../../../lib/json-ld";
 import { Head } from "nextra/components";
+import { siteConfig } from "../../config";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     const displayCategory = parseCategoryFromUrl(urlCategory);
     const posts = await getPostsByCategory(displayCategory);
 
-    const title = `${displayCategory} - Banandre`;
+    const title = `${displayCategory} - ${siteConfig.name}`;
     const description = `Articles in ${displayCategory}. ${posts.length} article${posts.length !== 1 ? "s" : ""} found.`;
 
     return {
@@ -50,29 +51,49 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
         "technology",
         "blog",
       ],
-      authors: [{ name: "Banandre" }],
-      creator: "Banandre",
-      publisher: "Banandre",
+      authors: [
+        {
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+      ],
+      alternates: {
+        canonical: `/categories/${urlCategory}`,
+      },
+      creator: siteConfig.name,
+      publisher: siteConfig.name,
       robots: {
         index: true,
         follow: true,
       },
       openGraph: {
+        type: "website",
+        locale: siteConfig.locale,
+        url: `${siteConfig.url}/categories/${urlCategory}`,
         title,
         description,
-        type: "website",
-        siteName: "Banandre",
+        siteName: siteConfig.name,
+        images: [
+          {
+            url: siteConfig.ogImage,
+            width: 1200,
+            height: 630,
+            alt: siteConfig.name,
+          },
+        ],
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
+        images: [siteConfig.ogImage],
+        creator: "@andre_banandre",
       },
     };
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "Category - Banandre",
+      title: `Category - ${siteConfig.name}`,
       description: "Articles by category",
     };
   }

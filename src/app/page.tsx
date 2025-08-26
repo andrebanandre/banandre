@@ -4,30 +4,59 @@ import { FallingBananasTitle } from "./_components/falling-bananas";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
+import { siteConfig } from "./config";
 
 export const metadata: Metadata = {
-  title: "Banandre - No One Cares About Code",
-  description:
-    "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
+  title: `${siteConfig.name} - ${siteConfig.title}`,
+  description: siteConfig.description,
   keywords: ["AI", "software architecture", "software development", "enterprise", "blog"],
-  authors: [{ name: "Banandre" }],
-  creator: "Banandre",
-  publisher: "Banandre",
+  authors: [
+    {
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  ],
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/en-US",
+    },
+  },
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Banandre - No One Cares About Code",
-    description: "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
     type: "website",
-    siteName: "Banandre",
+    locale: siteConfig.locale,
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Banandre - No One Cares About Code",
-    description: "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    creator: "@andre_banandre",
   },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default async function HomePage() {
