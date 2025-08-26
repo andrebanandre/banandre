@@ -5,6 +5,7 @@ import {
   TwitterLogoIcon,
   LinkedInLogoIcon,
   RocketIcon,
+  EnvelopeClosedIcon,
 } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";
 
@@ -199,6 +200,11 @@ export function Footer() {
                   icon: LinkedInLogoIcon,
                   href: "https://www.linkedin.com/in/andrii-fedorenko-65905863/",
                   label: "LinkedIn",
+                },
+                {
+                  icon: EnvelopeClosedIcon,
+                  href: "mailto:andre@banandre.com",
+                  label: "Contact",
                 },
                 // { icon: RocketIcon, href: '#', label: 'Newsletter' }
               ].map((social, index) => (
