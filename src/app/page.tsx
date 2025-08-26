@@ -8,8 +8,8 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Banandre - No One Cares About Code",
   description:
-    "A brutalist blog about coding, technology, and everything in between. Raw, unfiltered thoughts on software development.",
-  keywords: ["coding", "programming", "software development", "technology", "blog"],
+    "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
+  keywords: ["AI", "software architecture", "software development", "enterprise", "blog"],
   authors: [{ name: "Banandre" }],
   creator: "Banandre",
   publisher: "Banandre",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Banandre - No One Cares About Code",
-    description: "A brutalist blog about coding, technology, and everything in between.",
+    description: "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
     type: "website",
     siteName: "Banandre",
   },
   twitter: {
     card: "summary_large_image",
     title: "Banandre - No One Cares About Code",
-    description: "A brutalist blog about coding, technology, and everything in between.",
+    description: "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.",
   },
 };
 

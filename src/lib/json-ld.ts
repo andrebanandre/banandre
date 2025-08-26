@@ -1,10 +1,10 @@
 import type { Blog, WebSite, Organization, Person, BreadcrumbList, WithContext } from "schema-dts";
 import type { BlogMetadata } from "./blog-utils";
 
-const SITE_URL = "https://banandre.com";
-const SITE_NAME = "Banandre";
+const SITE_URL = "https://www.banandre.com";
+const SITE_NAME = "Banandre - No One Cares About Code";
 const SITE_DESCRIPTION =
-  "A brutalist blog about AI technology, coding reality, and sharp insights. Raw, unfiltered thoughts on artificial intelligence, software development, and tech industry truths by Andrii Fedorenko.";
+  "Raw and unfiltered insights on AI, software architecture, and enterprise solutions. A blog sharing the truth about tech without the buzzwords.";
 const AUTHOR_NAME = "Andrii Fedorenko";
 const AUTHOR_ALIAS = "Andre Banandre";
 const AUTHOR_EMAIL = "andre@banandre.com";
