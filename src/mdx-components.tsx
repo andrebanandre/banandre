@@ -1,6 +1,7 @@
 import React from "react";
 import { useMDXComponents as getNextraComponents } from "nextra/mdx-components";
 import { TOC } from "./app/_components/toc";
+import { ScrollToTop } from "./app/_components/scroll-to-top";
 import { InlineTags, TagList } from "./app/_components/tag";
 import { RelatedArticles, RelatedArticlesMDX } from "./app/_components/related-articles-server";
 import Link from "next/link";
@@ -410,6 +411,7 @@ const defaultComponents = getNextraComponents({
 
           <TOC toc={toc} />
         </div>
+        <ScrollToTop />
       </>
     );
   },
