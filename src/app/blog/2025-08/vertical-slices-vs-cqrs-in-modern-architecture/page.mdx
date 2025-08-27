@@ -65,7 +65,7 @@ Today, people think CQRS means:
 - Complex distributed systems (works fine in a monolith)
 
 The same corruption is happening to Vertical Slices. People now think VSA means:
-- Zero shared code between slices (Jimmy said "minimize," not "eliminate")
+- Zero shared code between slices (Jimmy said "minimize", not "eliminate")
 - Separate database tables per slice (not required)
 - Mandatory copy-paste (antipattern)
 - Specific folder structures (missing the point entirely)
@@ -74,7 +74,7 @@ This semantic drift causes teams to reject useful patterns because they think th
 
 ## The CRUD Fallacy
 
-"These patterns are too complex for CRUD systems," complain developers who apparently haven't read the actual definitions. Neither CQRS nor VSA require complex domain logic. They work perfectly fine for simple Create, Update, Delete operations, they just encourage you to name them `OnboardUser`, `UpdateProductDefinition`, and `CancelSubscription` instead of `Create`, `Update`, `Delete`.
+"These patterns are too complex for CRUD systems", complain developers who apparently haven't read the actual definitions. Neither CQRS nor VSA require complex domain logic. They work perfectly fine for simple Create, Update, Delete operations, they just encourage you to name them `OnboardUser`, `UpdateProductDefinition`, and `CancelSubscription` instead of `Create`, `Update`, `Delete`.
 
 This naming shift isn't overhead, it's the whole point. It forces you to think about what you're actually building rather than blindly implementing database operations. When requirements inevitably evolve beyond simple CRUD, you've already established a structure that can handle complexity.
 
