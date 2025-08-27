@@ -319,13 +319,14 @@ export function SidebarItem({
           initial="hidden"
           animate={isExpanded ? "visible" : "hidden"}
           variants={childrenVariants}
+          style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
         >
           {item.children!.map((child: PageItem, childIndex: number) => (
             <motion.div
               key={child.route || childIndex}
               initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + childIndex * 0.05, duration: 0.3 }}
+              animate={isExpanded ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ delay: isExpanded ? 0.1 + childIndex * 0.05 : 0, duration: 0.3 }}
             >
               <SidebarItem item={child} index={childIndex} pathname={pathname} level={level + 1} />
             </motion.div>
