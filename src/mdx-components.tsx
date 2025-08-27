@@ -290,14 +290,18 @@ const components = {
 const defaultComponents = getNextraComponents({
   wrapper({ children, toc, metadata }) {
     const blogMetadata = metadata as BlogNextraMetadata;
-    
+
     // Generate social metadata
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://banandre.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://banandre.com";
     const currentUrl = blogMetadata.slug ? `${baseUrl}/blog/${blogMetadata.slug}` : baseUrl;
-    const imageUrl = blogMetadata.image ? 
-      (blogMetadata.image.startsWith('http') ? blogMetadata.image : `${baseUrl}${blogMetadata.image}`) : 
-      `${baseUrl}/banana.png`;
-    const publishedDate = blogMetadata.date ? new Date(blogMetadata.date).toISOString() : new Date().toISOString();
+    const imageUrl = blogMetadata.image
+      ? blogMetadata.image.startsWith("http")
+        ? blogMetadata.image
+        : `${baseUrl}${blogMetadata.image}`
+      : `${baseUrl}/banana.png`;
+    const publishedDate = blogMetadata.date
+      ? new Date(blogMetadata.date).toISOString()
+      : new Date().toISOString();
 
     return (
       <>
@@ -305,7 +309,7 @@ const defaultComponents = getNextraComponents({
           {/* Open Graph Meta Tags */}
           <meta property="og:type" content="article" />
           <meta property="og:title" content={blogMetadata.title} />
-          <meta property="og:description" content={blogMetadata.description || ''} />
+          <meta property="og:description" content={blogMetadata.description || ""} />
           <meta property="og:image" content={imageUrl} />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
@@ -313,9 +317,10 @@ const defaultComponents = getNextraComponents({
           <meta property="og:site_name" content="Banandre" />
           <meta property="article:published_time" content={publishedDate} />
           <meta property="article:author" content="Banandre" />
-          {blogMetadata.tags && blogMetadata.tags.map((tag, index) => (
-            <meta key={index} property="article:tag" content={tag} />
-          ))}
+          {blogMetadata.tags &&
+            blogMetadata.tags.map((tag, index) => (
+              <meta key={index} property="article:tag" content={tag} />
+            ))}
           {blogMetadata.categories && (
             <meta property="article:section" content={blogMetadata.categories[0]} />
           )}
@@ -325,15 +330,13 @@ const defaultComponents = getNextraComponents({
           <meta name="twitter:site" content="@banandre" />
           <meta name="twitter:creator" content="@banandre" />
           <meta name="twitter:title" content={blogMetadata.title} />
-          <meta name="twitter:description" content={blogMetadata.description || ''} />
+          <meta name="twitter:description" content={blogMetadata.description || ""} />
           <meta name="twitter:image" content={imageUrl} />
 
           {/* Additional SEO Meta Tags */}
           <meta name="author" content="Banandre" />
           <meta name="publisher" content="Banandre" />
-          {blogMetadata.tags && (
-            <meta name="keywords" content={blogMetadata.tags.join(', ')} />
-          )}
+          {blogMetadata.tags && <meta name="keywords" content={blogMetadata.tags.join(", ")} />}
           <link rel="canonical" href={currentUrl} />
 
           {/* Schema.org JSON-LD */}
@@ -343,37 +346,37 @@ const defaultComponents = getNextraComponents({
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "BlogPosting",
-                "headline": blogMetadata.title,
-                "description": blogMetadata.description,
-                "image": imageUrl,
-                "url": currentUrl,
-                "datePublished": publishedDate,
-                "dateModified": publishedDate,
-                "author": {
+                headline: blogMetadata.title,
+                description: blogMetadata.description,
+                image: imageUrl,
+                url: currentUrl,
+                datePublished: publishedDate,
+                dateModified: publishedDate,
+                author: {
                   "@type": "Person",
-                  "name": "Banandre",
-                  "url": baseUrl
+                  name: "Banandre",
+                  url: baseUrl,
                 },
-                "publisher": {
+                publisher: {
                   "@type": "Organization",
-                  "name": "Banandre",
-                  "url": baseUrl,
-                  "logo": {
+                  name: "Banandre",
+                  url: baseUrl,
+                  logo: {
                     "@type": "ImageObject",
-                    "url": `${baseUrl}/banana.png`
-                  }
+                    url: `${baseUrl}/banana.png`,
+                  },
                 },
-                "mainEntityOfPage": {
+                mainEntityOfPage: {
                   "@type": "WebPage",
-                  "@id": currentUrl
+                  "@id": currentUrl,
                 },
-                ...(blogMetadata.tags && { "keywords": blogMetadata.tags.join(', ') }),
-                ...(blogMetadata.categories && { "about": blogMetadata.categories[0] })
-              })
+                ...(blogMetadata.tags && { keywords: blogMetadata.tags.join(", ") }),
+                ...(blogMetadata.categories && { about: blogMetadata.categories[0] }),
+              }),
             }}
           />
         </Head>
-        
+
         <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
           <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">
             <div className="hero-container">

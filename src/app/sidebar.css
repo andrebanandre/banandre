@@ -43,7 +43,7 @@
 }
 
 .brutalist-link::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 3px;
@@ -181,7 +181,6 @@ tbody tr:hover {
   background-color: var(--accent) !important;
   color: var(--blue-accent) !important;
 }
-
 
 .nextra-search-results mark {
   background-color: var(--blue-accent) !important;

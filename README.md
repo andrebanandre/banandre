@@ -44,9 +44,9 @@ This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap
 The sitemap is configured in `next-sitemap.config.js` with the following features:
 
 - **Automatic MDX page discovery**: All your MDX pages in `/demo/` and `/docs/` are automatically included
-- **Smart priority assignment**: 
+- **Smart priority assignment**:
   - Homepage: 1.0 priority, daily updates
-  - Blog posts: 0.8 priority, weekly updates  
+  - Blog posts: 0.8 priority, weekly updates
   - Tag pages: 0.6 priority, monthly updates
 - **Robots.txt generation**: Automatically creates a robots.txt file
 - **Static export compatible**: Works with your `output: 'export'` configuration
@@ -72,6 +72,7 @@ npx next-sitemap
 ### Generated Files
 
 After building, you'll find these files in your `build/` directory:
+
 - `sitemap.xml` - Main sitemap index
 - `robots.txt` - Robots file with sitemap references
 - `sitemap-*.xml` - Individual sitemap files (if you have many pages)

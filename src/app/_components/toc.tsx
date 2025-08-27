@@ -1,65 +1,65 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { ListBulletIcon, Cross1Icon } from '@radix-ui/react-icons'
-import type { Heading } from 'nextra'
-import { motion, easeInOut, easeOut } from 'framer-motion'
-import { EditOnGitHubLink } from './edit-on-github-link'
+import { useState, useEffect } from "react";
+import { ListBulletIcon, Cross1Icon } from "@radix-ui/react-icons";
+import type { Heading } from "nextra";
+import { motion, easeInOut, easeOut } from "framer-motion";
+import { EditOnGitHubLink } from "./edit-on-github-link";
 
 export function TOC({ toc }: { toc: Heading[] }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeId, setActiveId] = useState<string>('')
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
     // Handle initial hash navigation on page load
     if (window.location.hash) {
-      const elementId = window.location.hash.slice(1)
-      const element = document.getElementById(elementId)
+      const elementId = window.location.hash.slice(1);
+      const element = document.getElementById(elementId);
       if (element) {
         setTimeout(() => {
-          element.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-          })
-        }, 100)
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
       }
     }
 
     // Set up intersection observer for scroll spy
-    const headingElements = toc.map(item => 
-      document.getElementById(item.id)
-    ).filter(Boolean) as HTMLElement[]
+    const headingElements = toc
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean) as HTMLElement[];
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
+            setActiveId(entry.target.id);
           }
-        })
+        });
       },
       {
-        rootMargin: '-20% 0% -80% 0%',
-        threshold: 0
+        rootMargin: "-20% 0% -80% 0%",
+        threshold: 0,
       }
-    )
+    );
 
     // Start observing all headings
     headingElements.forEach((element) => {
-      if (element) observer.observe(element)
-    })
+      if (element) observer.observe(element);
+    });
 
     // Cleanup
     return () => {
       headingElements.forEach((element) => {
-        if (element) observer.unobserve(element)
-      })
-    }
-  }, [toc])
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, [toc]);
 
-  if (!toc || toc.length === 0) return null
+  if (!toc || toc.length === 0) return null;
 
-  const toggleTOC = () => setIsOpen(!isOpen)
+  const toggleTOC = () => setIsOpen(!isOpen);
 
   // Animation variants
   const buttonVariants = {
@@ -68,16 +68,16 @@ export function TOC({ toc }: { toc: Heading[] }) {
       rotate: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
+        ease: easeInOut,
+      },
     },
     tap: {
       scale: 0.95,
       transition: {
-        duration: 0.1
-      }
-    }
-  }
+        duration: 0.1,
+      },
+    },
+  };
 
   const overlayVariants = {
     hidden: { opacity: 0 },
@@ -85,21 +85,21 @@ export function TOC({ toc }: { toc: Heading[] }) {
       opacity: 1,
       transition: {
         duration: 0.3,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   const sidebarVariants = {
-    hidden: { x: '100%' },
+    hidden: { x: "100%" },
     visible: {
       x: 0,
       transition: {
         duration: 0.4,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   const desktopVariants = {
     hidden: { opacity: 0, x: 20 },
@@ -109,12 +109,10 @@ export function TOC({ toc }: { toc: Heading[] }) {
       transition: {
         duration: 0.6,
         ease: easeOut,
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   return (
     <>
@@ -135,23 +133,19 @@ export function TOC({ toc }: { toc: Heading[] }) {
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3, ease: easeInOut }}
         >
-          {isOpen ? (
-            <Cross1Icon className="w-6 h-6" />
-          ) : (
-            <ListBulletIcon className="w-6 h-6" />
-          )}
+          {isOpen ? <Cross1Icon className="w-6 h-6" /> : <ListBulletIcon className="w-6 h-6" />}
         </motion.div>
       </motion.button>
 
       {/* Mobile TOC Overlay */}
       <motion.div
-        className={`fixed inset-0 z-40 lg:hidden ${isOpen ? 'block' : 'hidden'}`}
+        className={`fixed inset-0 z-40 lg:hidden ${isOpen ? "block" : "hidden"}`}
         initial="hidden"
         animate={isOpen ? "visible" : "hidden"}
         variants={overlayVariants}
       >
-        <motion.div 
-          className="absolute inset-0 bg-black bg-opacity-75" 
+        <motion.div
+          className="absolute inset-0 bg-black bg-opacity-75"
           onClick={toggleTOC}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -177,44 +171,52 @@ export function TOC({ toc }: { toc: Heading[] }) {
         </div>
       </motion.aside>
     </>
-  )
+  );
 }
 
-function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: string, onItemClick?: () => void }) {
+function TOCContent({
+  toc,
+  activeId,
+  onItemClick,
+}: {
+  toc: Heading[];
+  activeId: string;
+  onItemClick?: () => void;
+}) {
   const titleVariants = {
     hover: {
       scale: 1.02,
       color: "var(--accent)",
       transition: {
         duration: 0.3,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const linkVariants = {
     hover: {
       x: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault()
-    const element = document.getElementById(id)
+    e.preventDefault();
+    const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       // Update URL hash
-      history.pushState(null, '', `#${id}`)
+      history.pushState(null, "", `#${id}`);
     }
-    if (onItemClick) onItemClick()
-  }
+    if (onItemClick) onItemClick();
+  };
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -223,7 +225,7 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        <motion.h3 
+        <motion.h3
           className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-6 text-shadow-subtle"
           variants={titleVariants}
           whileHover="hover"
@@ -235,7 +237,7 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
       <nav className="flex-1">
         <ul className="space-y-3">
           {toc.map((item: Heading, index: number) => {
-            const isActive = activeId === item.id
+            const isActive = activeId === item.id;
             return (
               <motion.li
                 key={item.id}
@@ -249,28 +251,28 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
                   className={`
                     text-sm font-medium flex items-center group transition-all duration-200 py-2 px-3 rounded-md
 
-                    ${item.depth === 2 ? 'font-bold' : 
-                      item.depth === 3 ? 'ml-4' : 
-                      'ml-8'}
-                    ${isActive 
-                      ? 'bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-bold' 
-                      : 'hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]'
+                    ${item.depth === 2 ? "font-bold" : item.depth === 3 ? "ml-4" : "ml-8"}
+                    ${
+                      isActive
+                        ? "bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-bold"
+                        : "hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]"
                     }
-                    ${!isActive 
-                      ? item.depth === 2 
-                        ? 'text-white' 
-                        : item.depth === 3 
-                          ? 'text-gray-300' 
-                          : 'text-gray-400' 
-                      : ''
+                    ${
+                      !isActive
+                        ? item.depth === 2
+                          ? "text-white"
+                          : item.depth === 3
+                            ? "text-gray-300"
+                            : "text-gray-400"
+                        : ""
                     }
                   `}
                   variants={linkVariants}
                   whileHover="hover"
                 >
-                  <motion.span 
+                  <motion.span
                     className={`mr-2 group-hover:translate-x-1 transition-transform duration-200 ${
-                      isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'
+                      isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"
                     }`}
                     whileHover={{ rotate: 90 }}
                     transition={{ duration: 0.3 }}
@@ -281,7 +283,7 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
                   {item.value}
                 </motion.a>
               </motion.li>
-            )
+            );
           })}
         </ul>
       </nav>
@@ -296,5 +298,5 @@ function TOCContent({ toc, activeId, onItemClick }: { toc: Heading[], activeId: 
         <EditOnGitHubLink />
       </motion.div>
     </div>
-  )
+  );
 }

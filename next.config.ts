@@ -1,5 +1,5 @@
-import nextra from 'nextra';
-import type { NextConfig } from 'next';
+import nextra from "nextra";
+import type { NextConfig } from "next";
 
 // Set up Nextra with its configuration
 const withNextra = nextra({
@@ -8,15 +8,15 @@ const withNextra = nextra({
 
 // Export the final Next.js config with Nextra included
 const nextConfig: NextConfig = {
-  output: 'export',
+  output: "export",
   images: {
     unoptimized: true, // mandatory, otherwise won't export
   },
   eslint: {
     // Only run ESLint on specific directories during production builds
-    dirs: ['src', 'pages', 'app', 'components', 'lib'],
+    dirs: ["src", "pages", "app", "components", "lib"],
   },
-  distDir: 'build',
+  distDir: "build",
   // ... Add regular Next.js options here
   turbopack: {
     resolveAlias: {

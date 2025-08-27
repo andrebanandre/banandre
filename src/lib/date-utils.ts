@@ -1,15 +1,15 @@
-export function formatDateForLocale(dateString: string, locale: string = 'en-US'): string {
+export function formatDateForLocale(dateString: string, locale: string = "en-US"): string {
   try {
     const date = new Date(dateString);
-    
+
     if (isNaN(date.getTime())) {
       return dateString;
     }
 
     const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
 
     return date.toLocaleDateString(locale, options);
@@ -19,8 +19,8 @@ export function formatDateForLocale(dateString: string, locale: string = 'en-US'
 }
 
 export function getUserPreferredLocale(): string {
-  if (typeof navigator !== 'undefined') {
-    return navigator.language || 'en-US';
+  if (typeof navigator !== "undefined") {
+    return navigator.language || "en-US";
   }
-  return 'en-US';
+  return "en-US";
 }

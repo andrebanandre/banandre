@@ -60,7 +60,8 @@ function SneakyBanana() {
   useEffect(() => {
     // Random chance to appear (roughly every 10-15 seconds)
     const checkInterval = setInterval(() => {
-      if (!isVisible && !isExploding && Math.random() < 0.1) { // 10% chance every second
+      if (!isVisible && !isExploding && Math.random() < 0.1) {
+        // 10% chance every second
         setIsVisible(true);
         setIsExploding(false);
         setPosition({
@@ -68,17 +69,20 @@ function SneakyBanana() {
           delay: 0,
           duration: 4 + Math.random() * 2,
         });
-        
+
         // Start explosion just before animation completes
-        setTimeout(() => {
-          setIsExploding(true);
-          setIsVisible(false);
-          
-          // Hide explosion after animation
-          setTimeout(() => {
-            setIsExploding(false);
-          }, 600); // Explosion duration
-        }, position.duration * 1000 - 200); // Start explosion 200ms before fall completes
+        setTimeout(
+          () => {
+            setIsExploding(true);
+            setIsVisible(false);
+
+            // Hide explosion after animation
+            setTimeout(() => {
+              setIsExploding(false);
+            }, 600); // Explosion duration
+          },
+          position.duration * 1000 - 200
+        ); // Start explosion 200ms before fall completes
       }
     }, 1000);
 
@@ -101,7 +105,7 @@ function SneakyBanana() {
           alt="sneaky banana"
         />
       )}
-      
+
       {/* Explosion effect */}
       {isExploding && (
         <div
@@ -168,38 +172,71 @@ export function FallingBananasTitle() {
             transform: translateY(450px) rotate(360deg) scale(1);
           }
         }
-        
+
         /* Explosion animations for each particle */
         @keyframes explode0 {
-          to { transform: translate(30px, -30px) scale(0); opacity: 0; }
+          to {
+            transform: translate(30px, -30px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode1 {
-          to { transform: translate(-30px, -30px) scale(0); opacity: 0; }
+          to {
+            transform: translate(-30px, -30px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode2 {
-          to { transform: translate(40px, 0px) scale(0); opacity: 0; }
+          to {
+            transform: translate(40px, 0px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode3 {
-          to { transform: translate(-40px, 0px) scale(0); opacity: 0; }
+          to {
+            transform: translate(-40px, 0px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode4 {
-          to { transform: translate(25px, 25px) scale(0); opacity: 0; }
+          to {
+            transform: translate(25px, 25px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode5 {
-          to { transform: translate(-25px, 25px) scale(0); opacity: 0; }
+          to {
+            transform: translate(-25px, 25px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode6 {
-          to { transform: translate(15px, -40px) scale(0); opacity: 0; }
+          to {
+            transform: translate(15px, -40px) scale(0);
+            opacity: 0;
+          }
         }
         @keyframes explode7 {
-          to { transform: translate(-15px, -40px) scale(0); opacity: 0; }
+          to {
+            transform: translate(-15px, -40px) scale(0);
+            opacity: 0;
+          }
         }
-        
+
         /* Center flash animation */
         @keyframes flash {
-          0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-          50% { transform: translate(-50%, -50%) scale(2); opacity: 0.8; }
-          100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+          0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(2);
+            opacity: 0.8;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(4);
+            opacity: 0;
+          }
         }
       `}</style>
 
@@ -215,7 +252,7 @@ export function FallingBananasTitle() {
         {Array.from({ length: 15 }, (_, i) => (
           <FallingBanana key={i} index={i} />
         ))}
-        
+
         {/* Sneaky banana - rare appearance */}
         <SneakyBanana />
       </div>

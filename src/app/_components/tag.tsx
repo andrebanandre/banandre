@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { motion, easeInOut, easeOut } from 'framer-motion'
+import Link from "next/link";
+import { motion, easeInOut, easeOut } from "framer-motion";
 
 // Format tag for URL (lowercase, no special chars)
 function formatTagForUrl(tag: string): string {
-  return tag.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return tag.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
 interface TagProps {
-  tag: string
-  className?: string
-  showHash?: boolean
+  tag: string;
+  className?: string;
+  showHash?: boolean;
 }
 
-export function Tag({ tag, className = '', showHash = true }: TagProps) {
-  const formattedTag = formatTagForUrl(tag)
-  
+export function Tag({ tag, className = "", showHash = true }: TagProps) {
+  const formattedTag = formatTagForUrl(tag);
+
   // Animation variants for individual tags
   const tagVariants = {
     hover: {
@@ -24,23 +24,19 @@ export function Tag({ tag, className = '', showHash = true }: TagProps) {
       rotate: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
+        ease: easeInOut,
+      },
     },
     tap: {
       scale: 0.95,
       transition: {
-        duration: 0.1
-      }
-    }
-  }
-  
+        duration: 0.1,
+      },
+    },
+  };
+
   return (
-    <motion.div
-      variants={tagVariants}
-      whileHover="hover"
-      whileTap="tap"
-    >
+    <motion.div variants={tagVariants} whileHover="hover" whileTap="tap">
       <Link
         href={`/tags/${formattedTag}`}
         className={`
@@ -63,20 +59,21 @@ export function Tag({ tag, className = '', showHash = true }: TagProps) {
           ${className}
         `}
       >
-        {showHash && '#'}{tag}
+        {showHash && "#"}
+        {tag}
       </Link>
     </motion.div>
-  )
+  );
 }
 
 interface TagListProps {
-  tags: string[]
-  className?: string
+  tags: string[];
+  className?: string;
 }
 
-export function TagList({ tags, className = '' }: TagListProps) {
-  if (!tags || tags.length === 0) return null
-  
+export function TagList({ tags, className = "" }: TagListProps) {
+  if (!tags || tags.length === 0) return null;
+
   // Animation variants for tag list container
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -84,11 +81,11 @@ export function TagList({ tags, className = '' }: TagListProps) {
       opacity: 1,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  }
-  
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.8 },
     visible: {
@@ -97,13 +94,13 @@ export function TagList({ tags, className = '' }: TagListProps) {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: easeOut
-      }
-    }
-  }
-  
+        ease: easeOut,
+      },
+    },
+  };
+
   return (
-    <motion.div 
+    <motion.div
       className={`flex flex-wrap gap-3 ${className}`}
       variants={containerVariants}
       initial="hidden"
@@ -122,26 +119,26 @@ export function TagList({ tags, className = '' }: TagListProps) {
         </motion.div>
       ))}
     </motion.div>
-  )
+  );
 }
 
 // Component to replace the "**Tags:** #tag1 #tag2" text with clickable tags
 interface InlineTagsProps {
-  children: string
+  children: string;
 }
 
 export function InlineTags({ children }: InlineTagsProps) {
   // Check if this is a tags line
-  const tagMatch = children.match(/\*\*Tags:\*\*\s*((?:#\w+\s*)+)/)
-  
+  const tagMatch = children.match(/\*\*Tags:\*\*\s*((?:#\w+\s*)+)/);
+
   if (!tagMatch) {
-    return <span>{children}</span>
+    return <span>{children}</span>;
   }
-  
+
   // Extract hashtags
-  const hashtagMatches = tagMatch[1].match(/#(\w+)/g) || []
-  const tags = hashtagMatches.map(hashtag => hashtag.replace('#', ''))
-  
+  const hashtagMatches = tagMatch[1].match(/#(\w+)/g) || [];
+  const tags = hashtagMatches.map((hashtag) => hashtag.replace("#", ""));
+
   // Animation variants for the entire tags section
   const sectionVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -150,11 +147,11 @@ export function InlineTags({ children }: InlineTagsProps) {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: easeOut
-      }
-    }
-  }
-  
+        ease: easeOut,
+      },
+    },
+  };
+
   const labelVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
@@ -162,13 +159,13 @@ export function InlineTags({ children }: InlineTagsProps) {
       x: 0,
       transition: {
         duration: 0.6,
-        ease: easeOut
-      }
-    }
-  }
-  
+        ease: easeOut,
+      },
+    },
+  };
+
   return (
-    <motion.div 
+    <motion.div
       className="mt-8 pt-6 border-t-2 border-[var(--accent)]"
       variants={sectionVariants}
       initial="hidden"
@@ -176,13 +173,13 @@ export function InlineTags({ children }: InlineTagsProps) {
       viewport={{ once: true, amount: 0.3 }}
     >
       <div className="flex items-center gap-4 flex-wrap">
-        <motion.span 
+        <motion.span
           className="text-[var(--accent)] font-bold uppercase tracking-wider text-sm"
           variants={labelVariants}
-          whileHover={{ 
+          whileHover={{
             scale: 1.05,
             rotate: 1,
-            transition: { duration: 0.2, ease: easeInOut }
+            transition: { duration: 0.2, ease: easeInOut },
           }}
         >
           Tags:
@@ -190,5 +187,5 @@ export function InlineTags({ children }: InlineTagsProps) {
         <TagList tags={tags} />
       </div>
     </motion.div>
-  )
-} 
+  );
+}

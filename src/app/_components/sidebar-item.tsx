@@ -1,82 +1,82 @@
-'use client'
+"use client";
 
-import { Anchor } from 'nextra/components'
-import { useState } from 'react'
-import { ChevronDownIcon, ChevronRightIcon, FileIcon, ReaderIcon } from '@radix-ui/react-icons'
-import { motion, easeInOut, easeOut } from 'framer-motion'
+import { Anchor } from "nextra/components";
+import { useState } from "react";
+import { ChevronDownIcon, ChevronRightIcon, FileIcon, ReaderIcon } from "@radix-ui/react-icons";
+import { motion, easeInOut, easeOut } from "framer-motion";
 
 // Meta configuration to control sidebar visibility
 const META_CONFIG = {
   demo: "Demo",
   docs: { title: "Documentation", hidden: true },
-  tags: { title: "Tags", hidden: true }
-}
+  tags: { title: "Tags", hidden: true },
+};
 
 interface PageItem {
-  name?: string
-  route?: string
-  title?: string
-  href?: string
-  children?: PageItem[]
-  [key: string]: unknown
+  name?: string;
+  route?: string;
+  title?: string;
+  href?: string;
+  children?: PageItem[];
+  [key: string]: unknown;
 }
 
 // Function to filter pages based on _meta.json configuration
 export function filterPagesByMeta(pages: PageItem[]): PageItem[] {
-  return pages.filter(page => {
-    const pageName = page.name || page.route?.split('/').pop() || ''
-    
+  return pages.filter((page) => {
+    const pageName = page.name || page.route?.split("/").pop() || "";
+
     // Check if page is hidden in meta config
     if (META_CONFIG[pageName as keyof typeof META_CONFIG]) {
-      const metaItem = META_CONFIG[pageName as keyof typeof META_CONFIG]
-      if (typeof metaItem === 'object' && metaItem.hidden) {
-        return false
+      const metaItem = META_CONFIG[pageName as keyof typeof META_CONFIG];
+      if (typeof metaItem === "object" && metaItem.hidden) {
+        return false;
       }
     }
-    
+
     // Recursively filter children
     if (page.children) {
-      page.children = filterPagesByMeta(page.children)
+      page.children = filterPagesByMeta(page.children);
     }
-    
-    return true
-  })
+
+    return true;
+  });
 }
 
 interface SidebarItemProps {
-  item: PageItem
-  index: number
-  pathname: string
-  isMobile?: boolean
-  onItemClick?: () => void
-  level?: number
+  item: PageItem;
+  index: number;
+  pathname: string;
+  isMobile?: boolean;
+  onItemClick?: () => void;
+  level?: number;
 }
 
-export function SidebarItem({ 
-  item, 
-  index, 
-  pathname, 
-  isMobile = false, 
+export function SidebarItem({
+  item,
+  index,
+  pathname,
+  isMobile = false,
   onItemClick,
-  level = 0 
+  level = 0,
 }: SidebarItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const route = item.route || ('href' in item ? (item.href as string) : '')
-  const { title } = item
-  const hasChildren = 'children' in item && item.children && item.children.length > 0
-  const isActive = pathname === route
+  const [isExpanded, setIsExpanded] = useState(false);
+  const route = item.route || ("href" in item ? (item.href as string) : "");
+  const { title } = item;
+  const hasChildren = "children" in item && item.children && item.children.length > 0;
+  const isActive = pathname === route;
 
   const toggleExpanded = () => {
     if (hasChildren) {
-      setIsExpanded(!isExpanded)
+      setIsExpanded(!isExpanded);
     }
-  }
+  };
 
   const handleItemClick = () => {
     if (onItemClick) {
-      onItemClick()
+      onItemClick();
     }
-  }
+  };
 
   // Animation variants
   const itemVariants = {
@@ -87,20 +87,20 @@ export function SidebarItem({
       transition: {
         delay: 0.3 + index * 0.1,
         duration: 0.5,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   const linkVariants = {
     hover: {
       x: isMobile ? 3 : 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const iconVariants = {
     hover: {
@@ -108,15 +108,15 @@ export function SidebarItem({
       rotate: 5,
       transition: {
         duration: 0.2,
-        ease: easeInOut
-      }
-    }
-  }
+        ease: easeInOut,
+      },
+    },
+  };
 
   const chevronVariants = {
     expanded: { rotate: 90 },
-    collapsed: { rotate: 0 }
-  }
+    collapsed: { rotate: 0 },
+  };
 
   const childrenVariants = {
     hidden: { opacity: 0, height: 0 },
@@ -126,10 +126,10 @@ export function SidebarItem({
       transition: {
         duration: 0.3,
         ease: easeOut,
-        staggerChildren: 0.05
-      }
-    }
-  }
+        staggerChildren: 0.05,
+      },
+    },
+  };
 
   const mobileItemVariants = {
     hidden: { opacity: 0, x: -20 },
@@ -138,10 +138,10 @@ export function SidebarItem({
       x: 0,
       transition: {
         duration: 0.3,
-        ease: easeOut
-      }
-    }
-  }
+        ease: easeOut,
+      },
+    },
+  };
 
   if (isMobile) {
     return (
@@ -153,9 +153,10 @@ export function SidebarItem({
         <div
           className={`
             text-sm font-semibold flex items-center group transition-all duration-200 py-3 px-4 rounded-md cursor-pointer
-            ${isActive 
-              ? 'bg-[var(--accent)] text-[var(--accent-foreground)] brutalist-border' 
-              : 'text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10'
+            ${
+              isActive
+                ? "bg-[var(--accent)] text-[var(--accent-foreground)] brutalist-border"
+                : "text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10"
             }
           `}
           onClick={hasChildren ? toggleExpanded : handleItemClick}
@@ -165,7 +166,7 @@ export function SidebarItem({
               <ReaderIcon
                 className={`
                   w-4 h-4 mr-3 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? 'text-[var(--accent-foreground)]' : 'text-[var(--accent)]'}
+                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
                 `}
               />
               <span className="flex-1 font-semibold uppercase tracking-wide text-sm">{title}</span>
@@ -179,14 +180,14 @@ export function SidebarItem({
                   <ChevronDownIcon
                     className={`
                       w-4 h-4
-                      ${isActive ? 'text-[var(--accent-foreground)]' : 'text-[var(--accent)]'}
+                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
                     `}
                   />
                 ) : (
                   <ChevronRightIcon
                     className={`
                       w-4 h-4
-                      ${isActive ? 'text-[var(--accent-foreground)]' : 'text-[var(--accent)]'}
+                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
                     `}
                   />
                 )}
@@ -197,11 +198,11 @@ export function SidebarItem({
               <FileIcon
                 className={`
                   w-4 h-4 mr-3 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? 'text-[var(--accent-foreground)]' : 'text-[var(--accent)]'}
+                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
                 `}
               />
-              <Anchor 
-                href={route} 
+              <Anchor
+                href={route}
                 className="flex-1 font-semibold uppercase tracking-wide text-sm text-decoration-none"
                 onClick={handleItemClick}
               >
@@ -225,9 +226,9 @@ export function SidebarItem({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 + childIndex * 0.05, duration: 0.3 }}
               >
-                <SidebarItem 
-                  item={child} 
-                  index={childIndex} 
+                <SidebarItem
+                  item={child}
+                  index={childIndex}
                   pathname={pathname}
                   isMobile={true}
                   onItemClick={onItemClick}
@@ -238,25 +239,21 @@ export function SidebarItem({
           </motion.div>
         )}
       </motion.div>
-    )
+    );
   }
 
   // Desktop version
   return (
-    <motion.li
-      variants={itemVariants}
-    >
+    <motion.li variants={itemVariants}>
       <motion.div
         className={`
           text-sm font-semibold flex items-center group transition-all duration-200 py-2 px-3 rounded-md cursor-pointer
-          ${isActive 
-            ? 'bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-black' 
-            : 'hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]'
+          ${
+            isActive
+              ? "bg-[var(--accent)] bg-opacity-20 border-l-4 border-[var(--accent)] text-[var(--blue-accent)] font-black"
+              : "hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]"
           }
-          ${!isActive 
-            ? 'text-white' 
-            : ''
-          }
+          ${!isActive ? "text-white" : ""}
         `}
         onClick={toggleExpanded}
         variants={linkVariants}
@@ -264,14 +261,11 @@ export function SidebarItem({
       >
         {hasChildren ? (
           <>
-            <motion.div
-              variants={iconVariants}
-              whileHover="hover"
-            >
+            <motion.div variants={iconVariants} whileHover="hover">
               <ReaderIcon
                 className={`
                   w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
+                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
                 `}
               />
             </motion.div>
@@ -286,14 +280,14 @@ export function SidebarItem({
                 <ChevronDownIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
+                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
                   `}
                 />
               ) : (
                 <ChevronRightIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
+                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
                   `}
                 />
               )}
@@ -301,19 +295,16 @@ export function SidebarItem({
           </>
         ) : (
           <>
-            <motion.div
-              variants={iconVariants}
-              whileHover="hover"
-            >
+            <motion.div variants={iconVariants} whileHover="hover">
               <FileIcon
                 className={`
                   w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? 'text-[var(--blue-accent)]' : 'text-[var(--accent)]'}
+                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
                 `}
               />
             </motion.div>
-            <Anchor 
-              href={route} 
+            <Anchor
+              href={route}
               className="flex-1 font-semibold uppercase tracking-wide text-sm text-decoration-none"
             >
               {title}
@@ -336,16 +327,11 @@ export function SidebarItem({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 + childIndex * 0.05, duration: 0.3 }}
             >
-              <SidebarItem 
-                item={child} 
-                index={childIndex} 
-                pathname={pathname}
-                level={level + 1}
-              />
+              <SidebarItem item={child} index={childIndex} pathname={pathname} level={level + 1} />
             </motion.div>
           ))}
         </motion.ul>
       )}
     </motion.li>
-  )
-} 
+  );
+}

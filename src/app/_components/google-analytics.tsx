@@ -1,4 +1,4 @@
-import Script from 'next/script'
+import Script from "next/script";
 
 export default function GoogleAnalytics() {
   return (
@@ -22,5 +22,5 @@ export default function GoogleAnalytics() {
         }}
       />
     </>
-  )
-} 
+  );
+}
