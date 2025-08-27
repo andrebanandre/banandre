@@ -24,6 +24,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   const filteredSidebarItems = filterPagesByMeta(docsDirectories);
 
   // Customize sidebar items same as in Sidebar component
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const customizeDirectories = (directories: any[]) => {
     return directories
       .map((item) => {

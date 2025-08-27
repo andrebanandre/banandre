@@ -18,6 +18,7 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
   const filteredDirectories = filterPagesByMeta(docsDirectories);
 
   // Customize sidebar items
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const customizeDirectories = (directories: any[]) => {
     return directories
       .map((item) => {
