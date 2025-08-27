@@ -5,10 +5,11 @@ import type { PageMapItem } from "nextra";
 import { Anchor, Search } from "nextra/components";
 import { normalizePages } from "nextra/normalize-pages";
 import type { FC } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HamburgerMenuIcon, Cross1Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";
 import { SidebarItem, filterPagesByMeta } from "./sidebar-item";
+import { SidebarCategories } from "./sidebar-categories";
 
 export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   const pathname = usePathname();
@@ -22,9 +23,55 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   // Filter the sidebar pages based on _meta.json configuration
   const filteredSidebarItems = filterPagesByMeta(docsDirectories);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  // Customize sidebar items same as in Sidebar component
+  const customizeDirectories = (directories: any[]) => {
+    return directories.map(item => {
+      // Rename "Banandre - No one cares about code" to "Home" and redirect to home
+      if (item.title && item.title.includes("Banandre")) {
+        return {
+          ...item,
+          title: "Home",
+          route: "/",
+          href: "/"
+        };
+      }
+      // Remove CATEGORIES item - we'll add it as a custom section
+      if (item.title === "CATEGORIES" || item.name === "categories") {
+        return null;
+      }
+      return item;
+    }).filter(Boolean); // Remove null items
+  };
 
-  const closeMenu = () => setIsMenuOpen(false);
+  const customSidebarItems = customizeDirectories(filteredSidebarItems);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    // Prevent body scroll when menu is open
+    if (!isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    // Re-enable body scroll
+    document.body.style.overflow = 'unset';
+  };
+
+  // Cleanup effect to restore scroll on unmount or route change
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  // Close menu on route change
+  useEffect(() => {
+    closeMenu();
+  }, [pathname]);
 
   // Animation variants
   const containerVariants = {
@@ -209,18 +256,18 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
 
       {/* Mobile Navigation Menu */}
       <motion.div
-        className={`fixed inset-x-0 top-20 z-40 md:hidden ${isMenuOpen ? "block" : "hidden"}`}
+        className={`fixed inset-x-0 top-20 bottom-0 z-40 md:hidden ${isMenuOpen ? "block" : "hidden"}`}
         initial="hidden"
         animate={isMenuOpen ? "visible" : "hidden"}
         variants={mobileMenuVariants}
       >
         <motion.div
-          className="bg-[var(--background)] border-b-4 border-[var(--accent)] shadow-lg"
+          className="bg-[var(--background)] border-b-4 border-[var(--accent)] shadow-lg h-full overflow-y-auto"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: easeOut }}
         >
-          <div className="px-6 py-6 space-y-4">
+          <div className="px-6 py-6 space-y-4 min-h-full">
             {/* Mobile Search */}
             <motion.div variants={mobileItemVariants} className="mb-4">
               <Search
@@ -261,7 +308,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             })}
 
             {/* Sidebar Navigation Items */}
-            {filteredSidebarItems.length > 0 && (
+            {customSidebarItems.length > 0 && (
               <>
                 <motion.div
                   variants={mobileItemVariants}
@@ -272,7 +319,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
                   </h3>
                 </motion.div>
 
-                {filteredSidebarItems.map((item, index) => (
+                {customSidebarItems.map((item, index) => (
                   <SidebarItem
                     key={item.route || index}
                     item={item}
@@ -284,6 +331,16 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
                 ))}
               </>
             )}
+
+            {/* Categories Section */}
+            <motion.div
+              variants={mobileItemVariants}
+              className="pt-6 mt-6 border-t-2 border-[var(--accent)] border-opacity-30"
+            >
+              <div className="px-4">
+                <SidebarCategories />
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </motion.div>

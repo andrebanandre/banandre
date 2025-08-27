@@ -5,6 +5,7 @@ import type { PageMapItem } from "nextra";
 import { normalizePages } from "nextra/normalize-pages";
 import { motion, easeOut, easeInOut } from "framer-motion";
 import { SidebarItem, filterPagesByMeta } from "./sidebar-item";
+import { SidebarCategories } from "./sidebar-categories";
 
 export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
   const pathname = usePathname();
@@ -15,6 +16,28 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
 
   // Filter the pages based on _meta.json configuration
   const filteredDirectories = filterPagesByMeta(docsDirectories);
+
+  // Customize sidebar items
+  const customizeDirectories = (directories: any[]) => {
+    return directories.map(item => {
+      // Rename "Banandre - No one cares about code" to "Home" and redirect to home
+      if (item.title && item.title.includes("Banandre")) {
+        return {
+          ...item,
+          title: "Home",
+          route: "/",
+          href: "/"
+        };
+      }
+      // Remove CATEGORIES item - we'll add it as a custom section
+      if (item.title === "CATEGORIES" || item.name === "categories") {
+        return null;
+      }
+      return item;
+    }).filter(Boolean); // Remove null items
+  };
+
+  const customDirectories = customizeDirectories(filteredDirectories);
 
   // Animation variants
   const containerVariants = {
@@ -78,7 +101,7 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
 
       <nav>
         <motion.ul className="space-y-3" variants={containerVariants}>
-          {filteredDirectories.map((item, index) => (
+          {customDirectories.map((item, index) => (
             <SidebarItem
               key={item.route || index}
               item={item}
@@ -87,6 +110,17 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
             />
           ))}
         </motion.ul>
+        
+        {/* Categories Section */}
+        <motion.div 
+          className="mt-8"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          transition={{ delay: 0.5 }}
+        >
+          <SidebarCategories />
+        </motion.div>
       </nav>
     </motion.aside>
   );
