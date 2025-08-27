@@ -319,7 +319,7 @@ export function SidebarItem({
           initial="hidden"
           animate={isExpanded ? "visible" : "hidden"}
           variants={childrenVariants}
-          style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
+          style={{ pointerEvents: isExpanded ? "auto" : "none" }}
         >
           {item.children!.map((child: PageItem, childIndex: number) => (
             <motion.div

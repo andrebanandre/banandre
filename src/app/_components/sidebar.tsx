@@ -19,22 +19,24 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
 
   // Customize sidebar items
   const customizeDirectories = (directories: any[]) => {
-    return directories.map(item => {
-      // Rename "Banandre - No one cares about code" to "Home" and redirect to home
-      if (item.title && item.title.includes("Banandre")) {
-        return {
-          ...item,
-          title: "Home",
-          route: "/",
-          href: "/"
-        };
-      }
-      // Remove CATEGORIES item - we'll add it as a custom section
-      if (item.title === "CATEGORIES" || item.name === "categories") {
-        return null;
-      }
-      return item;
-    }).filter(Boolean); // Remove null items
+    return directories
+      .map((item) => {
+        // Rename "Banandre - No one cares about code" to "Home" and redirect to home
+        if (item.title && item.title.includes("Banandre")) {
+          return {
+            ...item,
+            title: "Home",
+            route: "/",
+            href: "/",
+          };
+        }
+        // Remove CATEGORIES item - we'll add it as a custom section
+        if (item.title === "CATEGORIES" || item.name === "categories") {
+          return null;
+        }
+        return item;
+      })
+      .filter(Boolean); // Remove null items
   };
 
   const customDirectories = customizeDirectories(filteredDirectories);
@@ -110,9 +112,9 @@ export function Sidebar({ pageMap }: { pageMap: PageMapItem[] }) {
             />
           ))}
         </motion.ul>
-        
+
         {/* Categories Section */}
-        <motion.div 
+        <motion.div
           className="mt-8"
           initial="hidden"
           animate="visible"

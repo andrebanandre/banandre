@@ -25,22 +25,24 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
 
   // Customize sidebar items same as in Sidebar component
   const customizeDirectories = (directories: any[]) => {
-    return directories.map(item => {
-      // Rename "Banandre - No one cares about code" to "Home" and redirect to home
-      if (item.title && item.title.includes("Banandre")) {
-        return {
-          ...item,
-          title: "Home",
-          route: "/",
-          href: "/"
-        };
-      }
-      // Remove CATEGORIES item - we'll add it as a custom section
-      if (item.title === "CATEGORIES" || item.name === "categories") {
-        return null;
-      }
-      return item;
-    }).filter(Boolean); // Remove null items
+    return directories
+      .map((item) => {
+        // Rename "Banandre - No one cares about code" to "Home" and redirect to home
+        if (item.title && item.title.includes("Banandre")) {
+          return {
+            ...item,
+            title: "Home",
+            route: "/",
+            href: "/",
+          };
+        }
+        // Remove CATEGORIES item - we'll add it as a custom section
+        if (item.title === "CATEGORIES" || item.name === "categories") {
+          return null;
+        }
+        return item;
+      })
+      .filter(Boolean); // Remove null items
   };
 
   const customSidebarItems = customizeDirectories(filteredSidebarItems);
@@ -49,22 +51,22 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
     setIsMenuOpen(!isMenuOpen);
     // Prevent body scroll when menu is open
     if (!isMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
     // Re-enable body scroll
-    document.body.style.overflow = 'unset';
+    document.body.style.overflow = "unset";
   };
 
   // Cleanup effect to restore scroll on unmount or route change
   useEffect(() => {
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, []);
 
