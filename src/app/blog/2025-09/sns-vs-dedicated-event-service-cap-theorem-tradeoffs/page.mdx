@@ -1,11 +1,11 @@
 ---
-title: "Your Event-Driven Architecture Is Probably Wrong: SNS vs Dedicated Services"
+title: "SNS vs Dedicated Services. CAP theorem tradeoffs"
 description: "The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event services that nobody talks about"
 slug: sns-vs-dedicated-event-service-cap-theorem-tradeoffs
 image: "/blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp"
 date: 2025-09-03
 tags: ["microservices", "aws", "architecture", "distributed-systems"]
-categories: ["cloud-computing", "devops"]
+categories: ["Software Architecture"]
 ---
 
 Every microservices team eventually hits the same architectural crossroads: deploy AWS SNS/SQS and call it a day, or build a custom event service that promises better guarantees. The choice isn't about convenience, it's about which CAP theorem compromise you're willing to live with.
@@ -56,7 +56,7 @@ AWS EventBridge has emerged as a middle ground, offering more sophisticated rout
 
 The architectural decision ultimately reflects your organization's tolerance for vendor dependence versus operational complexity. There's no right answer, only the answer that aligns with your business constraints and engineering culture.
 
-## The Uncomfortable Truth
+---
 
 Most teams choose SNS/SQS because operational overhead is immediate and tangible, while consistency issues are deferred and abstract. They'll deal with duplicate orders tomorrow to avoid being paged about infrastructure tonight.
 
