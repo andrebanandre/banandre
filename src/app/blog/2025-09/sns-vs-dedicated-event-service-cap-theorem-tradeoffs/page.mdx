@@ -12,7 +12,7 @@ Every microservices team eventually hits the same architectural crossroads: depl
 
 ## The Event Distribution Dilemma: Managed vs Custom
 
-![Cover Image for CAP Theorem 101: Balancing Consistency, Availability & Partition Tolerance](SNSvsDedicatedEventService_CAPTheoremTradeoffsinMicroservices_https3A2F2Fdev-to-uploads.s3.amazonaws.com2Fuploads2Farticles2Fbv6gb5ol86nsixj43yzf.png)
+![Cover Image for CAP Theorem 101: Balancing Consistency, Availability & Partition Tolerance](/blog/2025/cap-theorem-101-balancing-consistency-availability-and-partition-tolerance.webp)
 
 When a user purchase event fires, your architecture decides whether three different services receive the notification instantly, eventually, or not at all. AWS SNS/SQS offers the path of least resistance: managed infrastructure, automatic scaling, and someone else's pager duty. The custom event service route promises something more valuable, control over delivery semantics, ordering guarantees, and business logic during distribution.
 
