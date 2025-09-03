@@ -28,7 +28,6 @@ Custom event services can achieve exactly-once delivery and strict ordering, but
 
 ## The Operational Debt Nobody Calculates
 
-![Developer-first embedded dashboards](SNSvsDedicatedEventService_CAPTheoremTradeoffsinMicroservices_https3A2F2Fi.imgur.com2FNM5rf5L.png)
 
 The SNS/SQS approach masks its complexity in operational simplicity. Teams can add consumers without coordination, scaling happens automatically, and AWS manages the infrastructure. But you inherit 256KB message limits, unconfigurable retry mechanisms, and vendor lock-in that makes future migration painful.
 
@@ -44,7 +43,7 @@ The irony? Most teams spend more time building deduplication logic than they wou
 
 ## Beyond CAP: The PACELC Extension
 
-![Google AI - Official AI Model and Platform Partner](SNSvsDedicatedEventService_CAPTheoremTradeoffsinMicroservices_https3A2F2Fdev-to-uploads.s3.amazonaws.com2Fuploads2Farticles2Fxjlyhbdqehj3akhz166w.png)
+![PACEL extension of CAP](/blog/2025/cap-pacelc-extension.webp)
 
 The CAP theorem only tells part of the story. The PACELC theorem extends this thinking: during partitions (P), you trade off availability vs consistency (A vs C), but during normal operations (E), you trade off latency vs consistency (L vs C).
 
