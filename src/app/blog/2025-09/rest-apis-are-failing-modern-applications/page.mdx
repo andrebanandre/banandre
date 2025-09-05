@@ -1,0 +1,46 @@
+---
+title: "REST APIs Are Failing Modern Applications"
+description: "Why REST's architectural constraints are cracking under the pressure of real-time data, microservices, and client demands"
+slug: rest-apis-are-failing-modern-applications
+image: "/blog/2025/rest-api-paradox.webp"
+date: 2025-09-05
+tags: ["api-design", "rest", "microservices", "architecture"]
+categories: ["backend-development", "system-design"]
+---
+
+REST APIs have become the digital equivalent of trying to fit a square peg in a round hole, except the hole keeps changing shape and the peg was designed for a different game entirely.
+
+## The Architectural Straitjacket
+
+Fielding's 2000 dissertation outlined six constraints that made REST revolutionary for its time: uniform interface, client-server separation, statelessness, cacheability, layered system, and optional code-on-demand. These principles worked beautifully when applications were relatively simple and data moved at human speed.
+
+Today's demands tell a different story. Real-time applications need WebSocket connections that REST can't natively support. Microservices require efficient service-to-service communication that HTTP overhead bloats. Mobile clients demand granular data fetching that REST's all-or-nothing resource approach struggles to provide.
+
+The uniform interface constraint, once REST's greatest strength, has become its most painful limitation. Clients get either everything about a resource or nothing, forcing either over-fetching (getting data they don't need) or under-fetching (requiring multiple round trips). 
+
+## The Filtering Fallacy
+
+Most REST APIs attempt to solve this with query parameters, `?fields=name,email&expand=posts,comments`, but this approach quickly becomes unmanageable. The IBM article notes that "resources shouldn't be too large but should contain every piece of information that the client might need", which is fundamentally impossible in practice.
+
+Consider a social media API: a mobile client might need a user's basic profile plus their three most recent posts for a notification. A web client might need the same user's complete profile, all their posts, their friends list, and recent activity. With REST, you either:
+- Create separate endpoints (violating uniformity)
+- Make clients filter manually (shifting complexity to consumers)
+- Over-fetch dramatically (wasting bandwidth and processing)
+
+None of these solutions align with REST's original principles, yet they've become standard practice.
+
+## The State of Statelessness
+
+REST's stateless constraint, where each request must contain all necessary information, creates another modern paradox. While it simplifies server design, it forces clients to manage complex state themselves or include excessive authentication data with every request.
+
+In microservices architectures, this means JWT tokens or API keys get passed through multiple services, creating security concerns and performance overhead. The stateless ideal clashes with practical needs for session management, rate limiting, and distributed tracing.
+
+## Evolution or Extinction?
+
+The RESTful API design best practices from the research include versioning, content negotiation, and HATEOAS, concepts that sound good in theory but rarely work in practice. How many APIs actually implement HATEOAS successfully? How many clients actually use content negotiation beyond basic JSON responses?
+
+Modern alternatives like GraphQL and gRPC have emerged precisely because REST's constraints don't align with contemporary needs. GraphQL provides the flexible querying that REST lacks, while gRPC offers the performance that HTTP/JSON can't match.
+
+Yet REST persists, not because it's optimal, but because it's familiar. The paradox is that we're bending REST so far out of shape to meet modern demands that we're creating something that's neither truly RESTful nor optimally modern.
+
+The real question isn't whether REST needs evolution, it's whether we're willing to admit that some problems require completely different solutions rather than increasingly complex workarounds to a 25-year-old specification.
