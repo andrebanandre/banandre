@@ -12,8 +12,6 @@ Google's EmbeddingGemma isn't just another model release, it's a direct assault 
 
 ## The On-Device Revolution Nobody Saw Coming
 
-![EmbeddingGemma_Banner](GooglesEmbeddingGemma_State-of-the-ArtOpenEmbeddingModel_EmbeddingGemma_Wagtial_RD2-V02.original.jpg)
-
 While everyone was chasing trillion-parameter cloud models, Google quietly built a 300M parameter embedding model that outperforms competitors nearly twice its size on the [Massive Text Embedding Benchmark](https://huggingface.co/spaces/mteb/leaderboard). The implications are staggering: EmbeddingGemma delivers 68.36 mean score on English tasks and 61.15 on multilingual benchmarks while consuming less than 200MB of RAM when quantized.
 
 The real kicker? It processes 256 tokens in under 15ms on EdgeTPU hardware. That's real-time semantic search without internet connectivity, something that was pure science fiction just two years ago.
@@ -22,7 +20,7 @@ The real kicker? It processes 256 tokens in under 15ms on EdgeTPU hardware. That
 
 EmbeddingGemma's architecture reveals Google's endgame: 100M model parameters paired with 200M embedding parameters, all optimized through Matryoshka Representation Learning. This lets developers truncate output dimensions from 768 down to 128 based on their precision needs, trading minimal accuracy loss for massive speed gains.
 
-![MTEB Score](GooglesEmbeddingGemma_State-of-the-ArtOpenEmbeddingModel_EmbeddingGemma_Chart01_RD3-V01.original.png)
+![MTEB Score](/blog/2025/gemma-emending-benchmarks.webp)
 
 The model's training data tells the real story: 320 billion tokens spanning 100+ languages, with rigorous filtering for CSAM and sensitive information. Unlike cloud alternatives, EmbeddingGemma processes everything locally, your personal emails, documents, and search queries never leave the device.
 
