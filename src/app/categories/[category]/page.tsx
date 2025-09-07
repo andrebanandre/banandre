@@ -5,9 +5,9 @@ import {
   formatCategoryForUrl,
 } from "../../../lib/blog-utils";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Category } from "../../_components/category";
+import { BlogGrid } from "../../_components/blog-card";
 import type { Metadata } from "next";
 import {
   generateCategoryPageSchema,
@@ -153,64 +153,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </p>
           </div>
 
-          <div className="grid gap-8">
-            {posts.map((post) => (
-              <article
-                key={post.slug}
-                className="bg-[var(--card)] brutalist-border p-6 hover:bg-[var(--muted)] transition-colors group"
-              >
-                <Link href={post.slug} className="block">
-                  <div className="flex flex-col gap-4">
-                    {post.image && (
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        width={800}
-                        height={192}
-                        className="w-full h-48 object-cover brutalist-border"
-                      />
-                    )}
-
-                    <div>
-                      <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-[var(--accent)] transition-colors">
-                        {post.title}
-                      </h2>
-
-                      {post.description && <p className="text-gray-300 mb-4">{post.description}</p>}
-
-                      <div className="flex flex-wrap gap-2">
-                        {post.categories.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {post.categories.map((category) => (
-                              <span
-                                key={category}
-                                className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase"
-                              >
-                                {category}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {post.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {post.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="text-xs bg-[var(--muted)] bg-opacity-50 text-[var(--foreground)] px-2 py-1 font-bold uppercase"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
+          <BlogGrid posts={posts} />
         </div>
       </div>
     </>
