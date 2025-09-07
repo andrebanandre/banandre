@@ -62,7 +62,7 @@ export function Pagination({ currentPage, totalPages, baseUrl = "/" }: Paginatio
         {/* Previous Button */}
         {shouldShowPrevious && (
           <Link href={getPageUrl(currentPage - 1)}>
-            <button className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] text-[var(--accent)] font-bold uppercase tracking-wide brutalist-border hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-all duration-200">
+            <button className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] text-[var(--accent)] font-bold uppercase tracking-wide brutalist-border hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-all duration-200 cursor-pointer">
               <ChevronLeftIcon className="w-4 h-4" />
               <span className="hidden sm:inline">Prev</span>
             </button>
@@ -78,7 +78,7 @@ export function Pagination({ currentPage, totalPages, baseUrl = "/" }: Paginatio
               <Link href={getPageUrl(page as number)}>
                 <button
                   className={`
-                    px-4 py-2 font-bold uppercase tracking-wide brutalist-border transition-all duration-200
+                    px-4 py-2 font-bold uppercase tracking-wide brutalist-border transition-all duration-200 cursor-pointer
                     ${
                       currentPage === page
                         ? "bg-[var(--accent)] text-[var(--accent-foreground)]"
@@ -96,7 +96,7 @@ export function Pagination({ currentPage, totalPages, baseUrl = "/" }: Paginatio
         {/* Next Button */}
         {shouldShowNext && (
           <Link href={getPageUrl(currentPage + 1)}>
-            <button className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] text-[var(--accent)] font-bold uppercase tracking-wide brutalist-border hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-all duration-200">
+            <button className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] text-[var(--accent)] font-bold uppercase tracking-wide brutalist-border hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-all duration-200 cursor-pointer">
               <span className="hidden sm:inline">Next</span>
               <ChevronRightIcon className="w-4 h-4" />
             </button>
