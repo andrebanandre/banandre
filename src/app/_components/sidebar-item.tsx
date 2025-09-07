@@ -166,7 +166,7 @@ export function SidebarItem({
               <ReaderIcon
                 className={`
                   w-4 h-4 mr-3 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
+                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)] group-hover:text-[var(--accent-foreground)]"}
                 `}
               />
               <span className="flex-1 font-semibold uppercase tracking-wide text-sm">{title}</span>
@@ -180,14 +180,14 @@ export function SidebarItem({
                   <ChevronDownIcon
                     className={`
                       w-4 h-4
-                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
+                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)] group-hover:text-[var(--accent-foreground)]"}
                     `}
                   />
                 ) : (
                   <ChevronRightIcon
                     className={`
                       w-4 h-4
-                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
+                      ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)] group-hover:text-[var(--accent-foreground)]"}
                     `}
                   />
                 )}
@@ -198,7 +198,7 @@ export function SidebarItem({
               <FileIcon
                 className={`
                   w-4 h-4 mr-3 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)]"}
+                  ${isActive ? "text-[var(--accent-foreground)]" : "text-[var(--accent)] group-hover:text-[var(--accent-foreground)]"}
                 `}
               />
               <Anchor
@@ -265,7 +265,7 @@ export function SidebarItem({
               <ReaderIcon
                 className={`
                   w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
+                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)] group-hover:text-[var(--blue-accent)]"}
                 `}
               />
             </motion.div>
@@ -280,14 +280,14 @@ export function SidebarItem({
                 <ChevronDownIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
+                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)] group-hover:text-[var(--blue-accent)]"}
                   `}
                 />
               ) : (
                 <ChevronRightIcon
                   className={`
                     w-4 h-4
-                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
+                    ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)] group-hover:text-[var(--blue-accent)]"}
                   `}
                 />
               )}
@@ -299,7 +299,7 @@ export function SidebarItem({
               <FileIcon
                 className={`
                   w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200
-                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)]"}
+                  ${isActive ? "text-[var(--blue-accent)]" : "text-[var(--accent)] group-hover:text-[var(--blue-accent)]"}
                 `}
               />
             </motion.div>
