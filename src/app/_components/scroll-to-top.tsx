@@ -66,11 +66,6 @@ export function ScrollToTop() {
         fixed z-40 bg-[var(--accent)] text-[var(--accent-foreground)] p-4 brutalist-border 
         font-bold hover:bg-[var(--accent-hover)] transition-colors duration-200
         ${isVisible ? "pointer-events-auto" : "pointer-events-none"}
-        
-        /* Desktop positioning - close to desktop TOC (TOC is on the right, so place button to the left of it) */
-        lg:bottom-6 lg:right-80
-        
-        /* Mobile positioning - under TOC button (TOC is at bottom-6 right-6, so we put this at bottom-24 right-6) */
         bottom-24 right-6
       `}
       aria-label="Scroll to top"
