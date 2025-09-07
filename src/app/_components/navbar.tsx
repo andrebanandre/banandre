@@ -6,7 +6,7 @@ import { Anchor, Search } from "nextra/components";
 import { normalizePages } from "nextra/normalize-pages";
 import type { FC } from "react";
 import { useState, useEffect } from "react";
-import { HamburgerMenuIcon, Cross1Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";
 import { SidebarItem, filterPagesByMeta } from "./sidebar-item";
 import { SidebarCategories } from "./sidebar-categories";
@@ -14,6 +14,7 @@ import { SidebarCategories } from "./sidebar-categories";
 export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const { topLevelNavbarItems, docsDirectories } = normalizePages({
     list: pageMap,
@@ -64,12 +65,30 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
     document.body.style.overflow = "unset";
   };
 
+  const activateSearch = () => {
+    setIsSearchActive(true);
+    setIsMenuOpen(false); // Close mobile menu when search activates
+    // Prevent body scroll when search dialog is open
+    document.body.style.overflow = "hidden";
+  };
+
+  const deactivateSearch = () => {
+    setIsSearchActive(false);
+    // Re-enable body scroll
+    document.body.style.overflow = "unset";
+  };
+
   // Cleanup effect to restore scroll on unmount or route change
   useEffect(() => {
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
+
+  // Close search dialog on route change
+  useEffect(() => {
+    deactivateSearch();
+  }, [pathname]);
 
   // Close menu on route change
   useEffect(() => {
@@ -273,13 +292,15 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
           <div className="px-6 py-6 space-y-4 min-h-full">
             {/* Mobile Search */}
             <motion.div variants={mobileItemVariants} className="mb-4">
-              <Search
-                className="custom-search-input"
-                placeholder="Search BANANDRE..."
-                emptyResult="No results found."
-                errorText="Search failed to load."
-                loading="Searching..."
-              />
+              <div className="relative" onFocus={activateSearch} onClick={activateSearch}>
+                <Search
+                  className="custom-search-input"
+                  placeholder="Search BANANDRE..."
+                  emptyResult="No results found."
+                  errorText="Search failed to load."
+                  loading="Searching..."
+                />
+              </div>
             </motion.div>
 
             {/* Top Level Navigation Items */}
@@ -347,6 +368,115 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Mobile Search Dialog */}
+      {isSearchActive && (
+        <motion.div
+          className="fixed inset-0 z-50 md:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: easeOut }}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={deactivateSearch}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+
+          {/* Dialog Content */}
+          <motion.div
+            className="absolute inset-0 bg-[var(--background)]"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ duration: 0.4, ease: easeOut }}
+          >
+            {/* Header */}
+            <motion.div
+              className="flex items-center justify-between p-6 border-b-4 border-[var(--accent)] bg-[var(--background)]"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
+              {/* Logo */}
+              <Anchor href="/" className="text-decoration-none">
+                <div>
+                  <motion.div
+                    className="inline-block text-[var(--blue-accent)] font-black text-2xl uppercase tracking-wider bg-[var(--accent)] bg-opacity-20 px-1 py-0.5 rounded mb-1 cursor-pointer"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                  >
+                    BANANDRE
+                  </motion.div>
+                  <motion.div
+                    className="text-xs text-gray-400 uppercase tracking-widest font-mono"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                  >
+                    NO ONE CARES ABOUT CODE
+                  </motion.div>
+                </div>
+              </Anchor>
+              <motion.button
+                onClick={deactivateSearch}
+                className="p-2 text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)] transition-colors duration-200 rounded-lg"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Close search"
+              >
+                <Cross1Icon className="w-6 h-6" />
+              </motion.button>
+            </motion.div>
+
+            {/* Search Content */}
+            <motion.div
+              className="p-6 h-full overflow-y-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
+              {/* Search Input and Results */}
+              <div className="max-w-4xl mx-auto">
+                <Search
+                  className="w-full"
+                  placeholder="Search BANANDRE..."
+                  emptyResult="No results found."
+                  errorText="Search failed to load."
+                  loading="Searching..."
+                />
+
+                {/* Search Results will appear here automatically from Nextra Search component */}
+                <div className="mt-6">
+                  {/* This space allows the search results to expand naturally */}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Footer */}
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 p-6 border-t-2 border-[var(--accent)] border-opacity-30 bg-[var(--background)]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
+            >
+              <motion.button
+                onClick={deactivateSearch}
+                className="w-full px-6 py-3 bg-[var(--accent)] text-[var(--accent-foreground)] font-bold uppercase tracking-wide rounded-lg hover:bg-opacity-90 transition-all duration-200"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Close Search
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Spacer to prevent content from being hidden behind fixed navbar */}
       <div className="h-20"></div>
