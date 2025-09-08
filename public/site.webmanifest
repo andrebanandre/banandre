@@ -1,0 +1,29 @@
+{
+  "name": "Banandre - Software Engineering Insights & AI Analysis",
+  "short_name": "Banandre",
+  "description": "Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["technology", "blog", "education"],
+  "icons": [
+    {
+      "src": "/banana.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/banana.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
