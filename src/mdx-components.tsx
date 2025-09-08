@@ -8,6 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface BlogNextraMetadata {
   title: string;
@@ -244,13 +246,83 @@ const components = {
     />
   ),
 
-  // Custom code block styling
-  pre: (props: Record<string, unknown>) => (
-    <pre
-      className="my-8 rounded-md bg-black border-2 border-[var(--accent)] p-4 md:p-6 text-sm font-mono whitespace-pre-wrap break-words"
-      {...props}
-    />
-  ),
+  // Custom code block styling with syntax highlighting
+  pre: (props: Record<string, unknown>) => {
+    const { children, "data-language": language, ...restProps } = props;
+
+    // Check if this has language information
+    if (language && typeof language === "string") {
+      // Extract code content from children - handle different formats
+      let codeContent = "";
+
+      // Function to recursively extract text from React nodes
+      const extractTextContent = (node: unknown): string => {
+        if (typeof node === "string") return node;
+        if (typeof node === "number") return String(node);
+        if (Array.isArray(node)) return node.map(extractTextContent).join("");
+        if (React.isValidElement(node)) {
+          const props = node.props as Record<string, unknown>;
+          const childNodes = props?.children as React.ReactNode;
+          if (childNodes) {
+            return React.Children.toArray(childNodes).map(extractTextContent).join("");
+          }
+        }
+        return "";
+      };
+
+      codeContent = extractTextContent(children);
+
+      return (
+        <SyntaxHighlighter
+          language={language}
+          style={oneDark}
+          customStyle={{
+            margin: "2rem 0",
+            borderRadius: "0.375rem",
+            border: "2px solid var(--accent)",
+            background: "black",
+          }}
+          codeTagProps={{
+            style: {
+              fontSize: "0.875rem",
+              fontFamily:
+                'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+            },
+          }}
+          showLineNumbers={true}
+          wrapLines={true}
+          wrapLongLines={true}
+          lineNumberStyle={{
+            minWidth: "3em",
+            paddingRight: "1em",
+            textAlign: "right" as const,
+            userSelect: "none",
+            opacity: 0.5,
+            color: "var(--accent)",
+          }}
+          lineProps={(_lineNumber: number) => ({
+            style: {
+              display: "block",
+              width: "100%",
+            },
+          })}
+          PreTag="div"
+          CodeTag="div"
+          {...restProps}
+        >
+          {codeContent}
+        </SyntaxHighlighter>
+      );
+    }
+
+    // Fallback to regular pre for non-code content
+    return (
+      <pre
+        className="my-8 rounded-md bg-black border-2 border-[var(--accent)] p-4 md:p-6 text-sm font-mono whitespace-pre-wrap break-words"
+        {...props}
+      />
+    );
+  },
 
   code: (props: Record<string, unknown>) => (
     <code
