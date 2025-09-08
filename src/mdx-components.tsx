@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
+import { formatCategoryForUrl } from "./lib/blog-utils";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -466,6 +467,16 @@ const defaultComponents = getNextraComponents({
                 <h5 className="scroll-m-20 text-lg font-semibold tracking-tight text-white mt-6 mb-2">
                   {blogMetadata.description}
                 </h5>
+
+                {blogMetadata.categories && blogMetadata.categories.length > 0 && (
+                  <div className="mt-4 mb-6">
+                    <Link href={`/categories/${formatCategoryForUrl(blogMetadata.categories[0])}`}>
+                      <span className="text-xs bg-[var(--accent)] bg-opacity-20 text-[var(--blue-accent)] px-2 py-1 font-bold uppercase hover:bg-opacity-30 transition-all duration-200 cursor-pointer">
+                        {blogMetadata.categories[0].toUpperCase()}
+                      </span>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
             {blogMetadata.date && (
