@@ -10,7 +10,7 @@ const withNextra = nextra({
 const nextConfig: NextConfig = {
   output: "export",
   images: {
-    unoptimized: true, // mandatory, otherwise won't export
+    unoptimized: true, // mandatory for static export
   },
   eslint: {
     // Only run ESLint on specific directories during production builds

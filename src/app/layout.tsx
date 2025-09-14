@@ -72,7 +72,16 @@ export const metadata: Metadata = {
     "software architecture",
     "AI development",
     "tech analysis",
+    "machine learning",
+    "software development",
+    "engineering management",
+    "product management",
+    "tech blog",
+    "coding",
+    "developer tools",
   ],
+  category: "technology",
+  classification: "Software Engineering & AI Analysis",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -96,6 +105,22 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
   return (
     <html lang="en" dir="ltr">
       <Head faviconGlyph="✦">
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+
+        {/* Preconnect to critical resources */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
+
+        {/* Performance optimizations */}
+        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
+
+        {/* Security */}
+        <link rel="canonical" href="https://www.banandre.com" />
+
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

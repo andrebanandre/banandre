@@ -11,6 +11,8 @@ import { formatDateForLocale, getUserPreferredLocale } from "./lib/date-utils";
 import { formatCategoryForUrl } from "./lib/blog-utils";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { generateArticleSchema } from "./lib/json-ld";
+import { BlogMetadata } from "./lib/blog-utils";
 
 interface BlogNextraMetadata {
   title: string;
@@ -29,6 +31,50 @@ interface BlogNextraMetadata {
     words: number;
   };
 }
+
+// Article Schema component for blog posts
+const ArticleSchema = ({ post }: { post: BlogMetadata }) => {
+  const schema = generateArticleSchema(post);
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(schema),
+      }}
+    />
+  );
+};
+
+// Auto Article Schema component for blog posts
+const AutoArticleSchema = ({ frontMatter }: { frontMatter: BlogNextraMetadata }) => {
+  // Only add Article schema for blog posts (those with date field)
+  if (!frontMatter.date) {
+    return null;
+  }
+
+  // Derive the correct route (e.g. /blog/2025-08/slug) from filePath; fallback to /blog/slug
+  let routePath = "";
+  try {
+    const normalized = frontMatter.filePath.replace(/\\/g, "/");
+    const match = normalized.match(/src\/app(\/blog\/\d{4}-\d{2}\/[^/]+)/);
+    routePath = match ? match[1] : frontMatter.slug ? `/blog/${frontMatter.slug}` : "";
+  } catch {
+    routePath = frontMatter.slug ? `/blog/${frontMatter.slug}` : "";
+  }
+
+  const postData: BlogMetadata = {
+    title: frontMatter.title,
+    description: frontMatter.description || "",
+    image: frontMatter.image,
+    slug: routePath || "",
+    tags: frontMatter.tags || [],
+    categories: frontMatter.categories || [],
+    date: frontMatter.date,
+  } as unknown as BlogMetadata;
+
+  return <ArticleSchema post={postData} />;
+};
 
 const components = {
   h1: (props: Record<string, unknown>) => (
@@ -366,7 +412,18 @@ const defaultComponents = getNextraComponents({
 
     // Generate social metadata
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://banandre.com";
-    const currentUrl = blogMetadata.slug ? `${baseUrl}/blog/${blogMetadata.slug}` : baseUrl;
+
+    // Derive the correct route (e.g. /blog/2025-08/slug) from filePath; fallback to /blog/slug
+    let routePath = "";
+    try {
+      const normalized = blogMetadata.filePath.replace(/\\/g, "/");
+      const match = normalized.match(/src\/app(\/blog\/\d{4}-\d{2}\/[^/]+)/);
+      routePath = match ? match[1] : blogMetadata.slug ? `/blog/${blogMetadata.slug}` : "";
+    } catch {
+      routePath = blogMetadata.slug ? `/blog/${blogMetadata.slug}` : "`";
+    }
+
+    const currentUrl = routePath ? `${baseUrl}${routePath}` : baseUrl;
     const imageUrl = blogMetadata.image
       ? blogMetadata.image.startsWith("http")
         ? blogMetadata.image
@@ -449,6 +506,9 @@ const defaultComponents = getNextraComponents({
             }}
           />
         </Head>
+
+        {/* Article Schema for SEO */}
+        <AutoArticleSchema frontMatter={blogMetadata} />
 
         <div className="flex flex-col lg:flex-row min-h-screen bg-[var(--background)]">
           <div className="flex-1 px-6 md:px-12 py-1 max-w-4xl mx-auto lg:mx-0">

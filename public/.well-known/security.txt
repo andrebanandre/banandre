@@ -1,0 +1,7 @@
+# Security Policy for Banandre
+# Contact information for security researchers
+
+Contact: andre@banandre.com
+Expires: 2026-09-14T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.banandre.com/.well-known/security.txt

@@ -204,3 +204,78 @@ export function generateTagPageSchema(tag: string, posts: BlogMetadata[]) {
     },
   };
 }
+
+export function generateArticleSchema(post: BlogMetadata) {
+  const articleUrl = `${SITE_URL}${post.slug}`;
+  const publishDate = post.date ? new Date(post.date).toISOString() : new Date().toISOString();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    image: post.image ? `${SITE_URL}${post.image}` : `${SITE_URL}/banana-open.png`,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: {
+      "@type": "Person",
+      name: AUTHOR_NAME,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/banana-open.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    keywords: post.tags.join(", "),
+    articleSection: post.categories.join(", "),
+    url: articleUrl,
+  };
+}
+
+// Component to add Article schema to blog posts
+// Note: This component is defined in mdx-components.tsx to avoid JSX in .ts files
+
+export function generateTableOfContentsSchema(
+  headings: Array<{ value: string; id: string; depth: number }>
+) {
+  const tocItems = headings.map((heading, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: heading.value,
+    url: `#${heading.id}`,
+  }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "TableOfContents",
+    name: "Table of Contents",
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: tocItems.length,
+      itemListElement: tocItems,
+    },
+  };
+}
+
+export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+}
