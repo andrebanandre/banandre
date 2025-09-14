@@ -19,6 +19,7 @@ module.exports = {
     // Set different priorities for different page types
     let priority = config.priority;
     let changefreq = config.changefreq;
+    let lastmod;
 
     // Homepage gets highest priority
     if (path === "/") {
@@ -26,9 +27,16 @@ module.exports = {
       changefreq = "daily";
     }
     // Blog posts get high priority
-    else if (path.includes("/demo/") || path.includes("/docs/")) {
+    else if (path.includes("/blog/")) {
       priority = 0.8;
       changefreq = "weekly";
+
+      // Try to extract date from blog post path (format: /blog/YYYY-MM/title)
+      const dateMatch = path.match(/\/blog\/(\d{4}-\d{2})\//);
+      if (dateMatch) {
+        // Set lastmod to the first day of the month the post was published
+        lastmod = new Date(dateMatch[1] + '-01').toISOString();
+      }
     }
     // Tag pages get medium priority
     else if (path.includes("/tags/")) {
@@ -40,7 +48,7 @@ module.exports = {
       loc: path,
       changefreq,
       priority,
-      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+      lastmod: lastmod || (config.autoLastmod ? new Date().toISOString() : undefined),
       alternateRefs: config.alternateRefs ?? [],
     };
   },

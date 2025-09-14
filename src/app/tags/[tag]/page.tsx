@@ -21,15 +21,29 @@ interface TagPageProps {
 export async function generateStaticParams() {
   const tags = await getAllTags();
 
-  return tags.map(({ tag }) => ({
-    tag: tag.toLowerCase().replace(/[^a-z0-9]/g, ""),
-  }));
+  // Only generate static params for tags that have at least one post
+  const validTags = [];
+  for (const { tag } of tags) {
+    try {
+      const posts = await getPostsByTag(tag);
+      if (posts.length > 0) {
+        validTags.push({
+          tag: tag.toLowerCase().replace(/[^a-z0-9]/g, ""),
+        });
+      }
+    } catch (error) {
+      // Skip tags that cause errors
+      console.warn(`Skipping tag ${tag} due to error:`, error);
+    }
+  }
+
+  return validTags;
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
   try {
     const { tag: urlTag } = await params;
-    const displayTag = parseTagFromUrl(urlTag);
+    const displayTag = await parseTagFromUrl(urlTag);
     const posts = await getPostsByTag(displayTag);
 
     const title = `#${displayTag} - ${siteConfig.name}`;
@@ -89,7 +103,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 
 export default async function TagPage({ params }: TagPageProps) {
   const { tag: urlTag } = await params;
-  const displayTag = parseTagFromUrl(urlTag);
+  const displayTag = await parseTagFromUrl(urlTag);
 
   const posts = await getPostsByTag(displayTag);
 

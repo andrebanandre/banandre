@@ -137,8 +137,9 @@ export async function getAllTags(): Promise<{ tag: string; count: number }[]> {
 // Get posts filtered by a specific tag
 export async function getPostsByTag(tag: string): Promise<BlogMetadata[]> {
   const posts = await getAllBlogPosts();
+  const formattedTag = formatTagForUrl(tag);
   return posts.filter((post) =>
-    post.tags.some((postTag) => postTag.toLowerCase() === tag.toLowerCase())
+    post.tags.some((postTag) => formatTagForUrl(postTag) === formattedTag)
   );
 }
 
@@ -148,10 +149,11 @@ export function formatTagForUrl(tag: string): string {
 }
 
 // Parse tag from URL back to display format
-export function parseTagFromUrl(urlTag: string): string {
-  // For now, just capitalize first letter
-  // You might want to store a mapping if you need exact original formatting
-  return urlTag.charAt(0).toUpperCase() + urlTag.slice(1);
+export async function parseTagFromUrl(urlTag: string): Promise<string> {
+  // Try to find the original tag name by checking against all existing tags
+  const allTags = await getAllTags();
+  const matchingTag = allTags.find(({ tag }) => formatTagForUrl(tag) === urlTag);
+  return matchingTag ? matchingTag.tag : urlTag.charAt(0).toUpperCase() + urlTag.slice(1);
 }
 
 // Get all unique categories from all blog posts
