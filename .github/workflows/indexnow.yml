@@ -1,0 +1,85 @@
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/app/blog/**"
+      - "public/**"
+      - "lib/indexnow.ts"
+      - ".github/workflows/indexnow.yml"
+  workflow_dispatch:
+    inputs:
+      force_index:
+        description: "Force indexing all URLs (bypass content change detection)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Get last 2 commits to compare changes
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check if content changed
+        id: content-changed
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.inputs.force_index }}" != "true" ]; then
+            # Check if any blog content or public files changed
+            if git diff --name-only HEAD~1 | grep -E '\.(mdx|md)$' | grep -v node_modules; then
+              echo "content-changed=true" >> $GITHUB_OUTPUT
+              echo "📝 Content changes detected, will run IndexNow"
+            else
+              echo "content-changed=false" >> $GITHUB_OUTPUT
+              echo "ℹ️ No content changes detected, skipping IndexNow"
+            fi
+          else
+            echo "content-changed=true" >> $GITHUB_OUTPUT
+            if [ "${{ github.event.inputs.force_index }}" = "true" ]; then
+              echo "🔧 Manual trigger with force indexing enabled"
+            else
+              echo "🚀 Workflow triggered, will run IndexNow"
+            fi
+          fi
+
+      - name: Run IndexNow
+        if: steps.content-changed.outputs.content-changed == 'true'
+        run: |
+          echo "🌐 Starting IndexNow process..."
+          echo "📅 Indexing URLs modified in the last 7 days"
+
+          # Run the IndexNow script and capture output
+          if npm run indexnow; then
+            echo "✅ IndexNow completed successfully"
+          else
+            echo "❌ IndexNow failed"
+            exit 1
+          fi
+        env:
+          NODE_ENV: production
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "⚠️ IndexNow workflow failed. This might be due to:"
+          echo "   - Network issues"
+          echo "   - IndexNow API rate limits"
+          echo "   - Site verification issues"
+          echo "   - Check the logs above for more details"
