@@ -1,13 +1,21 @@
 name: IndexNow
 
+# This workflow runs IndexNow indexing after successful builds
+# Customize the workflow_run.workflows array with your actual build workflow names
+
 on:
   push:
     branches: [main]
     paths:
       - "src/app/blog/**"
       - "public/**"
-      - "lib/indexnow.ts"
+      - "lib/indexnow.js"
       - ".github/workflows/indexnow.yml"
+  workflow_run:
+    workflows: ["Build and Deploy"]  # Update with your actual workflow names
+    types:
+      - completed
+    branches: [main]
   workflow_dispatch:
     inputs:
       force_index:
@@ -22,6 +30,8 @@ on:
 jobs:
   indexnow:
     runs-on: ubuntu-latest
+    # Only run if triggered by workflow_run and the workflow succeeded
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
@@ -38,10 +48,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Show trigger information
+        run: |
+          echo "🎯 Trigger: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "📋 Source workflow: ${{ github.event.workflow_run.name }}"
+            echo "📊 Source conclusion: ${{ github.event.workflow_run.conclusion }}"
+          fi
+
       - name: Check if content changed
         id: content-changed
         run: |
-          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.inputs.force_index }}" != "true" ]; then
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # Always run after successful build
+            echo "content-changed=true" >> $GITHUB_OUTPUT
+            echo "🏗️ Build completed successfully, running IndexNow"
+          elif [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.inputs.force_index }}" != "true" ]; then
             # Check if any blog content or public files changed
             if git diff --name-only HEAD~1 | grep -E '\.(mdx|md)$' | grep -v node_modules; then
               echo "content-changed=true" >> $GITHUB_OUTPUT
