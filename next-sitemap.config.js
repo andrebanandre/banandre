@@ -35,7 +35,7 @@ module.exports = {
       const dateMatch = path.match(/\/blog\/(\d{4}-\d{2})\//);
       if (dateMatch) {
         // Set lastmod to the first day of the month the post was published
-        lastmod = new Date(dateMatch[1] + '-01').toISOString();
+        lastmod = new Date(dateMatch[1] + "-01").toISOString();
       }
     }
     // Tag pages get medium priority
