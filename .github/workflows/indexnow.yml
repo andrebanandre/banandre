@@ -12,7 +12,7 @@ on:
       - "lib/indexnow.js"
       - ".github/workflows/indexnow.yml"
   workflow_run:
-    workflows: ["Build and Deploy"]  # Update with your actual workflow names
+    workflows: ["Build and Deploy"] # Update with your actual workflow names
     types:
       - completed
     branches: [main]

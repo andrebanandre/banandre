@@ -11,27 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '24'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run linting
-      run: npm run lint
+      - name: Run linting
+        run: npm run lint
 
-    - name: Build project
-      run: npm run build
+      - name: Build project
+        run: npm run build
 
-    # Add your deployment steps here
-    # - name: Deploy to production
-    #   run: your-deployment-command
+      # Add your deployment steps here
+      # - name: Deploy to production
+      #   run: your-deployment-command
 
-    - name: Build completed successfully
-      run: echo "✅ Build completed successfully!"
+      - name: Build completed successfully
+        run: echo "✅ Build completed successfully!"
