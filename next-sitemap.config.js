@@ -1,4 +1,44 @@
 /** @type {import('next-sitemap').IConfig} */
+/* eslint-disable @typescript-eslint/no-require-imports */
+const fs = require("fs");
+const path = require("path");
+const matter = require("gray-matter");
+
+// Function to read MDX frontmatter and get the actual date
+function getBlogPostDate(blogPath) {
+  try {
+    // Convert URL path to file system path
+    // /blog/2025-09/some-post -> src/app/blog/2025-09/some-post/page.mdx
+    const urlParts = blogPath.split("/").filter(Boolean);
+    if (urlParts[0] !== "blog" || urlParts.length < 3) {
+      return null;
+    }
+
+    const filePath = path.join(
+      process.cwd(),
+      "src",
+      "app",
+      "blog",
+      urlParts[1],
+      urlParts[2],
+      "page.mdx"
+    );
+
+    if (fs.existsSync(filePath)) {
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      const { data } = matter(fileContent);
+
+      if (data.date) {
+        // Convert date to ISO string
+        return new Date(data.date).toISOString();
+      }
+    }
+  } catch (error) {
+    console.warn(`Could not read date from ${blogPath}:`, error.message);
+  }
+  return null;
+}
+
 module.exports = {
   siteUrl: process.env.SITE_URL || "https://www.banandre.com",
   generateRobotsTxt: true,
@@ -31,11 +71,10 @@ module.exports = {
       priority = 0.8;
       changefreq = "weekly";
 
-      // Try to extract date from blog post path (format: /blog/YYYY-MM/title)
-      const dateMatch = path.match(/\/blog\/(\d{4}-\d{2})\//);
-      if (dateMatch) {
-        // Set lastmod to the first day of the month the post was published
-        lastmod = new Date(dateMatch[1] + "-01").toISOString();
+      // Read the actual date from the MDX frontmatter
+      const actualDate = getBlogPostDate(path);
+      if (actualDate) {
+        lastmod = actualDate;
       }
     }
     // Tag pages get medium priority
