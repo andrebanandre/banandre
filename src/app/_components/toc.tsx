@@ -289,14 +289,14 @@ function TOCContent({
       </nav>
 
       {/* Edit on GitHub Link - Always at the bottom */}
-      <motion.div
+      {/* <motion.div
         className="mt-auto pt-6 border-t border-[var(--accent)] border-opacity-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.5 }}
       >
         <EditOnGitHubLink />
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 }
