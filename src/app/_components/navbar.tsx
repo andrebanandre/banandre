@@ -338,7 +338,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             {/* Categories Section */}
             <motion.div
               variants={mobileItemVariants}
-              className="pt-6 mt-6 border-t-2 border-[var(--accent)] border-opacity-30"
+              className="pt-6 mt-6 border-t-2 border-[var(--accent)] border-opacity-30 relative z-10"
             >
               <div className="px-4">
                 <SidebarCategories />

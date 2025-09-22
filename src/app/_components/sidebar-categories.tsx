@@ -11,10 +11,16 @@ function formatCategoryForUrl(category: string): string {
 }
 
 export function SidebarCategories() {
-  const categories = ["ARTIFICIAL INTELLIGENCE", "SOFTWARE ARCHITECTURE", "ENGINEERING MANAGEMENT"];
+  const categories = [
+    "ARTIFICIAL INTELLIGENCE",
+    "SOFTWARE ARCHITECTURE",
+    "SOFTWARE DEVELOPMENT",
+    "ENGINEERING MANAGEMENT",
+    "PRODUCT MANAGEMENT",
+  ];
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 relative z-20">
       <div className="mb-4">
         <h3 className="text-[var(--accent)] font-black text-sm uppercase tracking-wide mb-2">
           Categories
@@ -24,20 +30,18 @@ export function SidebarCategories() {
 
       <div className="space-y-2">
         {categories.map((category) => (
-          <div key={category}>
-            <Link href={`/categories/${formatCategoryForUrl(category)}`}>
-              <div
-                className="
-                text-xs font-semibold flex items-center group 
-                transition-all duration-200 py-1.5 px-3 rounded-md cursor-pointer
-                hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]
-                text-white hover:translate-x-1
-              "
-              >
-                <span className="uppercase tracking-wide truncate">{category}</span>
-              </div>
-            </Link>
-          </div>
+          <Link key={category} href={`/categories/${formatCategoryForUrl(category)}`}>
+            <div
+              className="
+              text-xs font-semibold flex items-center group
+              transition-all duration-200 py-1.5 px-3 rounded-md cursor-pointer
+              hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]
+              text-white hover:translate-x-1 relative z-30 pointer-events-auto
+            "
+            >
+              <span className="uppercase tracking-wide truncate">{category}</span>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
