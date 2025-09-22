@@ -64,13 +64,17 @@ jobs:
             echo "content-changed=true" >> $GITHUB_OUTPUT
             echo "🏗️ Build completed successfully, running IndexNow"
           elif [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.inputs.force_index }}" != "true" ]; then
-            # Check if any blog content or public files changed
-            if git diff --name-only HEAD~1 | grep -E '\.(mdx|md)$' | grep -v node_modules; then
+            # Check if any blog content changed (more specific filtering)
+            if git diff --name-only HEAD~1 | grep -E 'src/app/blog/.*\.(mdx|md)$' | grep -v node_modules; then
               echo "content-changed=true" >> $GITHUB_OUTPUT
-              echo "📝 Content changes detected, will run IndexNow"
+              echo "📝 Blog content changes detected, will run IndexNow"
+            elif git diff --name-only HEAD~1 | grep -E 'src/app/(page\.tsx|layout\.tsx)$'; then
+              echo "content-changed=true" >> $GITHUB_OUTPUT
+              echo "🏠 Homepage/layout changes detected, will run IndexNow"
             else
               echo "content-changed=false" >> $GITHUB_OUTPUT
-              echo "ℹ️ No content changes detected, skipping IndexNow"
+              echo "ℹ️ No relevant content changes detected, skipping IndexNow"
+              echo "💡 Only blog posts and main pages trigger IndexNow"
             fi
           else
             echo "content-changed=true" >> $GITHUB_OUTPUT
@@ -85,7 +89,8 @@ jobs:
         if: steps.content-changed.outputs.content-changed == 'true'
         run: |
           echo "🌐 Starting IndexNow process..."
-          echo "📅 Indexing URLs modified in the last 7 days"
+          echo "📅 Indexing URLs modified in the last 2 days (more targeted approach)"
+          echo "🚫 Excluding tags and categories pages to reduce noise"
 
           # Run the IndexNow script and capture output
           if npm run indexnow; then

@@ -1,0 +1,190 @@
+---
+title: "Last Write Wins Isn't a Feature, It's a Bug in Your Whiteboard"
+description: "Why most real-time collaboration tools get conflict resolution wrong, and how CRDTs, OT, and architectural pragmatism are rewriting the rules."
+slug: last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard
+image: "/blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp"
+date: 2025-09-22
+tags: ["CRDT", "real-time collaboration", "distributed systems", "state synchronization", "operational transformation"]
+categories: ["Software Architecture"]
+---
+
+You're in a Miro board with three teammates. You drag a rectangle to (420, 180). Someone else drags the same rectangle to (420, 180), at the exact same time. The board flickers. The rectangle snaps to their position. You sigh. You drag it back. They drag it again. This isn't collaboration. It's a tug-of-war with latency as the referee.
+
+Most teams call this "last write wins" and shrug. *It's fine*, they say. *It's just a whiteboard.* But beneath the surface, this casual acceptance reveals a dangerous architectural blind spot: we're treating coordination problems like UI quirks instead of distributed systems failures.
+
+Here's the truth: **if your real-time collaboration tool doesn't have a rigorous state synchronization strategy, you're not building a collaborative app, you're building a race condition with a pretty UI.**
+
+---
+
+### The Myth of the "Benign" Canvas
+
+It's easy to see why last-write-wins (LWW) feels acceptable. In text editors, two users editing the same character at the same index? Catastrophic. You get garbled text. Lost context. Broken meaning. CRDTs or Operational Transformation (OT) are mandatory.
+
+But consider this scenario:
+
+- User A places a sticky note at (300, 200) labeled "Deadline: Friday."
+- User B, offline for 8 seconds due to a spotty connection, places the *same* sticky note at (300, 200) with the label "Deadline: Thursday."
+- User B's update arrives after User A's. LWW kicks in. Thursday wins.
+- User A sees the note change. Confused. They change it back.
+- User B reconnects. Their note vanishes. They think User A deleted it.
+- A 20-minute argument ensues. The deadline is missed.
+
+This isn't a visual hiccup. It's **state corruption disguised as UX**.
+
+LWW doesn't resolve conflict. It *suppresses* it. And suppressed conflict doesn't disappear, it metastasizes into mistrust, confusion, and costly rework.
+
+---
+
+### CRDTs: The Quiet Revolution You're Already Using (Without Knowing It)
+
+If you've ever used Notion, Figma, or Google Docs with multiple editors, you've benefited from Conflict-free Replicated Data Types (CRDTs). They're the unsung heroes of modern collaboration.
+
+CRDTs don't care about order. They don't need a central authority. They use mathematical guarantees, commutativity, associativity, idempotence, to ensure that no matter the sequence of updates, all clients converge to the same state.
+
+Tiptap, for instance, uses [Yjs](https://github.com/yjs/yjs), a CRDT-based library, to power real-time collaboration in its editor. Every keystroke, every undo, every cursor movement is encoded as a *Yjs update*, a cryptographically verifiable delta that can be merged independently by any client.
+
+The beauty? Even if User A and User B are on opposite sides of the planet with 500ms ping, their edits will eventually reconcile. No server-side locks. No locks at all.
+
+And crucially: **CRDTs preserve intent.**
+
+If User A deletes a paragraph and User B adds text at the *end* of that paragraph, CRDTs don't just pick one, they merge both changes. That's what makes them fundamentally different from OT, which requires a central server to transform operations into a global order.
+
+> CRDTs turn "who edited last?" into "what did everyone intend to do?"
+
+This isn't theoretical. It's the reason you can disconnect from Google Docs for an hour, reconnect, and find your edits intact, without ever seeing a "conflict" dialog.
+
+---
+
+### Operational Transformation: The OG Solution That Still Haunts Us
+
+OT was the first serious attempt at real-time collaboration. It powers early Google Docs and continues to run under the hood of some enterprise systems.
+
+OT works like this:
+
+1. Each edit is an operation: Insert "x" at position 10. Delete character at 15.
+2. Operations are sent to a central server.
+3. The server transforms them based on the current state and the order they arrived in.
+4. Transformed operations are sent back to clients.
+
+It's elegant, until it isn't.
+
+OT is brittle. It requires:
+
+- A single source of truth (a server)
+- Strict ordering
+- Complex transformation functions for every possible edit type
+
+A single server crash? Your entire session's operation history may be lost.
+
+A misbehaving client sends malformed ops? The server can't transform them. Everyone's view breaks.
+
+And if your system has more than a few dozen concurrent editors? You're not scaling, you're begging for a bottleneck.
+
+OT isn't dead. But it's a relic. CRDTs are the future because they remove the server from being the *conductor* and make it a simple *messenger*.
+
+---
+
+### The Latency Trap: Why "Fast Enough" Is the Worst Kind of Compromise
+
+Here's the kicker: even with CRDTs, network latency still matters.
+
+You can't eliminate it. You can only manage it.
+
+Most systems solve this with optimistic UI updates. You drag the shape. The client renders it immediately. The update is queued to send. The server receives it. Other clients get the update. Their UIs update.
+
+But what happens when the server receives two conflicting updates, say, one from User A and one from User B, and the client that sent User A's update is still showing the old state because its ACK is delayed?
+
+You get **temporary divergence**.
+
+Users see different versions of the board. For 300ms. Then it reconciles.
+
+That's fine. But if you're building for enterprise users who rely on this for decision-making (think: product roadmaps, architectural diagrams, sprint planning), even 300ms of visual inconsistency is unacceptable.
+
+The fix? **Presence awareness + client-side reconciliation**.
+
+Yjs and Hocuspocus (the open-source backend powering Tiptap's collaboration) include **awareness**, a lightweight protocol that broadcasts cursor positions, selection ranges, and even user presence. This doesn't solve state conflicts, but it tells users: *"Someone else is editing this region."*
+
+That's the magic trick: **transparency over control**.
+
+You don't need to prevent conflict. You need to make it visible, predictable, and reversible.
+
+---
+
+### The Real Conflict: Engineering Pragmatism vs. Theoretical Purity
+
+Let's be honest: most startups don't build CRDTs from scratch. They use Yjs, automate it with Hocuspocus, and call it a day.
+
+And that's fine.
+
+But here's where the controversy brews:
+
+> "We don't need CRDTs. We just use Redis + last-write-wins. It's cheaper and faster."
+
+This isn't ignorance. It's *economics*.
+
+CRDTs require:
+
+- More client-side memory to store operation history
+- More bandwidth (each delta is stored, not just the final state)
+- More complexity in debugging (you can't just inspect the "current state" in a DB)
+
+For a side project? LWW is fine.
+
+For a product with 10,000 concurrent users editing diagrams that feed into product roadmaps? You're building a time bomb.
+
+The real question isn't *"Which algorithm is better?"*
+
+It's:  
+> What kind of failure are you willing to tolerate?
+
+- LWW: A visual glitch that hides a data inconsistency.  
+- CRDT: A slight delay in rendering, with guaranteed convergence and auditability.
+
+The former is cheaper to build. The latter is cheaper to support.
+
+---
+
+### The Unspoken Rule: Your Users Don't Care About Your Architecture, Until It Breaks
+
+In a Miro-like app, users don't think about CRDTs or OT.
+
+They think:  
+> "Why did my note disappear?"  
+> "Why does my teammate see a different layout?"  
+> "Why did we waste 45 minutes arguing over a shape?"
+
+Those are the moments that kill trust.
+
+Architectural choices aren't about elegance. They're about **predictability**.
+
+You don't need a perfect system. You need a *trustworthy* one.
+
+CRDTs don't make collaboration flawless. But they make it *reliable*.
+
+And in a world where design tools are becoming the nervous system of remote teams, reliability isn't a feature.
+
+It's the product.
+
+---
+
+### Final Thought: The Next Frontiers
+
+CRDTs aren't the endgame.
+
+They're the baseline.
+
+Now we're seeing:
+
+- **CRDT-powered AI agents** coordinating state across decentralized tools (e.g., an analyst agent updating a financial model while a designer agent adjusts a chart position, both reconciling via shared CRDTs).
+- **Version history as a first-class citizen**, not an afterthought, thanks to Yjs snapshots and diffing tools like Tiptap's [Snapshot Compare](https://tiptap.dev/docs/collaboration/documents/snapshot-compare).
+- **Schema-aware CRDTs**, where clients with incompatible schemas can negotiate change compatibility, critical when your app evolves faster than your users update.
+
+The future of collaboration isn't faster sync. It's **forgiving state**.
+
+Build systems that don't punish users for being offline, for moving slowly, for editing at the same time.
+
+Build systems that assume conflict is normal, and handle it without screaming.
+
+Because the real revolution isn't in the algorithm.
+
+It's in the humility to admit that humans will always be messy, and software should be too.
