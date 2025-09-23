@@ -469,7 +469,7 @@ const defaultComponents = getNextraComponents({
           {blogMetadata.tags && <meta name="keywords" content={blogMetadata.tags.join(", ")} />}
           <link rel="canonical" href={currentUrl} />
 
-          {/* Schema.org JSON-LD */}
+          {/* Schema.org JSON-LD for blog post */}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
