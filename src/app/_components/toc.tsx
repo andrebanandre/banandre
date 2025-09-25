@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { ListBulletIcon, Cross1Icon } from "@radix-ui/react-icons";
 import type { Heading } from "nextra";
 import { motion, easeInOut, easeOut } from "framer-motion";
-import { EditOnGitHubLink } from "./edit-on-github-link";
 
 export function TOC({ toc }: { toc: Heading[] }) {
   const [isOpen, setIsOpen] = useState(false);

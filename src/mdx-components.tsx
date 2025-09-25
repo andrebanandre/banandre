@@ -347,7 +347,7 @@ const components = {
             opacity: 0.5,
             color: "var(--accent)",
           }}
-          lineProps={(_lineNumber: number) => ({
+          lineProps={() => ({
             style: {
               display: "block",
               width: "100%",
@@ -436,37 +436,7 @@ const defaultComponents = getNextraComponents({
     return (
       <>
         <Head>
-          {/* Open Graph Meta Tags */}
-          <meta property="og:type" content="article" />
-          <meta property="og:title" content={blogMetadata.title} />
-          <meta property="og:description" content={blogMetadata.description || ""} />
-          <meta property="og:image" content={imageUrl} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
-          <meta property="og:url" content={currentUrl} />
-          <meta property="og:site_name" content="Banandre" />
-          <meta property="article:published_time" content={publishedDate} />
-          <meta property="article:author" content="Banandre" />
-          {blogMetadata.tags &&
-            blogMetadata.tags.map((tag, index) => (
-              <meta key={index} property="article:tag" content={tag} />
-            ))}
-          {blogMetadata.categories && (
-            <meta property="article:section" content={blogMetadata.categories[0]} />
-          )}
-
-          {/* Twitter Card Meta Tags */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@banandre" />
-          <meta name="twitter:creator" content="@banandre" />
-          <meta name="twitter:title" content={blogMetadata.title} />
-          <meta name="twitter:description" content={blogMetadata.description || ""} />
-          <meta name="twitter:image" content={imageUrl} />
-
-          {/* Additional SEO Meta Tags */}
-          <meta name="author" content="Banandre" />
-          <meta name="publisher" content="Banandre" />
-          {blogMetadata.tags && <meta name="keywords" content={blogMetadata.tags.join(", ")} />}
+          {/* Meta tags should now be handled by server-side metadata generation */}
           <link rel="canonical" href={currentUrl} />
 
           {/* Schema.org JSON-LD for blog post */}

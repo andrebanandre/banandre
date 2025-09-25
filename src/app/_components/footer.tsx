@@ -4,7 +4,6 @@ import {
   GitHubLogoIcon,
   TwitterLogoIcon,
   LinkedInLogoIcon,
-  RocketIcon,
   EnvelopeClosedIcon,
 } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";

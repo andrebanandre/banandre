@@ -118,6 +118,33 @@ export async function getAllBlogPosts(): Promise<BlogMetadata[]> {
   return posts;
 }
 
+// Get blog post metadata by slug
+export async function getBlogPostBySlug(slug: string): Promise<BlogMetadata | null> {
+  const posts = await getAllBlogPosts();
+  return posts.find((post) => post.slug === slug || post.slug === `/${slug}`) || null;
+}
+
+// Get frontmatter from a specific blog post file path
+export function getFrontmatterFromPath(filePath: string): BlogMetadata | null {
+  try {
+    const fileContent = fs.readFileSync(filePath, "utf8");
+    const { data: frontmatter } = matter(fileContent);
+
+    return {
+      title: frontmatter.title || "Untitled",
+      description: frontmatter.description || "",
+      image: frontmatter.image,
+      slug: frontmatter.slug || "",
+      tags: frontmatter.tags || [],
+      categories: frontmatter.categories || [],
+      date: frontmatter.date,
+    };
+  } catch (error) {
+    console.warn(`Failed to parse ${filePath}:`, error);
+    return null;
+  }
+}
+
 // Get all unique tags from all blog posts
 export async function getAllTags(): Promise<{ tag: string; count: number }[]> {
   const posts = await getAllBlogPosts();

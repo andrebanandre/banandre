@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 // Pure CSS falling banana component
-function FallingBanana({ index }: { index: number }) {
+function FallingBanana() {
   const [position, setPosition] = useState(() => {
     const isOpen = Math.random() > 0.7; // 30% chance for banana-open
     return {
@@ -86,7 +86,7 @@ export default function ThreeTitleScene() {
 
         {/* Falling bananas */}
         {Array.from({ length: 15 }, (_, i) => (
-          <FallingBanana key={i} index={i} />
+          <FallingBanana key={i} />
         ))}
       </div>
     </>

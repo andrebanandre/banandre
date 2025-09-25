@@ -13,7 +13,7 @@ export function formatDateForLocale(dateString: string, locale: string = "en-US"
     };
 
     return date.toLocaleDateString(locale, options);
-  } catch (error) {
+  } catch {
     return dateString;
   }
 }

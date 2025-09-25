@@ -1,15 +1,35 @@
 import nextra from "nextra";
 import type { NextConfig } from "next";
+import rehypeMeta from "rehype-meta";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 // Set up Nextra with its configuration
 const withNextra = nextra({
   search: true,
+  mdxOptions: {
+    remarkPlugins: [],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["anchor"],
+          },
+        },
+      ],
+      // Remove rehype-meta as it doesn't work properly with Nextra static exports
+    ],
+  },
+  defaultShowCopyCode: true,
 });
 
 // Export the final Next.js config with Nextra included
 const nextConfig: NextConfig = {
   output: "export",
-  outputFileTracingRoot: "/Users/andrii.fedorenko/development/private/banandre",
+  outputFileTracingRoot: process.cwd(),
   images: {
     unoptimized: true, // mandatory for static export
   },
@@ -17,17 +37,12 @@ const nextConfig: NextConfig = {
     // Only run ESLint on specific directories during production builds
     dirs: ["src", "pages", "app", "components", "lib"],
   },
-  typescript: {
-    // Temporary workaround for Next.js 15 type validation bug
-    // See: https://github.com/vercel/next.js/issues/...
-    ignoreBuildErrors: true,
-  },
   distDir: "build",
-  // ... Add regular Next.js options here
-  turbopack: {
-    resolveAlias: {
-      "next-mdx-import-source-file": "./src/mdx-components.tsx",
-    },
+  // Ensure proper TypeScript compilation
+  typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has TypeScript errors, but only for build phase
+    ignoreBuildErrors: false,
   },
 };
 

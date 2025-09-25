@@ -1,6 +1,5 @@
 import { getAllTags } from "../../lib/blog-utils";
 import { Tag } from "../_components/tag";
-import { siteConfig } from "../config";
 
 export default async function TagsPage() {
   const tags = await getAllTags();

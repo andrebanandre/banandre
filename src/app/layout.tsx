@@ -28,31 +28,7 @@ export const metadata: Metadata = {
   creator: "Banandre",
   publisher: "Banandre",
   metadataBase: new URL(baseUrl),
-  openGraph: {
-    type: "website",
-    title: "Banandre - Software Engineering Insights & AI Analysis",
-    description:
-      "Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.",
-    url: baseUrl,
-    siteName: "Banandre",
-    images: [
-      {
-        url: "/banana.png",
-        width: 1200,
-        height: 630,
-        alt: "Banandre - Software Engineering Insights",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@banandre",
-    creator: "@banandre",
-    title: "Banandre - Software Engineering Insights & AI Analysis",
-    description:
-      "Deep dives into software architecture, AI development, and engineering insights. Practical analysis of modern tech trends and development practices.",
-    images: ["/banana.png"],
-  },
+  // OpenGraph and Twitter metadata handled by individual pages/blog posts
   robots: {
     index: true,
     follow: true,
