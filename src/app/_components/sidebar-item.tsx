@@ -4,6 +4,7 @@ import { Anchor } from "nextra/components";
 import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon, FileIcon, ReaderIcon } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";
+import type { PageItem } from "nextra/normalize-pages";
 
 // Meta configuration to control sidebar visibility
 const META_CONFIG = {
@@ -11,15 +12,6 @@ const META_CONFIG = {
   docs: { title: "Documentation", hidden: true },
   tags: { title: "Tags", hidden: true },
 };
-
-interface PageItem {
-  name?: string;
-  route?: string;
-  title?: string;
-  href?: string;
-  children?: PageItem[];
-  [key: string]: unknown;
-}
 
 // Function to filter pages based on _meta.json configuration
 export function filterPagesByMeta(pages: PageItem[]): PageItem[] {
