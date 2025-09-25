@@ -396,6 +396,7 @@ const components = {
         width={800}
         height={600}
         className="my-8 w-full h-auto brutalist-border"
+        priority
         {...restProps}
       />
     );
@@ -487,6 +488,7 @@ const defaultComponents = getNextraComponents({
                 src={blogMetadata.image}
                 alt={blogMetadata.title}
                 className="hero-image brutalist-border"
+                fetchPriority="high"
               />
               <div className="hero-overlay" />
               <div className="hero-content">

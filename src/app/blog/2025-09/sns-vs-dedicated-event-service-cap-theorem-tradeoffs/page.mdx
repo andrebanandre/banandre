@@ -1,11 +1,79 @@
 ---
-title: "SNS vs Dedicated Services. CAP theorem tradeoffs"
-description: "The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event services that nobody talks about"
+title: SNS vs Dedicated Services. CAP theorem tradeoffs
+description: >-
+  The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event services
+  that nobody talks about
 slug: sns-vs-dedicated-event-service-cap-theorem-tradeoffs
-image: "/blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp"
-date: 2025-09-03
-tags: ["microservices", "aws", "architecture", "distributed-systems"]
-categories: ["Software Architecture"]
+image: /blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp
+date: 2025-09-03T00:00:00.000Z
+tags: &ref_0
+  - microservices
+  - aws
+  - architecture
+  - distributed-systems
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: SNS vs Dedicated Services. CAP theorem tradeoffs
+  description: >-
+    The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event
+    services that nobody talks about
+  url: >-
+    https://banandre.com/blog/2025-09/sns-vs-dedicated-event-service-cap-theorem-tradeoffs
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp
+      width: 1200
+      height: 630
+      alt: SNS vs Dedicated Services. CAP theorem tradeoffs
+  publishedTime: '2025-09-03T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: SNS vs Dedicated Services. CAP theorem tradeoffs
+  description: >-
+    The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event
+    services that nobody talks about
+  images:
+    - >-
+      https://banandre.com/blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: SNS vs Dedicated Services. CAP theorem tradeoffs
+  description: >-
+    The brutal CAP theorem tradeoffs between AWS SNS/SQS and custom event
+    services that nobody talks about
+  image: >-
+    https://banandre.com/blog/2025/sns-vs-dedicated-event-service-cap-theorem-tradeoffs.webp
+  url: >-
+    https://banandre.com/blog/2025-09/sns-vs-dedicated-event-service-cap-theorem-tradeoffs
+  datePublished: '2025-09-03T00:00:00.000Z'
+  dateModified: '2025-09-03T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/sns-vs-dedicated-event-service-cap-theorem-tradeoffs
 ---
 
 Every microservices team eventually hits the same architectural crossroads: deploy AWS SNS/SQS and call it a day, or build a custom event service that promises better guarantees. The choice isn't about convenience, it's about which CAP theorem compromise you're willing to live with.

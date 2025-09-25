@@ -1,11 +1,89 @@
 ---
-title: "Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody Admits"
-description: "Why premature microservices and over-engineering doom Azure scaling efforts, real lessons from hitting 10 million users"
+title: 'Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody Admits'
+description: >-
+  Why premature microservices and over-engineering doom Azure scaling efforts,
+  real lessons from hitting 10 million users
 slug: scaling-to-10-million-users-on-azure-the-microservices-mistake-nobody-admits
-image: "/blog/2025/scaling-applications-to-10-million-users-on-azure-practical-strategies-and-lessons-learned_microsoft-azure-global-infra.png"
-date: 2025-09-19
-tags: ["Azure", "Cloud Scaling", "Microservices", "Scalability", "DevOps"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/scaling-applications-to-10-million-users-on-azure-practical-strategies-and-lessons-learned_microsoft-azure-global-infra.png
+date: 2025-09-19T00:00:00.000Z
+tags: &ref_0
+  - Azure
+  - Cloud Scaling
+  - Microservices
+  - Scalability
+  - DevOps
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: >-
+    Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody
+    Admits
+  description: >-
+    Why premature microservices and over-engineering doom Azure scaling efforts,
+    real lessons from hitting 10 million users
+  url: >-
+    https://banandre.com/blog/2025-09/scaling-to-10-million-users-on-azure-the-microservices-mistake-nobody-admits
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/scaling-applications-to-10-million-users-on-azure-practical-strategies-and-lessons-learned_microsoft-azure-global-infra.png
+      width: 1200
+      height: 630
+      alt: >-
+        Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody
+        Admits
+  publishedTime: '2025-09-19T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: >-
+    Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody
+    Admits
+  description: >-
+    Why premature microservices and over-engineering doom Azure scaling efforts,
+    real lessons from hitting 10 million users
+  images:
+    - >-
+      https://banandre.com/blog/2025/scaling-applications-to-10-million-users-on-azure-practical-strategies-and-lessons-learned_microsoft-azure-global-infra.png
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: >-
+    Scaling to 10 Million Users on Azure: The Microservices Mistake Nobody
+    Admits
+  description: >-
+    Why premature microservices and over-engineering doom Azure scaling efforts,
+    real lessons from hitting 10 million users
+  image: >-
+    https://banandre.com/blog/2025/scaling-applications-to-10-million-users-on-azure-practical-strategies-and-lessons-learned_microsoft-azure-global-infra.png
+  url: >-
+    https://banandre.com/blog/2025-09/scaling-to-10-million-users-on-azure-the-microservices-mistake-nobody-admits
+  datePublished: '2025-09-19T00:00:00.000Z'
+  dateModified: '2025-09-19T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/scaling-to-10-million-users-on-azure-the-microservices-mistake-nobody-admits
 ---
 
 Scaling applications to 10 million users on Azure isn't about flashy new tools, it's about resisting the urge to over-engineer early. Most teams dive into microservices and complex architectures before they even hit 1,000 users, only to find themselves drowning in technical debt. The truth? Scaling to millions starts with doing absolutely nothing. StackOverflow ran on a single database server until it had 10 million monthly visitors, a fact that still shocks developers convinced they need Kubernetes from day one. [Read more about StackOverflow's architecture](https://newsletter.techworld-with-milan.com/p/stack-overflow-architecture).

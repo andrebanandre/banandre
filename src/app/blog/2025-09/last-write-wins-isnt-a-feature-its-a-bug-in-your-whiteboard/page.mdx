@@ -1,11 +1,80 @@
 ---
-title: "Last Write Wins Isn't a Feature, It's a Bug in Your Whiteboard"
-description: "Why most real-time collaboration tools get conflict resolution wrong, and how CRDTs, OT, and architectural pragmatism are rewriting the rules."
+title: 'Last Write Wins Isn''t a Feature, It''s a Bug in Your Whiteboard'
+description: >-
+  Why most real-time collaboration tools get conflict resolution wrong, and how
+  CRDTs, OT, and architectural pragmatism are rewriting the rules.
 slug: last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard
-image: "/blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp"
-date: 2025-09-22
-tags: ["CRDT", "real-time collaboration", "distributed systems", "state synchronization", "operational transformation"]
-categories: ["Software Architecture"]
+image: /blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp
+date: 2025-09-22T00:00:00.000Z
+tags: &ref_0
+  - CRDT
+  - real-time collaboration
+  - distributed systems
+  - state synchronization
+  - operational transformation
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Last Write Wins Isn''t a Feature, It''s a Bug in Your Whiteboard'
+  description: >-
+    Why most real-time collaboration tools get conflict resolution wrong, and
+    how CRDTs, OT, and architectural pragmatism are rewriting the rules.
+  url: >-
+    https://banandre.com/blog/2025-09/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp
+      width: 1200
+      height: 630
+      alt: 'Last Write Wins Isn''t a Feature, It''s a Bug in Your Whiteboard'
+  publishedTime: '2025-09-22T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Last Write Wins Isn''t a Feature, It''s a Bug in Your Whiteboard'
+  description: >-
+    Why most real-time collaboration tools get conflict resolution wrong, and
+    how CRDTs, OT, and architectural pragmatism are rewriting the rules.
+  images:
+    - >-
+      https://banandre.com/blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Last Write Wins Isn''t a Feature, It''s a Bug in Your Whiteboard'
+  description: >-
+    Why most real-time collaboration tools get conflict resolution wrong, and
+    how CRDTs, OT, and architectural pragmatism are rewriting the rules.
+  image: >-
+    https://banandre.com/blog/2025/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard.webp
+  url: >-
+    https://banandre.com/blog/2025-09/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard
+  datePublished: '2025-09-22T00:00:00.000Z'
+  dateModified: '2025-09-22T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/last-write-wins-isnt-a-feature-its-a-bug-in-your-whiteboard
 ---
 
 You're in a Miro board with three teammates. You drag a rectangle to (420, 180). Someone else drags the same rectangle to (420, 180), at the exact same time. The board flickers. The rectangle snaps to their position. You sigh. You drag it back. They drag it again. This isn't collaboration. It's a tug-of-war with latency as the referee.

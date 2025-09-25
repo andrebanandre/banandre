@@ -1,11 +1,82 @@
 ---
-title: "Sidecar Patterns: The Silent Performance Tax in Distributed Systems"
-description: "How the sidecar pattern, often hailed as a microservice best practice, can silently drain system performance ,  and when it's truly worth the trade-offs."
+title: 'Sidecar Patterns: The Silent Performance Tax in Distributed Systems'
+description: >-
+  How the sidecar pattern, often hailed as a microservice best practice, can
+  silently drain system performance ,  and when it's truly worth the trade-offs.
 slug: sidecar-pattern-the-silent-performance-tax-in-distributed-systems
-image: "/blog/2025/sidecar-pattern-the-silent-performance-tax-in-distributed-systems.jpg"
-date: 2025-09-19
-tags: ["distributed systems", "microservices", "cloud-native"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/sidecar-pattern-the-silent-performance-tax-in-distributed-systems.jpg
+date: 2025-09-19T00:00:00.000Z
+tags: &ref_0
+  - distributed systems
+  - microservices
+  - cloud-native
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Sidecar Patterns: The Silent Performance Tax in Distributed Systems'
+  description: >-
+    How the sidecar pattern, often hailed as a microservice best practice, can
+    silently drain system performance ,  and when it's truly worth the
+    trade-offs.
+  url: >-
+    https://banandre.com/blog/2025-09/sidecar-pattern-the-silent-performance-tax-in-distributed-systems
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/sidecar-pattern-the-silent-performance-tax-in-distributed-systems.jpg
+      width: 1200
+      height: 630
+      alt: 'Sidecar Patterns: The Silent Performance Tax in Distributed Systems'
+  publishedTime: '2025-09-19T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Sidecar Patterns: The Silent Performance Tax in Distributed Systems'
+  description: >-
+    How the sidecar pattern, often hailed as a microservice best practice, can
+    silently drain system performance ,  and when it's truly worth the
+    trade-offs.
+  images:
+    - >-
+      https://banandre.com/blog/2025/sidecar-pattern-the-silent-performance-tax-in-distributed-systems.jpg
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Sidecar Patterns: The Silent Performance Tax in Distributed Systems'
+  description: >-
+    How the sidecar pattern, often hailed as a microservice best practice, can
+    silently drain system performance ,  and when it's truly worth the
+    trade-offs.
+  image: >-
+    https://banandre.com/blog/2025/sidecar-pattern-the-silent-performance-tax-in-distributed-systems.jpg
+  url: >-
+    https://banandre.com/blog/2025-09/sidecar-pattern-the-silent-performance-tax-in-distributed-systems
+  datePublished: '2025-09-19T00:00:00.000Z'
+  dateModified: '2025-09-19T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/sidecar-pattern-the-silent-performance-tax-in-distributed-systems
 ---
 
 The sidecar pattern is often presented as a universal solution for microservices. Dev teams hear "decouple concerns", "separate responsibilities", and "simplify your code" ,  and rush to implement it without question. But behind the clean architecture diagrams and glowing case studies, there's a dirty little secret: sidecars aren't free. They chew through CPU, add latency, and create hidden failure points that can cripple performance-critical systems. Let's cut through the hype and talk about the real costs.

@@ -1,11 +1,101 @@
 ---
-title: "Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster (And Your Kotlin One Might Crash)"
-description: "Google's hidden memory overhaul forces a reckoning across mobile frameworks. Here's how Flutter, React Native, and Kotlin/JVM are handling the 16KB page requirement ,  and why your app's startup time might suddenly improve (or implode)."
+title: >-
+  Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster (And Your
+  Kotlin One Might Crash)
+description: >-
+  Google's hidden memory overhaul forces a reckoning across mobile frameworks.
+  Here's how Flutter, React Native, and Kotlin/JVM are handling the 16KB page
+  requirement ,  and why your app's startup time might suddenly improve (or
+  implode).
 slug: android-15-16kb-page-requirement-and-architectural-implications
-image: "/blog/2025/android-15-16kb-page-requirement-and-architectural-implications.webp"
-date: 2025-09-20
-tags: ["Android 15", "memory optimization", "Flutter", "Kotlin", "React Native", "native code"]
-categories: ["Software Architecture", "Software Development"]
+image: >-
+  /blog/2025/android-15-16kb-page-requirement-and-architectural-implications.webp
+date: 2025-09-20T00:00:00.000Z
+tags: &ref_0
+  - Android 15
+  - memory optimization
+  - Flutter
+  - Kotlin
+  - React Native
+  - native code
+categories:
+  - Software Architecture
+  - Software Development
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: >-
+    Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster (And
+    Your Kotlin One Might Crash)
+  description: >-
+    Google's hidden memory overhaul forces a reckoning across mobile frameworks.
+    Here's how Flutter, React Native, and Kotlin/JVM are handling the 16KB page
+    requirement ,  and why your app's startup time might suddenly improve (or
+    implode).
+  url: >-
+    https://banandre.com/blog/2025-09/android-15-16kb-page-requirement-and-architectural-implications
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/android-15-16kb-page-requirement-and-architectural-implications.webp
+      width: 1200
+      height: 630
+      alt: >-
+        Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster
+        (And Your Kotlin One Might Crash)
+  publishedTime: '2025-09-20T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: >-
+    Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster (And
+    Your Kotlin One Might Crash)
+  description: >-
+    Google's hidden memory overhaul forces a reckoning across mobile frameworks.
+    Here's how Flutter, React Native, and Kotlin/JVM are handling the 16KB page
+    requirement ,  and why your app's startup time might suddenly improve (or
+    implode).
+  images:
+    - >-
+      https://banandre.com/blog/2025/android-15-16kb-page-requirement-and-architectural-implications.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: >-
+    Android 15's 16KB Page Mandate: Why Your Flutter App Just Got Faster (And
+    Your Kotlin One Might Crash)
+  description: >-
+    Google's hidden memory overhaul forces a reckoning across mobile frameworks.
+    Here's how Flutter, React Native, and Kotlin/JVM are handling the 16KB page
+    requirement ,  and why your app's startup time might suddenly improve (or
+    implode).
+  image: >-
+    https://banandre.com/blog/2025/android-15-16kb-page-requirement-and-architectural-implications.webp
+  url: >-
+    https://banandre.com/blog/2025-09/android-15-16kb-page-requirement-and-architectural-implications
+  datePublished: '2025-09-20T00:00:00.000Z'
+  dateModified: '2025-09-20T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/android-15-16kb-page-requirement-and-architectural-implications
 ---
 
 The Android Open Source Project didn't announce this with a keynote. No press release. Just a quiet footnote in the Android 15 release notes: *"Starting November 1, 2025, all apps targeting API 35+ must support 16KB memory pages on 64-bit devices."*

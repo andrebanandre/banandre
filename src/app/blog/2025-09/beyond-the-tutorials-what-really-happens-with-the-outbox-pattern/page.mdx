@@ -1,11 +1,89 @@
 ---
-title: "Beyond the Tutorials: What Really Happens with the Outbox Pattern"
-description: "The outbox pattern promises atomic consistency in distributed systems, but the implementation reality is messier than most tutorials admit. Here's what actually happens when you combine Go, Postgres, and the complexities of real-world event delivery."
+title: 'Beyond the Tutorials: What Really Happens with the Outbox Pattern'
+description: >-
+  The outbox pattern promises atomic consistency in distributed systems, but the
+  implementation reality is messier than most tutorials admit. Here's what
+  actually happens when you combine Go, Postgres, and the complexities of
+  real-world event delivery.
 slug: beyond-the-tutorials-what-really-happens-with-the-outbox-pattern
-image: "/blog/2025/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern.webp"
-date: 2025-09-17
-tags: ["distributed-systems", "golang", "postgresql", "event-driven", "microservices"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern.webp
+date: 2025-09-17T00:00:00.000Z
+tags: &ref_0
+  - distributed-systems
+  - golang
+  - postgresql
+  - event-driven
+  - microservices
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Beyond the Tutorials: What Really Happens with the Outbox Pattern'
+  description: >-
+    The outbox pattern promises atomic consistency in distributed systems, but
+    the implementation reality is messier than most tutorials admit. Here's what
+    actually happens when you combine Go, Postgres, and the complexities of
+    real-world event delivery.
+  url: >-
+    https://banandre.com/blog/2025-09/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern.webp
+      width: 1200
+      height: 630
+      alt: 'Beyond the Tutorials: What Really Happens with the Outbox Pattern'
+  publishedTime: '2025-09-17T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Beyond the Tutorials: What Really Happens with the Outbox Pattern'
+  description: >-
+    The outbox pattern promises atomic consistency in distributed systems, but
+    the implementation reality is messier than most tutorials admit. Here's what
+    actually happens when you combine Go, Postgres, and the complexities of
+    real-world event delivery.
+  images:
+    - >-
+      https://banandre.com/blog/2025/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Beyond the Tutorials: What Really Happens with the Outbox Pattern'
+  description: >-
+    The outbox pattern promises atomic consistency in distributed systems, but
+    the implementation reality is messier than most tutorials admit. Here's what
+    actually happens when you combine Go, Postgres, and the complexities of
+    real-world event delivery.
+  image: >-
+    https://banandre.com/blog/2025/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern.webp
+  url: >-
+    https://banandre.com/blog/2025-09/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern
+  datePublished: '2025-09-17T00:00:00.000Z'
+  dateModified: '2025-09-17T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-09/beyond-the-tutorials-what-really-happens-with-the-outbox-pattern
 ---
 
 The outbox pattern is supposed to save us from distributed systems hell. Write your event to the database, commit the transaction, and let a background process handle the messy details of actually sending it to your message broker. Simple, elegant, bulletproof, or so they tell you.
