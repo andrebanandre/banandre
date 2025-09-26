@@ -44,6 +44,23 @@ const nextConfig: NextConfig = {
     // your project has TypeScript errors, but only for build phase
     ignoreBuildErrors: false,
   },
+  // Optimize for modern browsers to avoid unnecessary polyfills
+  experimental: {
+    // Use modern JavaScript features without transpilation for supported browsers
+    esmExternals: true,
+  },
+  // Disable core-js polyfills for modern browsers
+  webpack: (config, { dev, isServer }) => {
+    if (!isServer && !dev) {
+      // Remove core-js from the bundle
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "core-js": false,
+        "core-js-pure": false,
+      };
+    }
+    return config;
+  },
 };
 
 export default withNextra(nextConfig);
