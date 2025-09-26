@@ -1,6 +1,11 @@
 name: Social Metadata Bulk Update
 
 on:
+  push:
+    branches: ["*"]
+    paths:
+      - "src/app/blog/**/page.mdx"
+
   workflow_dispatch:
     inputs:
       dry_run:
@@ -50,7 +55,7 @@ jobs:
           fi
 
       - name: Validate and commit
-        if: steps.verify-changed-files.outputs.changes == 'true' && github.event.inputs.dry_run != 'true'
+        if: steps.verify-changed-files.outputs.changes == 'true' && (github.event_name == 'push' || github.event.inputs.dry_run != 'true')
         run: |
           echo "🔍 Validating updated metadata..."
           npm run social:validate
@@ -62,6 +67,6 @@ jobs:
           CHANGED_COUNT=$(git status --porcelain | wc -l)
           git add .
           git commit -m "🤖 Bulk update: Add social metadata to $CHANGED_COUNT blog posts"
-          git push origin main
+          git push origin ${{ github.ref_name }}
 
           echo "✅ Changes committed and pushed successfully"
