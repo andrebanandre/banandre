@@ -1,0 +1,67 @@
+name: Social Metadata Bulk Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run in dry-run mode (no files will be modified)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+jobs:
+  bulk-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.3.0"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run social metadata bulk update
+        run: npm run social:bulk-update
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Files were modified by the bulk update"
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No files were modified"
+          fi
+
+      - name: Validate and commit
+        if: steps.verify-changed-files.outputs.changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          echo "🔍 Validating updated metadata..."
+          npm run social:validate
+
+          echo "💾 Committing changes..."
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          CHANGED_COUNT=$(git status --porcelain | wc -l)
+          git add .
+          git commit -m "🤖 Bulk update: Add social metadata to $CHANGED_COUNT blog posts"
+          git push origin main
+
+          echo "✅ Changes committed and pushed successfully"
