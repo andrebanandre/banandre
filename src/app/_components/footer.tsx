@@ -189,11 +189,6 @@ export function Footer() {
             </motion.h3>
             <div className="flex space-x-4">
               {[
-                {
-                  icon: GitHubLogoIcon,
-                  href: "https://github.com/andrebanandre/banandre",
-                  label: "GitHub",
-                },
                 { icon: TwitterLogoIcon, href: "https://x.com/andre_banandre", label: "X" },
                 {
                   icon: LinkedInLogoIcon,
