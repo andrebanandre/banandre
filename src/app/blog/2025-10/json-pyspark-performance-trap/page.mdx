@@ -1,11 +1,74 @@
 ---
-title: "JSON in PySpark: The Performance Trap You're Probably Falling For"
-description: "Why writing large PySpark DataFrames as JSON to S3 is fundamentally flawed - and what you should do instead"
+title: 'JSON in PySpark: The Performance Trap You''re Probably Falling For'
+description: >-
+  Why writing large PySpark DataFrames as JSON to S3 is fundamentally flawed -
+  and what you should do instead
 slug: json-pyspark-performance-trap
-image: "/blog/2025/json-pyspark-performance-trap.webp"
-date: 2025-10-04
-tags: ["pyspark", "s3", "json", "data-engineering", "performance"]
-categories: ["Data Engineering"]
+image: /blog/2025/json-pyspark-performance-trap.webp
+date: 2025-10-04T00:00:00.000Z
+tags: &ref_0
+  - pyspark
+  - s3
+  - json
+  - data-engineering
+  - performance
+categories:
+  - Data Engineering
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'JSON in PySpark: The Performance Trap You''re Probably Falling For'
+  description: >-
+    Why writing large PySpark DataFrames as JSON to S3 is fundamentally flawed -
+    and what you should do instead
+  url: 'https://banandre.com/blog/2025-10/json-pyspark-performance-trap'
+  siteName: Banandre
+  images:
+    - url: 'https://banandre.com/blog/2025/json-pyspark-performance-trap.webp'
+      width: 1200
+      height: 630
+      alt: 'JSON in PySpark: The Performance Trap You''re Probably Falling For'
+  publishedTime: '2025-10-04T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Data Engineering
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'JSON in PySpark: The Performance Trap You''re Probably Falling For'
+  description: >-
+    Why writing large PySpark DataFrames as JSON to S3 is fundamentally flawed -
+    and what you should do instead
+  images:
+    - 'https://banandre.com/blog/2025/json-pyspark-performance-trap.webp'
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'JSON in PySpark: The Performance Trap You''re Probably Falling For'
+  description: >-
+    Why writing large PySpark DataFrames as JSON to S3 is fundamentally flawed -
+    and what you should do instead
+  image: 'https://banandre.com/blog/2025/json-pyspark-performance-trap.webp'
+  url: 'https://banandre.com/blog/2025-10/json-pyspark-performance-trap'
+  datePublished: '2025-10-04T00:00:00.000Z'
+  dateModified: '2025-10-04T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': 'https://banandre.com/blog/2025-10/json-pyspark-performance-trap'
 ---
 
 The allure of JSON is undeniable. It's human-readable, universally understood, and seems like the perfect format for moving data between systems. But when you're dealing with PySpark DataFrames containing 60+ million rows headed for S3, JSON becomes less of a convenience and more of a performance nightmare.
