@@ -1,0 +1,138 @@
+---
+title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+description: >-
+  Why storing Kafka messages in databases for months is architectural madness
+  and what to do instead
+slug: your-kafka-isnt-a-database-stop-pretending-it-is
+image: >-
+  /blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+date: 2025-10-06T00:00:00.000Z
+tags: &ref_0
+  - kafka
+  - architecture
+  - data-retention
+  - storage-strategies
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  url: >-
+    https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+      width: 1200
+      height: 630
+      alt: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  publishedTime: '2025-10-06T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  images:
+    - >-
+      https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  image: >-
+    https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+  url: >-
+    https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
+  datePublished: '2025-10-06T00:00:00.000Z'
+  dateModified: '2025-10-06T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
+---
+
+Storing Kafka messages in your Oracle database as CLOBs for three months? Congratulations, you've built a Rube Goldberg machine for data storage. This architectural abomination is more common than you'd think, and it's time we called it what it is: a desperate cry for help that's drowning your database in unstructured text while your Kafka cluster sits there, bored out of its mind.
+
+The problem usually starts innocently enough. "We need to keep messages for investigation purposes", someone says. "Just dump them in the database", someone else shrugs. Fast forward three months, and your DBA is threatening to quit while your Oracle instance looks like it's been force-fed the entire internet. What was supposed to be a quick fix has become a performance nightmare that's revolutionizing exactly nothing except your disk space consumption.
+
+## The Database Dump Delusion
+
+Let's be clear about what's happening when you shove Kafka messages into a relational database as CLOBs. You're taking a system designed for structured, queryable data and forcing it to babysit what is essentially a firehose of semi-structured text. Each message becomes a blob that's expensive to store, impossible to index efficiently, and a joy to query about as much as a root canal.
+
+The result? Your database starts wheezing under the weight of millions of JSON/XML payloads. Backups take forever, replication lag becomes your new best friend, and your "easy search" requirement becomes a running joke among developers who know better. All while Kafka's native storage capabilities remain completely untapped.
+
+## Kafka's Native Superpower: Tiered Storage
+
+Here's a crazy idea: what if we used Kafka for, you know, storing Kafka messages? Revolutionary, I know. Kafka's tiered storage feature lets you offload older log segments to cheap object storage like S3 while keeping them accessible through the standard Kafka APIs. [As AWS explains](https://aws.amazon.com/compare/the-difference-between-kafka-and-redis/), Kafka can handle messages up to 1GB when compressed with tiered storage enabled.
+
+Instead of treating your database like a digital landfill, you configure Kafka to keep hot data on fast local storage for immediate access, then automatically migrate older segments to S3. Your retention period can extend from days to months (or even years) without exponentially growing your cluster storage costs. The best part? Consumers can still access this historical data seamlessly through the same Kafka client libraries they already use.
+
+The configuration is straightforward: enable tiered storage in your broker settings, specify your S3 bucket, and define your retention policies. Kafka handles the rest, moving data between storage tiers based on age and access patterns. No database connections, no CLOBs, no weekly purging scripts that everyone forgets to run until the production database grinds to a halt.
+
+## The Offload Pattern: Kafka Connect to Analytics
+
+Sometimes you genuinely need your message data in a queryable format for analytics or investigation. But that doesn't mean dumping raw messages into a relational database like a digital hoarder. The smart approach is using Kafka Connect to stream processed data into systems designed for analytics.
+
+A common pattern involves the S3 Sink Connector, which writes messages from Kafka topics to S3 in a structured format (like Parquet or Avro). From there, you can query the data directly with Amazon Athena or load it into a proper data warehouse like Snowflake or Redshift. [As one developer demonstrated](https://dev.to/kepha_mwandiki/from-kafka-to-clean-tables-building-a-confluent-snowflake-pipeline-with-streams-tasks-140d), this approach lets you build automated pipelines that transform raw JSON into clean, structured tables without touching your operational databases.
+
+The beauty of this pattern is separation of concerns. Kafka remains your high-throughput messaging system, S3 provides cheap, durable storage, and your analytics tools do what they do best, query structured data at scale. Your transactional databases stay focused on what they're good at: serving applications, not archiving message history.
+
+## When Database Storage Actually Makes Sense
+
+There are legitimate scenarios where storing message metadata in a database makes sense. The key is being selective about what you store and why. Instead of dumping entire message payloads, consider storing just the metadata you need for investigation: message IDs, timestamps, source/destination, status codes, and maybe a hash of the payload for integrity verification.
+
+This approach gives you queryable metadata without the storage bloat of full payloads. When you need the actual message content, you can retrieve it from Kafka (or your tiered storage) using the stored message ID. It's a hybrid approach that plays to each system's strengths rather than forcing one to do everything poorly.
+
+## The Postgres Counter-Revolution
+
+In a refreshing dose of architectural pragmatism, some teams are discovering that for certain workloads, a "boring" Postgres database outperforms complex Kafka setups. [DPG Media's search team recently shared](https://tweakers.net/plan/4520/dev-summit-2025-van-kafka-cluster-naar-postgres-lessen-in-search-bij-dpg-media.html) how they moved from an overengineered Kafka infrastructure to Postgres for their internal search use case.
+
+Their Kafka cluster was handling only about 10,000 messages per day, far below the millions-per-hour throughput where Kafka shines. The complexity of maintaining the Kafka cluster, with its infinite retention topic and constant backfills, wasn't justified by the relatively modest volume. Postgres, with its robust indexing and simpler operational model, gave them better searchability with less overhead.
+
+The lesson here isn't that Kafka is bad, it's that using the right tool for the job matters more than following architectural fashion trends. If your message volume is modest and your primary need is searchable metadata, maybe you don't need a distributed streaming platform at all.
+
+## Choosing Your Retention Strategy
+
+So how do you decide between these approaches? Start by asking yourself three questions:
+
+1. **What's your actual volume?** If you're processing millions of messages per hour, Kafka's tiered storage is your friend. If it's thousands, maybe Postgres is sufficient.
+
+2. **What do you really need to search?** Full message content or just metadata? The answer determines whether you need an analytics pipeline or simpler indexing.
+
+3. **How real-time do you need it?** For immediate access to historical data, Kafka with tiered storage wins. For batch analytics, an offload to S3/data warehouse works better.
+
+The worst strategy is the one we started with: dumping everything into a transactional database and hoping for the best. It's the architectural equivalent of using a sledgehammer to crack a nut, expensive, messy, and likely to break something important didn't intend to.
+
+## The Reality Check
+
+Your Kafka cluster isn't a database, and pretending it is will only lead to pain. Whether you embrace Kafka's native tiered storage, build an offload pipeline to proper analytics tools, or (gasp) discover that a simpler database solution meets your needs, stop treating your operational databases like digital landfills.
+
+The next time someone suggests "just store the messages in Oracle for a few months", ask them if they're planning to query unstructured CLOBs or if they actually need the data in a usable format. Then show them the bill for all that storage and watch them reconsider.
+
+Your future self, and your DBA, will thank you for choosing the right tool for the job instead of building another architectural monster that everyone will regret maintaining.
