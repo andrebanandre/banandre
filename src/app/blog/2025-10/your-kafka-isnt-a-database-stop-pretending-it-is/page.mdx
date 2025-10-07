@@ -1,11 +1,80 @@
 ---
-title: "Your Kafka Isn't a Database: Stop Pretending It Is"
-description: "Why storing Kafka messages in databases for months is architectural madness and what to do instead"
+title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+description: >-
+  Why storing Kafka messages in databases for months is architectural madness
+  and what to do instead
 slug: your-kafka-isnt-a-database-stop-pretending-it-is
-image: "/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp"
-date: 2025-10-06
-tags: ["kafka", "architecture", "data-retention", "storage-strategies"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+date: 2025-10-06T00:00:00.000Z
+tags: &ref_0
+  - kafka
+  - architecture
+  - data-retention
+  - storage-strategies
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  url: >-
+    https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+      width: 1200
+      height: 630
+      alt: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  publishedTime: '2025-10-06T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  images:
+    - >-
+      https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Your Kafka Isn''t a Database: Stop Pretending It Is'
+  description: >-
+    Why storing Kafka messages in databases for months is architectural madness
+    and what to do instead
+  image: >-
+    https://banandre.com/blog/2025/kafka-message-storage-strategies-for-long-term-retention_cover-image.webp
+  url: >-
+    https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
+  datePublished: '2025-10-06T00:00:00.000Z'
+  dateModified: '2025-10-06T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/your-kafka-isnt-a-database-stop-pretending-it-is
 ---
 
 Storing Kafka messages in your Oracle database as CLOBs for three months? Congratulations, you've built a Rube Goldberg machine for data storage. This architectural abomination is more common than you'd think, and it's time we called it what it is: a desperate cry for help that's drowning your database in unstructured text while your Kafka cluster sits there, bored out of its mind.
