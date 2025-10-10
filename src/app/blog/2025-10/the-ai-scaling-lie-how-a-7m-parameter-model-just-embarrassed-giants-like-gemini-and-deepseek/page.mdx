@@ -1,0 +1,149 @@
+---
+title: >-
+  The AI Scaling Lie: How a 7M-Parameter Model Just Embarrassed Giants Like
+  Gemini and DeepSeek
+description: >-
+  Samsung's Tiny Recursive Model with microscopic 7M parameters beats massive
+  LLMs on reasoning tasks, challenging the 'bigger is better' dogma.
+slug: >-
+  the-ai-scaling-lie-how-a-7m-parameter-model-just-embarrassed-giants-like-gemini-and-deepseek
+image: >-
+  /blog/2025/tiny-recursive-model-outperforms-major-ai-models-in-reasoning-tasks_samsung-ai-lab-in-montreal.jpg
+date: 2025-10-10T00:00:00.000Z
+tags: &ref_0
+  - ai
+  - machine-learning
+  - reasoning
+  - efficiency
+  - samsung
+categories:
+  - Artificial Intelligence
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: >-
+    The AI Scaling Lie: How a 7M-Parameter Model Just Embarrassed Giants Like
+    Gemini and DeepSeek
+  description: >-
+    Samsung's Tiny Recursive Model with microscopic 7M parameters beats massive
+    LLMs on reasoning tasks, challenging the 'bigger is better' dogma.
+  url: >-
+    https://banandre.com/blog/2025-10/the-ai-scaling-lie-how-a-7m-parameter-model-just-embarrassed-giants-like-gemini-and-deepseek
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/tiny-recursive-model-outperforms-major-ai-models-in-reasoning-tasks_samsung-ai-lab-in-montreal.jpg
+      width: 1200
+      height: 630
+      alt: >-
+        The AI Scaling Lie: How a 7M-Parameter Model Just Embarrassed Giants
+        Like Gemini and DeepSeek
+  publishedTime: '2025-10-10T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Artificial Intelligence
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: >-
+    The AI Scaling Lie: How a 7M-Parameter Model Just Embarrassed Giants Like
+    Gemini and DeepSeek
+  description: >-
+    Samsung's Tiny Recursive Model with microscopic 7M parameters beats massive
+    LLMs on reasoning tasks, challenging the 'bigger is better' dogma.
+  images:
+    - >-
+      https://banandre.com/blog/2025/tiny-recursive-model-outperforms-major-ai-models-in-reasoning-tasks_samsung-ai-lab-in-montreal.jpg
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: >-
+    The AI Scaling Lie: How a 7M-Parameter Model Just Embarrassed Giants Like
+    Gemini and DeepSeek
+  description: >-
+    Samsung's Tiny Recursive Model with microscopic 7M parameters beats massive
+    LLMs on reasoning tasks, challenging the 'bigger is better' dogma.
+  image: >-
+    https://banandre.com/blog/2025/tiny-recursive-model-outperforms-major-ai-models-in-reasoning-tasks_samsung-ai-lab-in-montreal.jpg
+  url: >-
+    https://banandre.com/blog/2025-10/the-ai-scaling-lie-how-a-7m-parameter-model-just-embarrassed-giants-like-gemini-and-deepseek
+  datePublished: '2025-10-10T00:00:00.000Z'
+  dateModified: '2025-10-10T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/the-ai-scaling-lie-how-a-7m-parameter-model-just-embarrassed-giants-like-gemini-and-deepseek
+---
+
+The AI industry has been operating on a trillion-dollar assumption: that intelligence scales with size. But Samsung's SAIL Montreal lab just dropped a research paper that might make OpenAI and Google executives sweat. Their Tiny Recursive Model (TRM),  with just 7 million parameters,  is outperforming models **100,000 times larger** on some of the hardest reasoning benchmarks in AI.
+
+
+## The Numbers That Should Terrify Big AI
+
+Let's get straight to the shocking results. On the ARC-AGI-1 benchmark,  designed to test abstract reasoning capabilities that supposedly require human-like intelligence,  TRM achieves **45% accuracy**. Meanwhile, Google's Gemini 2.5 Pro manages only 37%, and DeepSeek R1 stumbles at 15.8%. 
+
+Even more telling: on ARC-AGI-2, where Gemini 2.5 Pro scores a paltry 4.9%, TRM hits **8% accuracy**. This isn't a marginal improvement,  it's a paradigm shift happening with less than 0.01% of the parameters.
+
+TRM achieves these results while being small enough to potentially run on a smartwatch, while the models it's beating require data center-scale computing resources.
+
+## How Recursion Replaces Billions of Parameters
+
+TRM's secret weapon isn't complexity,  it's simplicity. Where traditional LLMs use massive parameter counts to brute-force solutions, TRM employs an elegant recursive process: "draft → latent-think → revise."
+
+The model works by recursively improving its predicted answer through an iterative loop,  approximately 6 scratchpad updates per outer step, unrolled up to 16 steps with full backpropagation through the recursion. This allows the tiny network to progressively refine its solution, addressing errors from previous iterations in an extremely parameter-efficient manner.
+
+As the [research paper](https://arxiv.org/abs/2510.04871) explains, "TRM recursively improves its predicted answer with a tiny network. It starts with the embedded input question and initial embedded answer, then for up to 16 improvement steps, it tries to improve its answer by recursively updating its latent reasoning."
+
+## The Architecture That Makes Scale Obsolete
+
+What makes TRM particularly interesting is how it simplifies the earlier Hierarchical Reasoning Model (HRM) approach. Where HRM used two networks recursing at different frequencies with complex biological justifications, TRM strips everything down to a single tiny network with only 2 layers.
+
+The researchers found that "less is more",  using smaller networks with deeper recursion actually produced better generalization than larger networks. Their ablation studies showed that increasing layers from 2 to 4 actually hurt performance due to overfitting, despite having more capacity.
+
+This flies in the face of conventional AI wisdom, where the scaling hypothesis has driven companies to spend hundreds of millions training ever-larger models. TRM suggests we might have been optimizing the wrong variable.
+
+## Real-World Performance Beyond Benchmarks
+
+The implications extend beyond academic benchmarks. TRM achieves **87.4% accuracy** on Sudoku-Extreme (up from HRM's 55%) and **85.3%** on Maze-Hard (up from 74.5%). These aren't toy problems,  they require sophisticated spatial reasoning and logical deduction that have traditionally been challenging for AI systems.
+
+What's particularly telling is that TRM achieves these results while being trained on remarkably small datasets,  around 1,000 examples with heavy data augmentation. This suggests the recursive approach learns more efficiently from limited data, a crucial advantage for real-world applications where massive datasets aren't available.
+
+## The Billion-Dollar Question: Is Scale a Crutch?
+
+The success of TRM raises uncomfortable questions about the current direction of AI development. If a 7M-parameter model can outperform 671B-parameter behemoths on reasoning tasks, what exactly are we getting for those extra 670,993,000,000 parameters?
+
+Industry discussions on platforms like [Hacker News](https://news.ycombinator.com/item?id=45506268) reveal growing skepticism about the scale-at-all-costs approach. As one commentator noted, "The assumption being that you'd need the reasoning abilities of large language models to solve ARC-AGI turns out to be somewhat wrong."
+
+The TRM approach suggests that for structured reasoning tasks, architectural innovation might provide more bang-for-buck than simply adding more parameters. This could have massive implications for edge computing, where power and size constraints make trillion-parameter models impractical.
+
+## What This Means for the Future of AI
+
+TRM isn't likely to replace LLMs for general language tasks anytime soon. Its strength lies in focused reasoning problems rather than open-ended generation. However, it points toward a future where hybrid systems might combine specialized reasoning modules like TRM with larger language models.
+
+The [open-source release on GitHub](https://github.com/SamsungSAILMontreal/TinyRecursiveModels) means researchers worldwide can now experiment with this approach. Early adopters are already discussing how recursive architectures could enhance existing systems without requiring massive parameter increases.
+
+Perhaps most importantly, TRM demonstrates that innovation in AI architecture hasn't plateaued. While much of the industry has been focused on scaling existing approaches, there may be fundamental breakthroughs waiting in alternative designs that prioritize efficiency over brute force.
+
+## The Efficiency Revolution Has Begun
+
+As AI costs spiral into the hundreds of millions per model, TRM offers a glimpse of a more sustainable path forward. The model's tiny footprint means it could run on commodity hardware with a fraction of the energy consumption of today's AI giants.
+
+This isn't just about saving money,  it's about making advanced AI capabilities accessible to researchers, startups, and applications where data center-scale resources aren't feasible. The democratization of AI might not come from making big models cheaper, but from making small models smarter.
+
+The TRM paper concludes with appropriate humility: "While our approach led to better generalization on 4 benchmarks, every choice made is not guaranteed to be optimal on every dataset." But one thing is clear: the era where parameter count was the primary measure of AI sophistication might be coming to an end.
+
+The revolution in AI efficiency has begun, and it's happening with models small enough to fit on your wrist.
