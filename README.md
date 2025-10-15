@@ -1,78 +1,225 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍌 Banandre
 
-## Getting Started
+**No One Cares About Code.**
 
-First, run the development server:
+A brutally honest blog about AI, software architecture, and enterprise solutions. Raw insights without the buzzwords.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🌐 **Live Site:** [https://www.banandre.com](https://www.banandre.com)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📖 About
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Banandre delivers unfiltered insights on the realities of modern software development, AI implementation, and enterprise architecture. The blog covers:
 
-## Learn More
+- **Artificial Intelligence** - Real-world AI implementation, pitfalls, and breakthroughs
+- **Software Architecture** - Distributed systems, microservices, databases, and architectural decisions
+- **Software Development** - Practical development insights and technical debt realities
+- **Engineering Management** - Team dynamics, scaling challenges, and leadership
+- **Product Management** - Strategy, user feedback, and product-engineering collaboration
+- **Data Engineering** - ETL, data pipelines, and infrastructure
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This blog is built with modern web technologies:
 
-## Deploy on Vercel
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Content:** MDX for rich, interactive blog posts
+- **Styling:** CSS Modules + Tailwind CSS
+- **Language:** TypeScript
+- **Deployment:** Vercel
+- **Features:**
+  - RSS feed generation
+  - Sitemap generation
+  - SEO optimization with JSON-LD structured data
+  - Dynamic blog post routing
+  - Categories and tags system
+  - Related articles recommendations
+  - Google Analytics integration
+  - Social media metadata
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Getting Started
 
-## Sitemap Configuration
+### Prerequisites
 
-This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate sitemaps for all your MDX pages.
+- Node.js 18+ and npm
+- Git
 
-### Configuration
+### Installation
 
-The sitemap is configured in `next-sitemap.config.js` with the following features:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/andrebanandre/banandre.git
+   cd banandre
+   ```
 
-- **Automatic MDX page discovery**: All your MDX pages in `/demo/` and `/docs/` are automatically included
-- **Smart priority assignment**:
-  - Homepage: 1.0 priority, daily updates
-  - Blog posts: 0.8 priority, weekly updates
-  - Tag pages: 0.6 priority, monthly updates
-- **Robots.txt generation**: Automatically creates a robots.txt file
-- **Static export compatible**: Works with your `output: 'export'` configuration
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### Environment Variables
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-Create a `.env.local` file in your project root and add:
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-```bash
-SITE_URL=https://your-domain.com
-```
-
-### Usage
-
-The sitemap is automatically generated after each build via the `postbuild` script. To generate it manually:
+### Build for Production
 
 ```bash
 npm run build
-# or
-npx next-sitemap
+npm start
 ```
 
-### Generated Files
+---
 
-After building, you'll find these files in your `build/` directory:
+## 📝 Contributing
 
-- `sitemap.xml` - Main sitemap index
-- `robots.txt` - Robots file with sitemap references
-- `sitemap-*.xml` - Individual sitemap files (if you have many pages)
+Contributions are welcome! Whether you found a typo, have suggestions for content, or want to improve the codebase, here's how you can help:
+
+### Content Contributions
+
+#### Suggesting Topics
+- Open an issue with the `content-suggestion` label
+- Describe the topic and why it would be valuable
+- Include any relevant resources or research
+
+#### Reporting Issues
+- **Typos/Grammar:** Open an issue or submit a PR directly
+- **Broken Links:** Report via issues
+- **Technical Inaccuracies:** Open an issue with detailed explanation
+
+### Code Contributions
+
+#### Adding New Features
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. **Make your changes**
+   - Follow the existing code style
+   - Write clean, readable TypeScript
+   - Test your changes locally
+
+4. **Commit your changes**
+   ```bash
+   git commit -m "feat: add your feature description"
+   ```
+   Use conventional commits:
+   - `feat:` - New features
+   - `fix:` - Bug fixes
+   - `docs:` - Documentation changes
+   - `style:` - Code style changes
+   - `refactor:` - Code refactoring
+   - `test:` - Test updates
+   - `chore:` - Build/config updates
+
+5. **Push to your fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+6. **Open a Pull Request**
+   - Provide a clear description of changes
+   - Reference any related issues
+   - Wait for review
+
+#### Creating New Blog Posts
+
+New blog posts are created using MDX format in the `src/app/blog/` directory:
+
+1. **Use the template**
+   ```bash
+   npm run create-post
+   ```
+   Or manually copy from `templates/blog-post-template.mdx`
+
+2. **File structure**
+   ```
+   src/app/blog/YYYY-MM/post-slug/page.mdx
+   ```
+
+3. **Required frontmatter**
+   ```mdx
+   export const metadata = {
+     title: "Your Post Title",
+     publishDate: "YYYY-MM-DD",
+     author: "Andrii Fedorenko",
+     category: "Category Name",
+     tags: ["tag1", "tag2"],
+     excerpt: "Brief description",
+     readingTime: "X min read"
+   };
+   ```
+
+4. **Add images**
+   Place images in `public/blog/YYYY/your-image.webp`
+
+### Development Guidelines
+
+- **TypeScript:** All new code should be in TypeScript
+- **Components:** Use functional components with hooks
+- **Styling:** Use CSS Modules or Tailwind classes
+- **Testing:** Test changes across different browsers
+- **Performance:** Optimize images and lazy-load when possible
+- **Accessibility:** Ensure WCAG 2.1 AA compliance
+
+### Code Review Process
+
+1. All PRs require at least one review
+2. CI checks must pass
+3. Changes should not break existing functionality
+4. Documentation should be updated if needed
+
+---
+
+## 📂 Project Structure
+
+```
+banandre/
+├── src/
+│   ├── app/
+│   │   ├── _components/     # Reusable React components
+│   │   ├── blog/            # Blog posts (MDX)
+│   │   ├── categories/      # Category pages
+│   │   ├── tags/            # Tag pages
+│   │   ├── config.ts        # Site configuration
+│   │   └── layout.tsx       # Root layout
+│   ├── lib/                 # Utility functions
+│   └── types/               # TypeScript type definitions
+├── public/                  # Static assets
+├── scripts/                 # Build and utility scripts
+└── templates/               # Templates for new content
+```
+
+---
+
+## 🔗 Connect
+
+- **Twitter/X:** [@andre_banandre](https://x.com/andre_banandre)
+- **GitHub:** [@andrebanandre](https://github.com/andrebanandre)
+- **LinkedIn:** [Andrii Fedorenko](https://www.linkedin.com/in/andrii-fedorenko-65905863/)
+
+---
+
+## 📄 License
+
+© 2025 Banandre. All rights reserved.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with 🍌 by Andrii Fedorenko
+
+Special thanks to the open-source community and all the technologies that make this blog possible.
+
