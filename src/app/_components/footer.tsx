@@ -196,6 +196,11 @@ export function Footer() {
                   label: "LinkedIn",
                 },
                 {
+                  icon: GitHubLogoIcon,
+                  href: "https://github.com/andrebanandre/banandre",
+                  label: "GitHub",
+                },
+                {
                   icon: EnvelopeClosedIcon,
                   href: "mailto:andre@banandre.com",
                   label: "Contact",
