@@ -1,0 +1,100 @@
+---
+title: "The Death of OSS dbt: Merging with Fivetran and the End of Open Source Trust?"
+description: "The controversial merger between dbt Labs and Fivetran puts open source data tooling's future in question"
+slug: the-death-of-oss-dbt-merging-with-fivetran-and-the-end-of-open-source-trust
+image: "/blog/2025/the-death-of-oss-dbt-merging-with-fivetran-and-the-end-of-open-source-trust.webp"
+date: 2025-10-16
+tags: ["open-source", "data-engineering", "dbt", "fivetran"]
+categories: ["Artificial Intelligence"]
+---
+
+When the news broke that [dbt Labs and Fivetran would merge in an all-stock deal](https://www.reuters.com/business/a16z-backed-data-firms-fivetran-dbt-labs-merge-all-stock-deal-2025-10-13/), the data engineering community immediately sensed trouble. Two a16z-backed giants joining forces sounds like corporate synergy on paper, but for the thousands of organizations that built their data stacks on open source dbt-core, it felt more like a hostile takeover of their trusted infrastructure.
+
+The timing couldn't be more suspicious. Just as dbt Core enters "maintenance mode" and SQLMesh faces potential deprecation, this merger completes a trifecta of moves that signal a decisive pivot away from open source ideals toward proprietary lock-in. The response from developers has been immediate and visceral - the prevailing sentiment suggests this could be the final straw for open source trust in the data tooling ecosystem.
+
+## From Open Core to Closed Doors: The dbt Trajectory
+
+[dbt's journey](/blog/2025-10/the-fivetran-dbt-marriage-of-convenience-thats-quietly-declaring-war-on-snowflake) from beloved open source project to enterprise-focused platform has been a masterclass in "open core" strategy execution. What started as Fishtown Analytics in 2016 grew into a $4.2 billion valuation by 2022, fueled by massive venture rounds totaling nearly $415 million. 
+
+The cracks in the open source foundation began showing when dbt Labs moved key innovation behind proprietary walls. First came dbt Fusion - the new engine rebuilt from the ground up in Rust that promises "30x faster parsing" and "state-aware orchestration" that can reduce cloud costs by up to 29%. The catch? It's source-available, not open source.
+
+![Tristan Handy, dbt Labs](/blog/2025/the-death-of-oss-dbt-merging-with-fivetran-and-the-end-of-open-source-trust_tristan-handy-dbt-labs.jpg)
+
+Meanwhile, as the [dbt Labs blog announces](https://www.getdbt.com/blog/coalesce-2025-rewriting-the-future), dbt Core is now officially in maintenance mode. The official line is that "dbt Core will remain open source under its current license and will continue to be supported and maintained indefinitely" - but "maintained" is doing some heavy lifting here. When innovation happens elsewhere, maintenance mode often becomes abandonware with extra steps.
+
+## The Fivetran Factor: Proprietary DNA Meets Open Source
+
+Fivetran brings zero open source credibility to this merger. The data movement company has built its business on proprietary connectors and closed-source pipelines. While dbt Labs CEO Tristan Handy calls Fivetran "one of his startup's best partners" in early days, the cultural mismatch is undeniable.
+
+The ownership structure reveals who's really in charge. According to [Technical.ly's reporting](https://technical.ly/entrepreneurship/dbt-labs-merger-fivetran/), "dbt Labs shareholders will own a minority stake in the combined company" while Fivetran's George Fraser becomes CEO. When the company that built its reputation on open source becomes the junior partner to a proprietary vendor, the writing is on the wall.
+
+## The Developer Community Reacts: Forks and Futures
+
+Developer forums exploded with reactions that range from cynical resignation to outright rebellion. Many see parallels to HashiCorp's controversial license change and the subsequent OpenTofu fork. The consensus seems to be that a dbt-core fork is inevitable - just a matter of when, not if.
+
+One commenter captured the sentiment perfectly: "mergers tend to prioritize profit over open source." Another noted they're "just patiently waiting for a dbt-core fork to get traction", while others explicitly referenced "dbt core will be forked, just like Terraform/Open Tofu."
+
+![Fivetran & dbt: Why the future of data must be open and reliable](/blog/2025/the-death-of-oss-dbt-merging-with-fivetran-and-the-end-of-open-source-trust_fivetran-dbt-why-the-future-of-data-must-be-open-and-reliable.png)
+
+The irony isn't lost on experienced open source watchers. Fivetran's [official blog post](https://www.fivetran.com/blog/the-era-of-open-data-infrastructure) promises that "our mission is to give data teams choice and control through open standards, not proprietary lock-in." But actions speak louder than marketing copy. When you merge your open source champion with a proprietary vendor while simultaneously sunsetting innovation in your open source offering, the direction couldn't be clearer.
+
+## The Open Source Theater Playbook
+
+What we're witnessing follows a familiar venture-backed playbook:
+
+1. **Build massive adoption** through truly open source tooling
+2. **Introduce "premium" features** that gradually become essential
+3. **Pivot innovation** to proprietary offerings while maintaining the open source brand
+4. **Merge/acquire** to consolidate market position
+5. **Extract maximum value** from the now-captive user base
+
+The recent open-sourcing of MetricFlow at Coalesce 2025 feels like strategic tokenism - a distraction from the core issue. While moving MetricFlow to Apache 2.0 and aligning with Open Semantic Interchange initiatives sounds progressive, it's happening against the backdrop of dbt Core's innovation stagnation.
+
+## What This Means for Data Teams
+
+For organizations that standardized on dbt, the implications are material. The combined company boasts "$600 million in annual recurring revenue and more than 10,000 customers" according to [Philadelphia Business Journal reporting](https://www.bizjournals.com/philadelphia/news/2025/10/13/dbt-labs-fivetran-merge-data-a16z.html). That scale creates pricing power and reduces incentive to cater to open source users' needs.
+
+The practical consequences are already unfolding:
+
+**Vendor Lock-in Acceleration**: Teams that bought into dbt's open ecosystem now face migration costs that make switching prohibitively expensive. The "open data infrastructure" vision sounds great until you're paying enterprise prices for basic features.
+
+**Innovation Divergence**: As Fusion becomes the innovation vehicle, dbt Core will increasingly lag behind. We've seen this movie before with other open core companies - the community edition gets security patches while transformative features remain proprietary.
+
+**Community Fragmentation**: The most talented contributors will likely peel off to whatever fork gains momentum, leaving dbt Core in a state of managed decline.
+
+## The Fork in the Road
+
+History suggests that successful forks require more than just developer frustration. They need institutional backing, clear governance, and sustainable funding. The OpenTofu foundation showed it's possible, but forks often struggle to match the resources of well-funded commercial entities.
+
+The question isn't whether someone will fork dbt-core - it's whether that fork can achieve critical mass before the combined dbt-Fivetran entity solidifies its market dominance.
+
+Some developers argue this is "a nothingburger" since "there's literally nothing stopping anyone from adding community contributions or forking the project." But that misses the reality of modern open source economics. Without the original maintainers' full attention and resources, forks often become second-class citizens in the ecosystem.
+
+## The Venture Capital Calculus
+
+Both companies share more than just markets - they share investors. Andreessen Horowitz (a16z) backed both firms, making this merger as much about portfolio optimization as product synergy. When your investors own significant stakes in complementary companies, mergers become the path of least resistance to liquidity.
+
+The timing suggests this isn't about immediate IPO plans though. As [Reuters reported](https://www.reuters.com/business/a16z-backed-data-firms-fivetran-dbt-labs-merge-all-stock-deal-2025-10-13/), "an IPO is not imminent" despite the combined scale strengthening "its position for a public listing." This is about building an unassailable data infrastructure monopoly before going public.
+
+## The Trust Equation
+
+What makes this moment particularly painful for the data community is how deeply dbt embedded itself as a trusted foundation. Unlike proprietary tools that were always understood as commercial products, dbt Core represented something different - a community-driven standard that wouldn't betray its users for corporate interests.
+
+Now that trust feels broken. When the hand that feeds you starts charging for the meal, you question whether you were ever actually welcome at the table.
+
+The official assurances that "dbt Core will remain open source under its current license" ring hollow when the roadmap clearly leads elsewhere. Maintenance mode is the corporate equivalent of "we'll still invite you to parties, but don't expect to be in the group chat."
+
+## Where Do We Go From Here?
+
+The data tooling ecosystem now faces a fundamental choice: accept the increasingly proprietary future or build alternatives that preserve true openness. The trajectory is clear - as Fivetran's CPO Anjan Kundavaram [writes](https://www.fivetran.com/blog/the-era-of-open-data-infrastructure), the combined entity will focus on "breadth", "reliability", and "AI powered" features - all enterprise-friendly attributes that justify premium pricing.
+
+For data teams, this means:
+
+1. **Evaluate lock-in risks** in your current dbt implementation
+2. **Monitor fork developments** and community sentiment
+3. **Consider alternative tooling** that remains truly open source
+4. **Pressure vendors** to maintain real open source commitments, not just marketing optics
+
+The merger might create a data infrastructure behemoth with 1,500 joint commercial customers and "more than 10,000 customers" overall, but it comes at the cost of trust from the community that built its foundation.
+
+In the end, the question isn't whether open source dbt is technically dead - it's whether anyone will still trust the corpse when the proprietary overlords are calling the shots. The data community has been here before with other "open core" companies, and the pattern is painfully familiar: the open source gets you in the door, but the enterprise features lock you in the room.
