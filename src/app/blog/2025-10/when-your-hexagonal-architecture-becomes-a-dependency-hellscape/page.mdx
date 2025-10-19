@@ -1,11 +1,80 @@
 ---
-title: "When Your Hexagonal Architecture Becomes a Dependency Hellscape"
-description: "Navigating cross-module communication in hexagonal monoliths without descending into dependency chaos"
+title: When Your Hexagonal Architecture Becomes a Dependency Hellscape
+description: >-
+  Navigating cross-module communication in hexagonal monoliths without
+  descending into dependency chaos
 slug: when-your-hexagonal-architecture-becomes-a-dependency-hellscape
-image: "/blog/2025/when-your-hexagonal-architecture-becomes-a-dependency-hellscape.jpg"
-date: 2025-10-18
-tags: ["hexagonal-architecture", "monoliths", "domain-driven-design", "software-architecture", "dependency-management"]
-categories: ["Software Architecture"]
+image: /blog/2025/when-your-hexagonal-architecture-becomes-a-dependency-hellscape.jpg
+date: 2025-10-18T00:00:00.000Z
+tags: &ref_0
+  - hexagonal-architecture
+  - monoliths
+  - domain-driven-design
+  - software-architecture
+  - dependency-management
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: When Your Hexagonal Architecture Becomes a Dependency Hellscape
+  description: >-
+    Navigating cross-module communication in hexagonal monoliths without
+    descending into dependency chaos
+  url: >-
+    https://banandre.com/blog/2025-10/when-your-hexagonal-architecture-becomes-a-dependency-hellscape
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/when-your-hexagonal-architecture-becomes-a-dependency-hellscape.jpg
+      width: 1200
+      height: 630
+      alt: When Your Hexagonal Architecture Becomes a Dependency Hellscape
+  publishedTime: '2025-10-18T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: When Your Hexagonal Architecture Becomes a Dependency Hellscape
+  description: >-
+    Navigating cross-module communication in hexagonal monoliths without
+    descending into dependency chaos
+  images:
+    - >-
+      https://banandre.com/blog/2025/when-your-hexagonal-architecture-becomes-a-dependency-hellscape.jpg
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: When Your Hexagonal Architecture Becomes a Dependency Hellscape
+  description: >-
+    Navigating cross-module communication in hexagonal monoliths without
+    descending into dependency chaos
+  image: >-
+    https://banandre.com/blog/2025/when-your-hexagonal-architecture-becomes-a-dependency-hellscape.jpg
+  url: >-
+    https://banandre.com/blog/2025-10/when-your-hexagonal-architecture-becomes-a-dependency-hellscape
+  datePublished: '2025-10-18T00:00:00.000Z'
+  dateModified: '2025-10-18T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/when-your-hexagonal-architecture-becomes-a-dependency-hellscape
 ---
 
 The promise of Hexagonal Architecture is seductive: clean domain logic, interchangeable infrastructure, and testability that makes QA teams weep with joy. Then reality hits, you've got User, Post, and Category modules that need to talk to each other, and suddenly your beautifully hexagonal design looks more like a dependency spider web. The core dilemma emerges: how do modules communicate without violating domain boundaries or creating that soul-crushing cyclic dependency nightmare?
