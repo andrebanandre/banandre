@@ -1,0 +1,86 @@
+---
+title: "Is Fluss About to Make Kafka Obsolete for Lakehouse Real-Time?"
+description: "Apache Fluss 0.8.0 introduces Iceberg support, enabling sub-second latency processing via Flink and positioning itself as the hot layer solution for Iceberg-based lakehouses."
+slug: is-fluss-about-to-make-kafka-obsolete-for-lakehouse-real-time
+image: "/blog/2025/is-fluss-about-to-make-kafka-obsolete-for-lakehouse-real-time.jpeg"
+date: 2025-10-20
+tags: ["flink", "iceberg", "real-time", "data-engineering", "apache-fluss", "kafka"]
+categories: ["Data Engineering"]
+---
+
+The lakehouse architecture promised to unify data lakes and data warehouses, but real-time analytics remained its Achilles' heel. Now Apache Fluss is stepping in with a game-changing proposition: sub-second latency for your Iceberg-based lakehouses. But does this spell the beginning of the end for the Kafka-dominated streaming landscape we've known for years?
+
+## The Real-Time Gap in Modern Lakehouses
+
+Traditional lakehouse architectures have struggled with what developers call the "30-second problem" - the delay between when data arrives and when it becomes queryable in analytical systems. While batch processing handles historical analysis well, real-time use cases like fraud detection, dynamic pricing, and live monitoring have been forced into complex multi-system architectures.
+
+The current approach typically involves Kafka for streaming, various databases for hot data, and then Iceberg/Deltalake for cold storage. This creates what Ververica describes as ["a complex chain of tools"](https://www.ververica.com/blog/introducing-apache-fluss-on-ververicas-unified-streaming-data-platform) with "additional pipelines to build and maintain, data duplication to manage, and latency gaps to tolerate."
+
+![Streaming vs batch architecture diagram on blue background.](/blog/2025/the-rise-of-fluss-could-it-be-the-real-time-hot-layer-for-iceberg-lakehouses_streaming-vs-batch-architecture-diagram-on-blue-background.jpg)
+
+## What Exactly is Fluss Breaking?
+
+Apache Fluss fundamentally rethinks streaming storage architecture. Unlike Kafka and Pulsar which focus on event transport, Fluss is designed from the ground up for real-time analytics. The project's creators identified two critical bottlenecks in traditional streaming systems:
+
+**Column Skipping**: When you have datasets with 50+ columns (a common reality in analytics), Fluss lets you read only the specific columns needed for your query. This isn't revolutionary for batch systems, but it's transformative for streaming analytics where every millisecond counts.
+
+**Predicate Pushdown**: Every column batch includes summaries that enable filtering at read-time, similar to Parquet's approach. This means analytical queries can skip irrelevant rows entirely rather than processing everything and filtering afterward.
+
+The kicker? Fluss treats streams as tables - a fundamental shift from the immutable log philosophy that's dominated streaming for the past decade.
+
+## The Iceberg Integration That Changes Everything
+
+The real breakthrough comes with Fluss 0.8.0's Iceberg support. The integration follows a clever architecture:
+
+```
+Data Source → Flink → Fluss Tables (sub-second latency) → Lake Tearing Service → Iceberg Tables (30-second freshness)
+```
+
+Flink jobs read from Fluss tables and write results back to Fluss tables, while a lake tearing service moves data every 30 seconds to Iceberg. This gives you the best of both worlds: real-time queries via Fluss with second-level freshness, while Iceberg maintains the historical record with 30-second finality.
+
+What makes this particularly interesting is that Fluss doesn't just solve the latency problem - it addresses the operational overhead too. Fluss allows you to either define that Fluss maintains the table - responsible for both vacuuming the snapshots you are not interested in and compacting the small files - or it can work with external table maintenance if you're running on Databricks or other platforms.
+
+## The Architecture Revolution: From Log-Only to Unified
+
+![The Revolution in Stream Processing](/blog/2025/the-rise-of-fluss-could-it-be-the-real-time-hot-layer-for-iceberg-lakehouses_the-revolution-in-stream-processing.jpg)
+
+Ververica's vision positions Fluss as the "core storage engine" for streaming workloads, enabling what they call "zero-state streaming analytics." This addresses one of the most painful aspects of stream processing: massive, unstable stateful jobs that consume thousands of cores.
+
+The unified approach collapses what used to be three separate systems (streaming transport, hot cache, cold storage) into a single cohesive platform. As Ververica notes, this eliminates "the artificial distinction between streams and tables" and enables organizations to "query data in real time, join it efficiently with other flows, and persist it seamlessly into longer-term lakehouse storage."
+
+## Real-World Implications: Beyond the Hype
+
+The practical implications are significant for organizations struggling with real-time analytics:
+
+**Cost Efficiency**: By reducing network transfer and offloading heavy state from compute jobs, Fluss can dramatically reduce infrastructure costs. The demo shows how you can maintain real-time capabilities without the traditional overhead of maintaining separate hot and cold data systems.
+
+**Simplified Operational Complexity**: Instead of orchestrating Kafka, Redis, and Iceberg with complex sync patterns, you get a single system that handles the entire real-time data lifecycle.
+
+**AI/ML Readiness**: Fluss's support for multimodal data formats like Lance positions it perfectly for AI workloads. Real-time feature stores become simpler when the same system handles both online inference and offline training data.
+
+As one developer noted in forum discussions, this appears particularly promising for real-time data processing scenarios where traditional architectures have been cumbersome.
+
+## The Competitive Landscape: Who Should Be Worried?
+
+Kafka's dominance in streaming transport isn't immediately threatened, but Fluss's positioning as a "stream storage solution built for realtime analytics" targets a specific pain point that Kafka was never designed to solve. While Kafka excels at moving bytes efficiently, it wasn't built for analytical queries or columnar storage patterns.
+
+The timing couldn't be more interesting. With Apache Iceberg gaining massive adoption across data platforms, Fluss's integration positions it to capture the emerging "real-time lakehouse" market exactly as enterprises are looking to modernize their data architectures.
+
+## The Verdict: Game-Changer or Niche Solution?
+
+Fluss's approach is undeniably compelling, but there are legitimate questions:
+
+**Ecosystem Maturity**: As a project that was only donated to Apache this summer, Fluss is still early in its development cycle. Production deployments at scale like Taobao suggest readiness, but broader enterprise adoption will take time.
+
+**Processing Engine Diversity**: Currently, Flink is the primary processing engine integrated. The promise of "more processing engines will integrate with Fluss eventually" is crucial for broader adoption beyond the Flink ecosystem.
+
+**Operational Simplicity**: Real-world deployment at scale always reveals unexpected complexities, and Fluss is no exception despite its promising architecture.
+
+
+## The Future of Streaming Storage
+
+Apache Fluss represents more than just another streaming technology - it's a fundamental rethinking of how we handle real-time analytics. By treating streams as queryable tables rather than just transport mechanisms, Fluss addresses the core limitation that has plagued real-time lakehouse implementations.
+
+For organizations building on Iceberg, Fluss 0.8.0 offers a compelling path to sub-second analytics without sacrificing the benefits of their lakehouse architecture. As adoption grows, it's worth paying close attention to how this technology evolves.
+
+The real test will be whether Fluss can deliver on its promise to "erase the gap between operational and analytical data" while maintaining the operational simplicity enterprises demand. If it succeeds, we might be looking at the beginning of the next generation of streaming architectures - one where the distinction between streams and tables finally becomes what it should have been all along: irrelevant.
