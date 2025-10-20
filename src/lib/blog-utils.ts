@@ -205,7 +205,7 @@ export async function getPostsByCategory(category: string): Promise<BlogMetadata
   const filteredPosts = posts.filter((post) =>
     post.categories.some((postCategory) => postCategory.toLowerCase() === category.toLowerCase())
   );
-  
+
   // Sort by date (newest to oldest)
   return filteredPosts.sort((a, b) => {
     if (!a.date && !b.date) return 0;
