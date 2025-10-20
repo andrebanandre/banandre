@@ -7,7 +7,7 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Category } from "../../_components/category";
-import { BlogGrid } from "../../_components/blog-card";
+import { ClientCategoryGrid } from "../../_components/client-category-grid";
 import type { Metadata } from "next";
 import {
   generateCategoryPageSchema,
@@ -16,6 +16,7 @@ import {
 } from "../../../lib/json-ld";
 import { Head } from "nextra/components";
 import { siteConfig } from "../../config";
+import { Suspense } from "react";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -153,7 +154,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </p>
           </div>
 
-          <BlogGrid posts={posts} />
+          <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+            <ClientCategoryGrid posts={posts} baseUrl={`/categories/${urlCategory}`} />
+          </Suspense>
         </div>
       </div>
     </>

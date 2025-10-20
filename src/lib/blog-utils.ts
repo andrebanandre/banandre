@@ -202,9 +202,17 @@ export async function getAllCategories(): Promise<{ category: string; count: num
 // Get posts filtered by a specific category
 export async function getPostsByCategory(category: string): Promise<BlogMetadata[]> {
   const posts = await getAllBlogPosts();
-  return posts.filter((post) =>
+  const filteredPosts = posts.filter((post) =>
     post.categories.some((postCategory) => postCategory.toLowerCase() === category.toLowerCase())
   );
+  
+  // Sort by date (newest to oldest)
+  return filteredPosts.sort((a, b) => {
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
 }
 
 // Format category for URL (lowercase, spaces to dashes, no special chars)
