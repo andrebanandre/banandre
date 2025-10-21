@@ -1,11 +1,90 @@
 ---
-title: "When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as Flawed MoE Strategy"
-description: "REAP pruning outperforms merging in MoE models, enabling near-lossless compression of 480B giants to local hardware"
+title: >-
+  When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as Flawed
+  MoE Strategy
+description: >-
+  REAP pruning outperforms merging in MoE models, enabling near-lossless
+  compression of 480B giants to local hardware
 slug: cerebras-reap-pruning-challenges-expert-merging-in-moe-models
-image: "/blog/2025/cerebras-reap-pruning-challenges-expert-merging-in-moe-models.jpg"
-date: 2025-10-21
-tags: ["llm", "moe", "compression", "research", "cerebras"]
-categories: ["Artificial Intelligence"]
+image: /blog/2025/cerebras-reap-pruning-challenges-expert-merging-in-moe-models.jpg
+date: 2025-10-21T00:00:00.000Z
+tags: &ref_0
+  - llm
+  - moe
+  - compression
+  - research
+  - cerebras
+categories:
+  - Artificial Intelligence
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: >-
+    When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as Flawed
+    MoE Strategy
+  description: >-
+    REAP pruning outperforms merging in MoE models, enabling near-lossless
+    compression of 480B giants to local hardware
+  url: >-
+    https://banandre.com/blog/2025-10/cerebras-reap-pruning-challenges-expert-merging-in-moe-models
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/cerebras-reap-pruning-challenges-expert-merging-in-moe-models.jpg
+      width: 1200
+      height: 630
+      alt: >-
+        When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as
+        Flawed MoE Strategy
+  publishedTime: '2025-10-21T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Artificial Intelligence
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: >-
+    When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as Flawed
+    MoE Strategy
+  description: >-
+    REAP pruning outperforms merging in MoE models, enabling near-lossless
+    compression of 480B giants to local hardware
+  images:
+    - >-
+      https://banandre.com/blog/2025/cerebras-reap-pruning-challenges-expert-merging-in-moe-models.jpg
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: >-
+    When Less Is Actually More: Cerebras' REAP Exposes Expert Merging as Flawed
+    MoE Strategy
+  description: >-
+    REAP pruning outperforms merging in MoE models, enabling near-lossless
+    compression of 480B giants to local hardware
+  image: >-
+    https://banandre.com/blog/2025/cerebras-reap-pruning-challenges-expert-merging-in-moe-models.jpg
+  url: >-
+    https://banandre.com/blog/2025-10/cerebras-reap-pruning-challenges-expert-merging-in-moe-models
+  datePublished: '2025-10-21T00:00:00.000Z'
+  dateModified: '2025-10-21T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/cerebras-reap-pruning-challenges-expert-merging-in-moe-models
 ---
 
 The conventional wisdom in model compression has always been clear: when you have redundant experts in Mixture-of-Experts (MoE) models, merge them rather than throw them away. Recent papers like M-SMoE and HC-SMoE have championed this approach, showing strong results on multiple-choice benchmarks. **But what if everyone got it fundamentally wrong?**
