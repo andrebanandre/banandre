@@ -1,11 +1,71 @@
 ---
-title: "When DNS Goes Down: How to Weather the Cloud-Storm"
-description: "Strategies for surviving DNS outages when everything breaks."
+title: 'When DNS Goes Down: How to Weather the Cloud-Storm'
+description: Strategies for surviving DNS outages when everything breaks.
 slug: when-dns-goes-down-how-to-weather-the-cloud-storm
-image: "/blog/2025/when-dns-goes-down-how-to-weather-the-cloud-storm.webp"
-date: 2025-10-24
-tags: ["dns", "cloud-resilience", "aws", "devops"]
-categories: ["Software Architecture"]
+image: /blog/2025/when-dns-goes-down-how-to-weather-the-cloud-storm.webp
+date: 2025-10-24T00:00:00.000Z
+tags: &ref_0
+  - dns
+  - cloud-resilience
+  - aws
+  - devops
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'When DNS Goes Down: How to Weather the Cloud-Storm'
+  description: Strategies for surviving DNS outages when everything breaks.
+  url: >-
+    https://banandre.com/blog/2025-10/when-dns-goes-down-how-to-weather-the-cloud-storm
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/when-dns-goes-down-how-to-weather-the-cloud-storm.webp
+      width: 1200
+      height: 630
+      alt: 'When DNS Goes Down: How to Weather the Cloud-Storm'
+  publishedTime: '2025-10-24T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'When DNS Goes Down: How to Weather the Cloud-Storm'
+  description: Strategies for surviving DNS outages when everything breaks.
+  images:
+    - >-
+      https://banandre.com/blog/2025/when-dns-goes-down-how-to-weather-the-cloud-storm.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'When DNS Goes Down: How to Weather the Cloud-Storm'
+  description: Strategies for surviving DNS outages when everything breaks.
+  image: >-
+    https://banandre.com/blog/2025/when-dns-goes-down-how-to-weather-the-cloud-storm.webp
+  url: >-
+    https://banandre.com/blog/2025-10/when-dns-goes-down-how-to-weather-the-cloud-storm
+  datePublished: '2025-10-24T00:00:00.000Z'
+  dateModified: '2025-10-24T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-10/when-dns-goes-down-how-to-weather-the-cloud-storm
 ---
 
 The [AWS US-East-1 outage on October 20, 2025](https://x.com/andre_banandre/status/1980195623795400839), wasn't a server meltdown. It wasn't a network cable being cut. The root cause was simple: a race condition in AWS's own DNS automation that removed critical DynamoDB endpoint records. When DNS goes wrong, the internet breaks, even when the underlying services are perfectly healthy.
