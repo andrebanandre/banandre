@@ -1,0 +1,126 @@
+---
+title: "AMD RDNA3 Users Finally Get Decent llama.cpp Performance - Here's What Changed"
+description: "New optimizations fix critical performance drops and crashes on AMD RDNA3 GPUs, delivering faster long-context inference on hardware like Ryzen AI Max 395."
+slug: amd-rdna3-faster-llamacpp-performance-rocm-optimizations
+image: /blog/2025/amd-rdna3-faster-llamacpp-performance-rocm-optimizations.webp
+date: 2025-10-31
+tags: ["amd", "rocm", "llamacpp", "gpu", "optimization"]
+categories: ["Artificial Intelligence"]
+---
+
+The AMD versus NVIDIA battle in AI inference just got more interesting. For months, AMD RDNA3 GPU users suffered through disappointing performance in llama.cpp's ROCm backend - particularly as context lengths grew. Promising hardware like the Ryzen AI Max 395 with its powerful integrated RDNA3 GPU was hamstrung by software bottlenecks that made long-context workloads practically unusable.
+
+That story just changed dramatically.
+
+## The Problem: RDNA3's Performance Cliff
+
+The core issue was simple but devastating: llama.cpp's ROCm/HIP backend with rocWMMA enabled would experience catastrophic performance degradation as context length increased. What started as promising performance at short context lengths turned into a performance cliff at longer sequences.
+
+The data reveals how bad it was. Comparing standard rocWMMA versus the default HIP path on a Llama 3.2 1B model:
+
+At 65K context length, **prefill performance dropped by 15%** while **decode performance plummeted by 58%**. The situation was even worse for larger models like GPT-OSS-20B, where decode performance at 65K context saw a **57% regression** compared to the standard HIP backend without rocWMMA.
+
+What made this particularly frustrating was that rocWMMA was supposed to be the *optimized* path. The [official llama.cpp ROCm build documentation](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md#hip) recommends enabling `-DGGML_HIP_ROCWMMA_FATTN=ON` specifically for better FlashAttention performance on RDNA3+ architectures. This recommendation had become a performance trap.
+
+## The Fix: Understanding What Went Wrong
+
+Developer `randomfoo2` discovered the root causes while digging into ROCm's matrix multiplication acceleration. The problems were architectural:
+
+**First**, the decode path was incorrectly using WMMA (Wave Matrix Multiply-Accumulate) operations where simpler VEC/TILE operations would suffice. This forced unnecessary tensor core usage for operations that didn't benefit from them.
+
+**Second**, there was an architectural mismatch in how FlashAttention was being tuned for RDNA3. The configuration wasn't optimized for AMD's hardware characteristics, particularly around local data share (LDS) usage and block residency.
+
+**Most concerningly**, the default HIP path lacked a critical safety guard: when predicted TILE splits had no suitable configuration, the system would crash rather than falling back to VEC operations. This explained many of the ROCm backend crashes users reported.
+
+## The Numbers: Performance Transformation
+
+The optimized branch delivers staggering improvements, particularly at the context lengths where ROCm previously struggled most:
+
+### Llama 3.2 1B Q4_K_M Performance Comparison
+
+**Prefill Improvements (higher is better):**
+
+| Context Depth | Default rocWMMA | Optimized rocWMMA | Improvement |
+|---------------|-----------------|-------------------|-------------|
+| 512 tokens    | 4884 tokens/s   | 4970 tokens/s     | +1.75%      |
+| 16K tokens    | 1266 tokens/s   | 2065 tokens/s     | **+63.14%** |
+| 65K tokens    | 360 tokens/s    | 706 tokens/s      | **+96.11%** |
+
+**Decode Improvements (token generation):**
+
+| Context Depth | Default rocWMMA | Optimized rocWMMA | Improvement |
+|---------------|-----------------|-------------------|-------------|
+| 4K tokens     | 144 tokens/s    | 173 tokens/s      | **+20.74%** |
+| 16K tokens    | 88 tokens/s     | 127 tokens/s      | **+45.11%** |
+| 65K tokens    | 27 tokens/s     | 65 tokens/s       | **+136.06%** |
+
+The numbers tell a clear story: what was supposed to be an optimization path was actually making RDNA3 performance substantially worse in realistic use cases.
+
+## What Changed Technically
+
+The [optimized branch](https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune) implements several key fixes:
+
+**Adaptive KQ Stride Optimization**
+The FlashAttention implementation now dynamically adjusts KQ stride based on head dimension, using 128 for D\<=128 to reduce LDS footprint. This improves memory efficiency without sacrificing compute throughput.
+
+**Block Residency Enhancement**  
+Increased HIP occupancy via `__launch_bounds__` constraints ensures a minimum of 2 blocks per streaming multiprocessor, better utilizing RDNA3's compute units.
+
+**Intelligent Kernel Selection**
+The system now properly avoids WMMA for decode operations, using HIP's tuned VEC/TILE selection instead. This prevents the performance cliff that occurred when using tensor cores for operations better suited to traditional compute units.
+
+**Crash Prevention**
+Added decode-time safety guards that fall back to VEC operations when predicted TILE splits have no suitable configuration, eliminating many of the random crashes users experienced with the ROCm backend.
+
+## The Developer Reaction: Progress or Politics?
+
+The community response has been overwhelmingly positive, with developers calling the improvements "game-changing" for affordable local inference hardware. As one commenter noted, "people like you and your PR keep alive local inference for modest wallets and old hardware."
+
+However, the official response highlights the complexities of open-source maintenance. The ROCm maintainer [commented](https://github.com/ggml-org/llama.cpp/pull/16827#issuecomment-3458203398) that they're working on a more fundamental rewrite of the WMMA kernel system:
+
+> "I very much expect a proper MMA implementation to be faster than the WMMA kernel so I don't want to make any more changes to it until it is removed. If it turns out that the kernel in this PR is still faster at the end I will reconsider."
+
+This creates tension between immediate performance gains for users and long-term architectural direction. The maintainer estimates a month-long timeline for the replacement MMA kernel implementation, leaving AMD RDNA3 users in limbo.
+
+## Practical Impact: Ryzen AI Max Suddenly Useful
+
+The performance improvements matter most for newer hardware like the Ryzen AI Max 395 with its RDNA3.5 graphics. Previously, these chips couldn't leverage their full potential for AI workloads despite having capable hardware.
+
+Compared to NVIDIA's DGX Spark, the gap has narrowed considerably. With the optimized ROCm backend, the performance difference at 32K context drops from **+117.5% slower** to just **+6.4% slower** in token generation. For prefill, the improvement is even more dramatic - closing from **+445.6% slower** to **+199.4% slower**.
+
+While NVIDIA still leads, the optimized ROCm backend makes AMD hardware genuinely competitive for local AI inference, especially considering the price-performance advantage.
+
+## How to Get the Improvements Today
+
+For developers eager to try these optimizations, the process is straightforward:
+
+```bash
+git clone -b rocm-wmma-tune https://github.com/lhl/llama.cpp.git
+cd llama.cpp
+mkdir build && cd build
+cmake .. -DGGML_HIP_ROCWMMA_FATTN=ON
+make -j$(nproc)
+```
+
+Community members have also created [Docker containers](https://github.com/kyuz0/amd-strix-halo-toolboxes/pull/11/files#diff-cab8ae85e621fa22745cdfac4af09471a22dcf162c9fc92dbb5c5de9af68bd8a) with the optimizations pre-applied for easier testing.
+
+## The Bigger Picture: AMD's AI Ecosystem Matures
+
+These optimizations represent more than just performance improvements - they signal AMD's growing commitment to making ROCm a first-class citizen for AI workloads. The fact that community developers can achieve such dramatic improvements suggests the hardware potential was always there, waiting for the software to catch up.
+
+For developers with AMD hardware, particularly newer RDNA3-based systems, this means:
+
+- **Long-context inference is now practical** - no more avoiding workflows that require substantial context windows
+- **Fewer crashes** - the safety guards prevent many common failure modes  
+- **Better hardware utilization** - RDNA3's tensor cores finally deliver on their promise
+- **Viable alternative to NVIDIA** - AMD GPUs can now handle serious AI workloads without compromise
+
+The improvements come at a crucial time as AMD continues pushing AI capabilities into their consumer hardware lineup. With upcoming Ryzen AI 300 series processors bringing even more powerful NPUs to laptops, having robust ROCm support becomes increasingly important.
+
+## Looking Forward
+
+While the optimizations currently live in a community branch, the performance gains are too significant to ignore. They demonstrate that with proper tuning, AMD hardware can deliver competitive AI inference performance.
+
+The question now is whether these improvements will make it into the mainline llama.cpp repository or if users will need to maintain forks. Given the substantial performance benefits and AMD's growing importance in the AI hardware ecosystem, there's strong incentive for upstream adoption.
+
+For now, AMD RDNA3 users finally have a path to competitive llama.cpp performance - and that's a win for everyone pushing the boundaries of local AI inference.
