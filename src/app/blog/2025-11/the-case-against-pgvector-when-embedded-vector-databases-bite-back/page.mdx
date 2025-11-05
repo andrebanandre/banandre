@@ -1,11 +1,84 @@
 ---
-title: "The Case Against PGVector: When Embedded Vector Databases Bite Back"
-description: "Why cramming vector search into PostgreSQL looks great on paper but falls apart in production - a hard look at scalability, real-time search, and operational nightmares."
+title: 'The Case Against PGVector: When Embedded Vector Databases Bite Back'
+description: >-
+  Why cramming vector search into PostgreSQL looks great on paper but falls
+  apart in production - a hard look at scalability, real-time search, and
+  operational nightmares.
 slug: the-case-against-pgvector-when-embedded-vector-databases-bite-back
-image: "/blog/2025/the-case-against-pgvector-when-embedded-vector-databases-bite-back_img-1png.png"
-date: 2025-11-04
-tags: ["vectordb", "postgresql", "ai-architecture", "scaling"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/the-case-against-pgvector-when-embedded-vector-databases-bite-back_img-1png.png
+date: 2025-11-04T00:00:00.000Z
+tags: &ref_0
+  - vectordb
+  - postgresql
+  - ai-architecture
+  - scaling
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'The Case Against PGVector: When Embedded Vector Databases Bite Back'
+  description: >-
+    Why cramming vector search into PostgreSQL looks great on paper but falls
+    apart in production - a hard look at scalability, real-time search, and
+    operational nightmares.
+  url: >-
+    https://banandre.com/blog/2025-11/the-case-against-pgvector-when-embedded-vector-databases-bite-back
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/the-case-against-pgvector-when-embedded-vector-databases-bite-back_img-1png.png
+      width: 1200
+      height: 630
+      alt: 'The Case Against PGVector: When Embedded Vector Databases Bite Back'
+  publishedTime: '2025-11-04T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: database
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'The Case Against PGVector: When Embedded Vector Databases Bite Back'
+  description: >-
+    Why cramming vector search into PostgreSQL looks great on paper but falls
+    apart in production - a hard look at scalability, real-time search, and
+    operational nightmares.
+  images:
+    - >-
+      https://banandre.com/blog/2025/the-case-against-pgvector-when-embedded-vector-databases-bite-back_img-1png.png
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'The Case Against PGVector: When Embedded Vector Databases Bite Back'
+  description: >-
+    Why cramming vector search into PostgreSQL looks great on paper but falls
+    apart in production - a hard look at scalability, real-time search, and
+    operational nightmares.
+  image: >-
+    https://banandre.com/blog/2025/the-case-against-pgvector-when-embedded-vector-databases-bite-back_img-1png.png
+  url: >-
+    https://banandre.com/blog/2025-11/the-case-against-pgvector-when-embedded-vector-databases-bite-back
+  datePublished: '2025-11-04T00:00:00.000Z'
+  dateModified: '2025-11-04T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-11/the-case-against-pgvector-when-embedded-vector-databases-bite-back
 ---
 
 The promise sounds perfect: keep everything in Postgres. One database, one backup, one system to rule them all. But when you actually run PGVector in production, that convenience quietly turns into a trap.
