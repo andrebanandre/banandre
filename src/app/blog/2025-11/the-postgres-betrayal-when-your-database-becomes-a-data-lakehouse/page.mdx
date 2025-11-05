@@ -1,11 +1,81 @@
 ---
-title: "The Postgres Betrayal: When Your Database Becomes a Data Lakehouse"
-description: "Snowflake just open-sourced pg_lake, letting Postgres talk directly to Iceberg tables. The SQL you know now touches petabytes."
+title: 'The Postgres Betrayal: When Your Database Becomes a Data Lakehouse'
+description: >-
+  Snowflake just open-sourced pg_lake, letting Postgres talk directly to Iceberg
+  tables. The SQL you know now touches petabytes.
 slug: the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse
-image: "/blog/2025/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse.webp"
-date: 2025-11-05
-tags: ["postgres", "data-lake", "iceberg", "snowflake", "data-architecture"]
-categories: ["Data Engineering"]
+image: >-
+  /blog/2025/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse.webp
+date: 2025-11-05T00:00:00.000Z
+tags: &ref_0
+  - postgres
+  - data-lake
+  - iceberg
+  - snowflake
+  - data-architecture
+categories:
+  - Data Engineering
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'The Postgres Betrayal: When Your Database Becomes a Data Lakehouse'
+  description: >-
+    Snowflake just open-sourced pg_lake, letting Postgres talk directly to
+    Iceberg tables. The SQL you know now touches petabytes.
+  url: >-
+    https://banandre.com/blog/2025-11/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse.webp
+      width: 1200
+      height: 630
+      alt: 'The Postgres Betrayal: When Your Database Becomes a Data Lakehouse'
+  publishedTime: '2025-11-05T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Data Engineering
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'The Postgres Betrayal: When Your Database Becomes a Data Lakehouse'
+  description: >-
+    Snowflake just open-sourced pg_lake, letting Postgres talk directly to
+    Iceberg tables. The SQL you know now touches petabytes.
+  images:
+    - >-
+      https://banandre.com/blog/2025/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse.webp
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'The Postgres Betrayal: When Your Database Becomes a Data Lakehouse'
+  description: >-
+    Snowflake just open-sourced pg_lake, letting Postgres talk directly to
+    Iceberg tables. The SQL you know now touches petabytes.
+  image: >-
+    https://banandre.com/blog/2025/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse.webp
+  url: >-
+    https://banandre.com/blog/2025-11/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse
+  datePublished: '2025-11-05T00:00:00.000Z'
+  dateModified: '2025-11-05T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-11/the-postgres-betrayal-when-your-database-becomes-a-data-lakehouse
 ---
 
 For decades, the separation was sacred: transactional databases handled business logic while data warehouses handled analytics. But Snowflake's [open-sourcing of pg_lake](https://github.com/Snowflake-Labs/pg_lake) just declared war on that architecture. PostgreSQL, the world's most beloved open-source database, can now directly query and manage Apache Iceberg tables in your data lake. The implications are seismic.
