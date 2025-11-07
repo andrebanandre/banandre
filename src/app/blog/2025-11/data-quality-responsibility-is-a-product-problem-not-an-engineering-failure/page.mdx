@@ -1,0 +1,89 @@
+---
+title: "Data Quality Responsibility Is a Product Problem, Not an Engineering Failure"
+description: "Why engineering teams are tired of cleaning up upstream messes that product managers should own from day one."
+slug: data-quality-responsibility-is-a-product-problem-not-an-engineering-failure
+image: "/blog/2025/data-quality-responsibility-is-a-product-problem-not-an-engineering-failure.jpg"
+date: 2025-11-07
+tags: ["data-engineering", "product-management", "data-quality", "data-governance"]
+categories: ["Product Management", "Data Engineering", "Product Management"]
+---
+
+A quiet mutiny is brewing in data engineering circles, and the source might surprise you. It's not about new tools, better frameworks, or faster queries, it's about shifting data quality responsibility from engineering teams to product management. If you've ever spent a weekend fixing "broken" data pipelines only to discover the business logic changed three weeks ago, you already understand why this conversation matters.
+
+## The Great Accountability Gap
+
+Data teams invest thousands of hours building sophisticated quality frameworks, Great Expectations validations, custom dbt tests, comprehensive monitoring dashboards, yet 90% of data quality incidents still stem from **upstream business logic changes that engineering teams learn about through production alerts.**
+
+Consider this reality check from veteran data professionals: "Product managers wouldn't launch a new feature in an app without defining what quality means for the user. Why do we accept running data products without the same rigor?" This disconnect has positioned data engineers as perpetual janitors, constantly cleaning up messes created by unclear requirements and shifting business definitions.
+
+The sentiment across development teams is clear: **We're treated like incident responders rather than engineers building products.** When a product manager changes commission calculations or modifies customer segmentation rules without communicating downstream impacts, engineering teams inherit the technical debt, and the 3AM pages.
+
+## Why Product Managers Should Own Data Quality Standards
+
+Product managers already own feature definition, user experience standards, and product success metrics. Extending that ownership to data quality standards isn't a radical shift, it's a natural evolution of product responsibility in data-driven organizations.
+
+As one industry professional notes, "A PM is responsible for the product from its inception to its retirement" ([Shakshi Neha, Medium](https://medium.com/@snshakshineha452/the-core-identity-what-exactly-is-a-product-manager-part-2-of-8-158ace9259a9)). This lifecycle ownership inherently includes data quality when the product generates or consumes data.
+
+### The Business Logic Problem
+
+The core issue isn't technical, it's organizational. Engineering teams receive vague requirements like "capture customer behavior" without clear definitions of what constitutes valid customer behavior, what time ranges matter, or how to handle edge cases. Then when reports show unexpected results or models fail, fingers point downstream to the data team.
+
+
+One veteran engineer captured this perfectly: "Most of the 'business logic' I deal with is more like 'business tomfoolery'" ([Reddit discussion](https://www.reddit.com/r/dataengineering/comments/1opz0ve/unpopular_opinion_data_quality_is_a_product/)). Sales commission calculations that arbitrarily change month boundaries, customer segmentation rules that evolves without documentation, revenue recognition policies that shift quarterly, these aren't engineering problems. They're product and business definition problems that manifest as data quality incidents.
+
+## The Alternative: Engineering-Driven Data Contracts
+
+Some argue that data engineers themselves need to drive better architectural patterns. As [kenfar noted in the Reddit discussion](https://www.reddit.com/r/dataengineering/comments/1opz0ve/unpopular_opinion_data_quality_is_a_product/), "Data engineers build systems in which they copy the encapsulated schemas from source systems into their warehouse to then transform them... as opposed to having the source system publish domain objects that are locked down with data contracts."
+
+This approach, implementing data contracts and better architectural patterns, can help, but it doesn't solve the fundamental accountability problem. Engineering teams can build perfect validation frameworks, but if the source data changes unpredictably, the validation tools merely document the chaos rather than preventing it.
+
+## The Cross-Business Alignment Challenge
+
+Product-level ownership introduces its own complexities. As LargeSale8354 pointed out, "Product owners only care in the context of their product... Marketing want a single customer view. Neither line of business collect the data in a form that allows comparison. You now have a data quality problem."
+
+![Crack CAT in 40 days](/blog/2025/data-quality-ownership-should-belong-to-product-management-not-engineering_crack-cat-in-40-days.webp)
+
+This cross-business misalignment creates fundamental data quality gaps that no amount of engineering can solve. Different business units capturing the same data for different purposes inevitably creates inconsistencies. The solution, as one commenter noted, is to "align data cleaning to dollars, and then everyone pays attention."
+
+## Practical Steps for Shifting Ownership
+
+### Define Data Quality SLAs Upfront
+
+Product managers should establish data quality Service Level Agreements (SLAs) during requirement gathering, not as an afterthought. These should include:
+
+- Completeness standards (what percentage of records must be complete)
+- Timeliness requirements (how current must the data be)
+- Accuracy thresholds (what constitutes "correct" data)
+- Business logic change notification processes
+
+### Implement Data Contracts with Product Sign-off
+
+Instead of engineering teams guessing at data requirements, implement formal data contracts that product managers must approve before engineering work begins. These contracts specify:
+
+- Field definitions and validation rules
+- Expected data volumes and update frequencies
+- Change management procedures
+- Business logic definitions and ownership
+
+### Establish Upstream Monitoring
+
+Push data quality monitoring as close to the source as possible. When product teams own data-generating features, they should also own monitoring for data completeness, consistency, and correctness at the point of generation.
+
+### Connect Data Quality to Customer Impact
+
+The most effective organizations tie data quality directly to customer experience metrics. When poor data quality leads to customer complaints, revenue loss, or operational inefficiency, product teams feel the impact directly, creating natural incentives for improvement.
+
+## The Data Product Mindset
+
+The fundamental shift required is treating data as a product rather than a byproduct. Product managers who own customer-facing features should also own the data those features generate, including its quality, reliability, and downstream usability.
+
+
+When product teams define clear acceptance criteria for data quality at the same time they define feature requirements, engineering teams can focus on building robust systems rather than chasing shifting goalposts. This doesn't mean engineering abdicates responsibility, it means both teams operate with clear boundaries and shared understanding.
+
+## The Organizational Imperative
+
+Companies that succeed with data treat quality as a first-class product requirement, not an engineering afterthought. They embed data quality discussions in product planning sessions, include data quality metrics in product success criteria, and hold product teams accountable for the data their features produce.
+
+The alternative, continuing to treat data quality as solely an engineering concern, ensures data teams remain reactive firefighters rather than strategic enablers. As one frustrated engineer put it: "We're building sophisticated tools to detect problems that wouldn't exist with proper upstream ownership."
+
+The solution starts with rethinking where data quality ownership belongs in your organization. The next time a data quality alert fires, ask yourself: Is this truly an engineering problem, or is it the symptom of a product-level accountability gap? The answer might determine whether your data team spends its time building value or cleaning up messes.
