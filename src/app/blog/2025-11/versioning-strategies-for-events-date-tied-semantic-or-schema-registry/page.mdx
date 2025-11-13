@@ -1,11 +1,87 @@
 ---
-title: "Versioning Strategies for Events: Date-Tied, Semantic, or Schema Registry?"
-description: "A brutally honest comparison of event versioning tactics, how teams actually manage schema evolution in production, and why most approaches create more problems than they solve."
+title: 'Versioning Strategies for Events: Date-Tied, Semantic, or Schema Registry?'
+description: >-
+  A brutally honest comparison of event versioning tactics, how teams actually
+  manage schema evolution in production, and why most approaches create more
+  problems than they solve.
 slug: versioning-strategies-for-events-date-tied-semantic-or-schema-registry
-image: "/blog/2025/versioning-strategies-for-events-date-tied-semantic-or-schema-registry.jpeg"
-date: 2025-11-13
-tags: ["event-driven", "versioning", "schema-registry", "microservices", "distributed-systems"]
-categories: ["Software Architecture"]
+image: >-
+  /blog/2025/versioning-strategies-for-events-date-tied-semantic-or-schema-registry.jpeg
+date: 2025-11-13T00:00:00.000Z
+tags: &ref_0
+  - event-driven
+  - versioning
+  - schema-registry
+  - microservices
+  - distributed-systems
+categories:
+  - Software Architecture
+author: Banandre
+type: article
+openGraph:
+  type: article
+  title: 'Versioning Strategies for Events: Date-Tied, Semantic, or Schema Registry?'
+  description: >-
+    A brutally honest comparison of event versioning tactics, how teams actually
+    manage schema evolution in production, and why most approaches create more
+    problems than they solve.
+  url: >-
+    https://banandre.com/blog/2025-11/versioning-strategies-for-events-date-tied-semantic-or-schema-registry
+  siteName: Banandre
+  images:
+    - url: >-
+        https://banandre.com/blog/2025/versioning-strategies-for-events-date-tied-semantic-or-schema-registry.jpeg
+      width: 1200
+      height: 630
+      alt: >-
+        Versioning Strategies for Events: Date-Tied, Semantic, or Schema
+        Registry?
+  publishedTime: '2025-11-13T00:00:00.000Z'
+  authors:
+    - Banandre
+  tags: *ref_0
+  section: Software Architecture
+twitter:
+  card: summary_large_image
+  site: '@banandre'
+  creator: '@banandre'
+  title: 'Versioning Strategies for Events: Date-Tied, Semantic, or Schema Registry?'
+  description: >-
+    A brutally honest comparison of event versioning tactics, how teams actually
+    manage schema evolution in production, and why most approaches create more
+    problems than they solve.
+  images:
+    - >-
+      https://banandre.com/blog/2025/versioning-strategies-for-events-date-tied-semantic-or-schema-registry.jpeg
+jsonLd:
+  '@context': 'https://schema.org'
+  '@type': BlogPosting
+  headline: 'Versioning Strategies for Events: Date-Tied, Semantic, or Schema Registry?'
+  description: >-
+    A brutally honest comparison of event versioning tactics, how teams actually
+    manage schema evolution in production, and why most approaches create more
+    problems than they solve.
+  image: >-
+    https://banandre.com/blog/2025/versioning-strategies-for-events-date-tied-semantic-or-schema-registry.jpeg
+  url: >-
+    https://banandre.com/blog/2025-11/versioning-strategies-for-events-date-tied-semantic-or-schema-registry
+  datePublished: '2025-11-13T00:00:00.000Z'
+  dateModified: '2025-11-13T00:00:00.000Z'
+  author:
+    '@type': Person
+    name: Banandre
+    url: 'https://banandre.com'
+  publisher:
+    '@type': Organization
+    name: Banandre
+    url: 'https://banandre.com'
+    logo:
+      '@type': ImageObject
+      url: 'https://banandre.com/banana.png'
+  mainEntityOfPage:
+    '@type': WebPage
+    '@id': >-
+      https://banandre.com/blog/2025-11/versioning-strategies-for-events-date-tied-semantic-or-schema-registry
 ---
 
 Event versioning is the tax you pay for building distributed systems. Every team starts with "we'll just add a version field" and ends up in a compatibility nightmare that costs real money. After analyzing thousands of production incidents and sitting through heated debates about whether renaming a field constitutes a war crime, one thing is clear: your versioning strategy determines whether your event-driven architecture scales or becomes a distributed monolith of pain.
