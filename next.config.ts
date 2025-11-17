@@ -67,7 +67,6 @@ const nextConfig: NextConfig = {
     // Only run ESLint on specific directories during production builds
     dirs: ["src", "pages", "app", "components", "lib"],
   },
-  distDir: "build",
   // Ensure proper TypeScript compilation
   typescript: {
     // Dangerously allow production builds to successfully complete even if
