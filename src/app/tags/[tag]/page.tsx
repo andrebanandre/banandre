@@ -1,4 +1,5 @@
-import { getPostsByTag, getAllTags, parseTagFromUrl } from "../../../lib/blog-utils";
+import { parseTagFromUrl } from "../../../lib/blog-utils";
+import { getCombinedPostsByTag, getAllCombinedTags } from "../../../lib/blog-aggregator";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Tag } from "../../_components/tag";
@@ -19,13 +20,13 @@ interface TagPageProps {
 }
 
 export async function generateStaticParams() {
-  const tags = await getAllTags();
+  const tags = await getAllCombinedTags();
 
   // Only generate static params for tags that have at least one post
   const validTags = [];
   for (const { tag } of tags) {
     try {
-      const posts = await getPostsByTag(tag);
+      const posts = await getCombinedPostsByTag(tag);
       if (posts.length > 0) {
         validTags.push({
           tag: tag.toLowerCase().replace(/[^a-z0-9]/g, ""),
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   try {
     const { tag: urlTag } = await params;
     const displayTag = await parseTagFromUrl(urlTag);
-    const posts = await getPostsByTag(displayTag);
+    const posts = await getCombinedPostsByTag(displayTag);
 
     const title = `#${displayTag} - ${siteConfig.name}`;
     const description = `Articles tagged with ${displayTag}. ${posts.length} article${posts.length !== 1 ? "s" : ""} found.`;
@@ -105,7 +106,7 @@ export default async function TagPage({ params }: TagPageProps) {
   const { tag: urlTag } = await params;
   const displayTag = await parseTagFromUrl(urlTag);
 
-  const posts = await getPostsByTag(displayTag);
+  const posts = await getCombinedPostsByTag(displayTag);
 
   if (posts.length === 0) {
     notFound();

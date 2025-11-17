@@ -1,9 +1,9 @@
 import {
-  getPostsByCategory,
   getAllCategories,
-  parseCategoryFromUrl,
-  formatCategoryForUrl,
-} from "../../../lib/blog-utils";
+  getPostsByCategorySlug,
+  getCategoryBySlug,
+} from "@/lib/wordpress";
+import { normalizeWordPressPost } from "@/lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Category } from "../../_components/category";
@@ -14,7 +14,6 @@ import {
   generateBreadcrumbSchema,
   safeJsonLdStringify,
 } from "../../../lib/json-ld";
-import { Head } from "nextra/components";
 import { siteConfig } from "../../config";
 import { Suspense } from "react";
 
@@ -25,18 +24,40 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  const categories = await getAllCategories();
+  // Fetch WordPress categories only
+  const wpCategories = await getAllCategories();
 
-  return categories.map(({ category }) => ({
-    category: formatCategoryForUrl(category),
+  // Use WordPress slug directly instead of formatting the name
+  return wpCategories.map((cat) => ({
+    category: cat.slug,
   }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   try {
     const { category: urlCategory } = await params;
-    const displayCategory = parseCategoryFromUrl(urlCategory);
-    const posts = await getPostsByCategory(displayCategory);
+
+    // Fetch the category from WordPress to get the display name
+    const category = await getCategoryBySlug(urlCategory);
+    if (!category) {
+      return {
+        title: `Category - ${siteConfig.name}`,
+        description: "Category not found",
+      };
+    }
+
+    const displayCategory = category.name;
+
+    // Fetch WordPress posts for this category
+    let posts: ReturnType<typeof normalizeWordPressPost>[] = [];
+    try {
+      const wpPosts = await getPostsByCategorySlug(urlCategory);
+      if (wpPosts && wpPosts.length > 0) {
+        posts = wpPosts.map(normalizeWordPressPost);
+      }
+    } catch (error) {
+      console.warn(`No posts found for category: ${urlCategory}`, error);
+    }
 
     const title = `${displayCategory} - ${siteConfig.name}`;
     const description = `Articles in ${displayCategory}. ${posts.length} article${posts.length !== 1 ? "s" : ""} found.`;
@@ -102,9 +123,25 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: urlCategory } = await params;
-  const displayCategory = parseCategoryFromUrl(urlCategory);
 
-  const posts = await getPostsByCategory(displayCategory);
+  // Fetch the category from WordPress to get the display name
+  const category = await getCategoryBySlug(urlCategory);
+  if (!category) {
+    notFound();
+  }
+
+  const displayCategory = category.name;
+
+  // Fetch WordPress posts for this category only
+  let posts: ReturnType<typeof normalizeWordPressPost>[] = [];
+  try {
+    const wpPosts = await getPostsByCategorySlug(urlCategory);
+    if (wpPosts && wpPosts.length > 0) {
+      posts = wpPosts.map(normalizeWordPressPost);
+    }
+  } catch (error) {
+    console.error(`Error fetching posts for category: ${urlCategory}`, error);
+  }
 
   if (posts.length === 0) {
     notFound();
@@ -120,20 +157,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: safeJsonLdStringify(categorySchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: safeJsonLdStringify(breadcrumbSchema),
-          }}
-        />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLdStringify(categorySchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLdStringify(breadcrumbSchema),
+        }}
+      />
       <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">

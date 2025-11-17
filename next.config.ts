@@ -28,10 +28,40 @@ const withNextra = nextra({
 
 // Export the final Next.js config with Nextra included
 const nextConfig: NextConfig = {
-  output: "export",
+  // Removed output: "export" to enable SSR/ISR for WordPress integration
   outputFileTracingRoot: process.cwd(),
+  // Allow more time for slow external data sources during SSR/ISR
+  staticPageGenerationTimeout: 180,
   images: {
-    unoptimized: true, // mandatory for static export
+    // Configure remote patterns for WordPress images
+    remotePatterns: [
+      {
+        protocol: (process.env.WORDPRESS_PROTOCOL as "http" | "https") || "https",
+        hostname: process.env.WORDPRESS_HOSTNAME || "your-wordpress-site.com",
+        port: process.env.WORDPRESS_PORT || "",
+        pathname: process.env.WORDPRESS_PATHNAME || "/wp-content/uploads/**",
+      },
+      // Development: Allow localhost WordPress
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9999",
+        pathname: "/wp-content/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "9999",
+        pathname: "/wp-content/uploads/**",
+      },
+      // Production: Allow all HTTPS images as fallback
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+    // Optimize images for better performance
+    unoptimized: false,
   },
   eslint: {
     // Only run ESLint on specific directories during production builds

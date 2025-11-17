@@ -183,7 +183,11 @@ export async function parseTagFromUrl(urlTag: string): Promise<string> {
   return matchingTag ? matchingTag.tag : urlTag.charAt(0).toUpperCase() + urlTag.slice(1);
 }
 
-// Get all unique categories from all blog posts
+/**
+ * @deprecated This function is for MDX posts only. Use WordPress getAllCategories() instead.
+ * Will be removed in a future version once all content is migrated to WordPress.
+ * Get all unique categories from MDX blog posts only
+ */
 export async function getAllCategories(): Promise<{ category: string; count: number }[]> {
   const posts = await getAllBlogPosts();
   const categoryCounts: Record<string, number> = {};
@@ -199,7 +203,11 @@ export async function getAllCategories(): Promise<{ category: string; count: num
     .sort((a, b) => b.count - a.count);
 }
 
-// Get posts filtered by a specific category
+/**
+ * @deprecated This function is for MDX posts only. Use WordPress getPostsByCategorySlug() instead.
+ * Will be removed in a future version once all content is migrated to WordPress.
+ * Get posts filtered by a specific category from MDX posts only
+ */
 export async function getPostsByCategory(category: string): Promise<BlogMetadata[]> {
   const posts = await getAllBlogPosts();
   const filteredPosts = posts.filter((post) =>

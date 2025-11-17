@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import type { PageMapItem } from "nextra";
-import { Anchor, Search } from "nextra/components";
+import { Anchor } from "nextra/components";
 import { normalizePages } from "nextra/normalize-pages";
 import type { FC } from "react";
 import { useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { motion, easeInOut, easeOut } from "framer-motion";
 import { SidebarItem, filterPagesByMeta } from "./sidebar-item";
 import { SidebarCategories } from "./sidebar-categories";
+import { WordPressSearch } from "./wordpress-search";
 
 export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
   const pathname = usePathname();
@@ -188,12 +189,7 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
             <div className="flex items-center space-x-8">
               {/* Search Bar */}
               <motion.div className="hidden md:block flex-1 max-w-md mx-8" variants={itemVariants}>
-                <Search
-                  placeholder="Search..."
-                  emptyResult="No results found."
-                  errorText="Search failed to load."
-                  loading="Searching..."
-                />
+                <WordPressSearch placeholder="Search blog posts..." />
               </motion.div>
 
               {/* Desktop Navigation */}
@@ -273,12 +269,9 @@ export const Navbar: FC<{ pageMap: PageMapItem[] }> = ({ pageMap }) => {
           <div className="px-6 py-6 space-y-4 min-h-full">
             {/* Mobile Search */}
             <motion.div variants={mobileItemVariants} className="mb-4">
-              <Search
-                className="custom-search-input"
-                placeholder="Search BANANDRE..."
-                emptyResult="No results found."
-                errorText="Search failed to load."
-                loading="Searching..."
+              <WordPressSearch
+                className="w-full"
+                placeholder="Search blog posts..."
               />
             </motion.div>
 
