@@ -1,0 +1,317 @@
+/* Scoped styles for WordPress content */
+.wordpress-content {
+    /* Layout - Mapping WordPress theme spacing presets to rem values */
+    --wp--preset--spacing--20: 0.5rem;
+    --wp--preset--spacing--30: 1rem;
+    --wp--preset--spacing--40: 1.5rem;
+    --wp--preset--spacing--50: 2rem;
+
+    /* Visual - Mapping WordPress theme color presets to global variables */
+    --wp--preset--color--primary: var(--foreground);
+    --wp--preset--color--secondary: var(--card);
+    --wp--preset--color--tertiary: var(--border);
+
+    /* Derived variables from user request */
+    --grid-gap: var(--wp--preset--spacing--50);
+    --flex-gap: var(--wp--preset--spacing--40);
+    --col-gap: var(--wp--preset--spacing--50);
+    --section-spacing: var(--wp--preset--spacing--50);
+    --card-padding: var(--wp--preset--spacing--40);
+
+    --border-color: var(--wp--preset--color--tertiary);
+    --border-radius: 8px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    /* Adjusted for dark mode */
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Adjusted for dark mode */
+
+    /* Video */
+    --video-max-width: 42rem;
+    --video-border: 2px solid var(--wp--preset--color--tertiary);
+
+    /* Breakpoints */
+    --mobile: 768px;
+    --tablet: 1024px;
+}
+
+/* Mobile First Base Styles */
+.wordpress-content .blog-grid {
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: 1fr;
+}
+
+.wordpress-content .blog-flex {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap);
+}
+
+.wordpress-content .blog-multi-col {
+    column-count: 1;
+    column-gap: var(--col-gap);
+}
+
+/* Video Components */
+.wordpress-content .video-container {
+    margin: var(--section-spacing) auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.wordpress-content .video-embed {
+    width: 100%;
+    max-width: var(--video-max-width);
+    aspect-ratio: 16/9;
+    border: var(--video-border);
+    border-radius: var(--border-radius);
+    display: block;
+}
+
+/* Cards & Sections */
+.wordpress-content .blog-card {
+    border: 1px solid var(--wp--preset--color--tertiary);
+    border-radius: var(--border-radius);
+    padding: var(--card-padding);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s ease;
+    background-color: var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--primary);
+}
+
+.wordpress-content .blog-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.wordpress-content .blog-section {
+    margin: var(--wp--preset--spacing--50) 0;
+    padding: var(--wp--preset--spacing--40) 0;
+}
+
+.wordpress-content .content-group {
+    margin: var(--wp--preset--spacing--40) 0;
+}
+
+/* Image Layouts with SEO Enhancement */
+.wordpress-content .img-embed {
+    margin: var(--wp--preset--spacing--30) 0;
+    display: block;
+}
+
+.wordpress-content .img-standalone {
+    margin: var(--wp--preset--spacing--50) auto;
+    display: block;
+    max-width: 100%;
+}
+
+.wordpress-content .img-wrap-left {
+    float: left;
+    margin: 0 var(--wp--preset--spacing--30) var(--wp--preset--spacing--30) 0;
+    max-width: 50%;
+}
+
+.wordpress-content .img-wrap-right {
+    float: right;
+    margin: 0 0 var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
+    max-width: 50%;
+}
+
+.wordpress-content .img-card {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    display: block;
+}
+
+/* SEO Image Components */
+.wordpress-content .figure-wrapper {
+    margin: var(--wp--preset--spacing--40) 0;
+    display: block;
+}
+
+.wordpress-content .figure-caption {
+    font-style: italic;
+    text-align: center;
+    margin-top: var(--wp--preset--spacing--20);
+    font-size: 0.9em;
+    color: var(--wp--preset--color--primary);
+    opacity: 0.8;
+}
+
+/* Column Systems - Tablet & Desktop */
+@media (min-width: 769px) {
+    .wordpress-content .cols-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .wordpress-content .cols-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .wordpress-content .cols-1-2 {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .wordpress-content .cols-2-1 {
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .wordpress-content .blog-flex {
+        flex-direction: row;
+    }
+
+    .wordpress-content .multi-col-2 {
+        column-count: 2;
+    }
+
+    .wordpress-content .multi-col-3 {
+        column-count: 3;
+    }
+}
+
+/* Mobile Overrides */
+@media (max-width: 768px) {
+    .wordpress-content .blog-grid:not(.mobile-cols-1) {
+        grid-template-columns: 1fr !important;
+    }
+
+    .wordpress-content .blog-flex:not(.mobile-stack) {
+        flex-direction: column !important;
+    }
+
+    .wordpress-content .multi-col-2,
+    .wordpress-content .multi-col-3 {
+        column-count: 1 !important;
+    }
+
+    .wordpress-content .img-wrap-left,
+    .wordpress-content .img-wrap-right {
+        float: none !important;
+        margin: var(--wp--preset--spacing--30) auto !important;
+        max-width: 100% !important;
+    }
+
+    .wordpress-content .video-embed {
+        max-width: 100%;
+        margin: 0 var(--wp--preset--spacing--30);
+    }
+}
+
+/* SEO Text Enhancements */
+.wordpress-content .content-group h1,
+.wordpress-content .content-group h2,
+.wordpress-content .content-group h3 {
+    margin-top: 0;
+    line-height: 1.3;
+    color: var(--wp--preset--color--primary);
+}
+
+.wordpress-content .content-group p {
+    line-height: 1.6;
+    margin-bottom: var(--wp--preset--spacing--30);
+    color: var(--wp--preset--color--primary);
+}
+
+/* Semantic HTML enhancements */
+.wordpress-content .article-section {
+    display: block;
+}
+
+.wordpress-content .content-group ul,
+.wordpress-content .content-group ol {
+    padding-left: var(--wp--preset--spacing--40);
+    margin: var(--wp--preset--spacing--30) 0;
+}
+
+/* Brutalist Post Grid Layout for Blog (Scoped if used inside content, but usually this is for lists) */
+/* If these are used inside the post content (e.g. related posts block), we scope them. */
+/* If they are used in the main blog list, they might need to be global or scoped differently. */
+/* Assuming these are for blocks that might appear in content */
+
+.wordpress-content .wp-block-post-template {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.wordpress-content .brutalist-post-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+    background: #000;
+    border-radius: 8px;
+}
+
+.wordpress-content .brutalist-post-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.wordpress-content .brutalist-post-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: none !important;
+}
+
+.wordpress-content .brutalist-post-card:hover .brutalist-post-image img {
+    transform: scale(1.05);
+}
+
+.wordpress-content .brutalist-post-content {
+    padding: 1.5rem;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+    position: relative;
+    z-index: 2;
+    border-radius: 0 0 8px 8px;
+}
+
+.wordpress-content .brutalist-post-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #fff;
+}
+
+.wordpress-content .brutalist-post-title a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.wordpress-content .brutalist-post-title a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.wordpress-content .brutalist-post-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.wordpress-content .brutalist-post-date,
+.wordpress-content .brutalist-post-read-time,
+.wordpress-content .brutalist-post-views {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+    .wordpress-content .wp-block-post-template {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .wordpress-content .brutalist-post-card {
+        margin-bottom: 1rem;
+    }
+}

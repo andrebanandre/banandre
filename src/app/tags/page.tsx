@@ -1,8 +1,13 @@
-import { getAllTags } from "../../lib/blog-utils";
+import { getAllTags, getAllPosts } from "../../lib/wordpress";
+import { normalizeWordPressPost } from "../../lib/content-types";
+import { getUniqueTagsFromPosts } from "../../lib/content-types";
 import { Tag } from "../_components/tag";
 
 export default async function TagsPage() {
-  const tags = await getAllTags();
+  // Fetch all posts to calculate tag counts
+  const wordpressPosts = await getAllPosts();
+  const posts = wordpressPosts.map(normalizeWordPressPost);
+  const tagStats = getUniqueTagsFromPosts(posts);
 
   return (
     <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
@@ -15,14 +20,14 @@ export default async function TagsPage() {
         </div>
 
         <div className="grid gap-6 md:gap-8">
-          {tags.length === 0 ? (
+          {tagStats.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-400 text-lg">No tags found.</p>
             </div>
           ) : (
             <>
               <div className="flex flex-wrap gap-4">
-                {tags.map(({ tag, count }) => (
+                {tagStats.map(({ tag, count }) => (
                   <div key={tag} className="relative">
                     <Tag tag={tag} />
                     <span className="absolute -top-2 -right-2 bg-white text-[var(--blue-accent)] text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
@@ -35,7 +40,7 @@ export default async function TagsPage() {
               <div className="mt-12 pt-8 border-t-2 border-[var(--accent)]">
                 <h2 className="text-2xl font-bold text-white mb-4 uppercase">Tag Statistics</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {tags.map(({ tag, count }) => (
+                  {tagStats.map(({ tag, count }) => (
                     <div
                       key={tag}
                       className="bg-[var(--card)] brutalist-border p-4 hover:bg-[var(--muted)] transition-colors"

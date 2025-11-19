@@ -1,43 +1,62 @@
-import nextra from "nextra";
 import type { NextConfig } from "next";
-import rehypeMeta from "rehype-meta";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
-// Set up Nextra with its configuration
-const withNextra = nextra({
-  search: true,
-  mdxOptions: {
-    remarkPlugins: [],
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "wrap",
-          properties: {
-            className: ["anchor"],
-          },
-        },
-      ],
-      // Remove rehype-meta as it doesn't work properly with Nextra static exports
-    ],
-  },
-  defaultShowCopyCode: true,
-});
-
-// Export the final Next.js config with Nextra included
 const nextConfig: NextConfig = {
-  output: "export",
+  // Redirect old WordPress date-based URLs to new structure
+  async redirects() {
+    return [
+      {
+        // Handle /blog/YYYY-MM/slug -> /blog/slug
+        source: '/blog/:year(\\d{4})-:month(\\d{2})/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true, // 301 redirect
+      },
+      {
+        // Handle /YYYY-MM/slug -> /blog/slug (in case some old links don't have /blog/)
+        source: '/:year(\\d{4})-:month(\\d{2})/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
+  // Removed output: "export" to enable SSR/ISR for WordPress integration
   outputFileTracingRoot: process.cwd(),
+  // Allow more time for slow external data sources during SSR/ISR
+  staticPageGenerationTimeout: 180,
   images: {
-    unoptimized: true, // mandatory for static export
+    // Configure remote patterns for WordPress images
+    remotePatterns: [
+      {
+        protocol: (process.env.WORDPRESS_PROTOCOL as "http" | "https") || "https",
+        hostname: process.env.WORDPRESS_HOSTNAME || "your-wordpress-site.com",
+        port: process.env.WORDPRESS_PORT || "",
+        pathname: process.env.WORDPRESS_PATHNAME || "/wp-content/uploads/**",
+      },
+      // Development: Allow localhost WordPress
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9999",
+        pathname: "/wp-content/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "9999",
+        pathname: "/wp-content/uploads/**",
+      },
+      // Production: Allow all HTTPS images as fallback
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+    // Optimize images for better performance
+    unoptimized: false,
   },
   eslint: {
     // Only run ESLint on specific directories during production builds
     dirs: ["src", "pages", "app", "components", "lib"],
   },
-  distDir: "build",
   // Ensure proper TypeScript compilation
   typescript: {
     // Dangerously allow production builds to successfully complete even if
@@ -63,4 +82,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextra(nextConfig);
+export default nextConfig;

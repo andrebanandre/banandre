@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Head } from "nextra/components";
-import { getPageMap } from "nextra/page-map";
 import type { FC, ReactNode } from "react";
-import { NextraTheme } from "./_components/nextra-theme";
 import GoogleAnalytics from "./_components/google-analytics";
+import { Header } from "./_components/header";
+import { Sidebar } from "./_components/sidebar";
+import { Footer } from "./_components/footer";
+import { ConditionalLayout } from "./_components/conditional-layout";
 import {
   generateWebSiteSchema,
   generateOrganizationSchema,
@@ -12,7 +13,6 @@ import {
 } from "../lib/json-ld";
 import "./globals.css";
 import "./sidebar.css";
-import "nextra-theme-blog/style.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://banandre.com";
 
@@ -73,14 +73,13 @@ export const metadata: Metadata = {
 };
 
 const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
-  const pageMap = await getPageMap();
   const websiteSchema = generateWebSiteSchema();
   const organizationSchema = generateOrganizationSchema();
   const blogSchema = generateBlogSchema();
 
   return (
     <html lang="en" dir="ltr">
-      <Head faviconGlyph="✦">
+      <head>
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
@@ -115,9 +114,12 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
             __html: safeJsonLdStringify(blogSchema),
           }}
         />
-      </Head>
+      </head>
       <body style={{ margin: 0 }}>
-        <NextraTheme pageMap={pageMap}>{children}</NextraTheme>
+        <Header />
+        <ConditionalLayout sidebar={<Sidebar />} footer={<Footer />}>
+          {children}
+        </ConditionalLayout>
         <GoogleAnalytics />
       </body>
     </html>

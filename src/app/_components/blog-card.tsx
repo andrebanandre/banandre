@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { decode } from "html-entities";
 
-import { type BlogMetadata } from "../../lib/blog-utils";
+import { type NormalizedPost } from "../../lib/content-types";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 interface BlogCardProps {
-  post: BlogMetadata;
+  post: NormalizedPost;
   featured?: boolean;
   size?: "small" | "medium" | "large" | "featured";
 }
@@ -55,7 +56,7 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
         transition: { duration: 0.1 },
       }}
     >
-      <Link href={post.slug} className="block h-full">
+      <Link href={post.url} className="block h-full">
         <div className="h-full flex flex-col relative">
           {/* Image Cover - Full width, no gaps */}
           {post.image && (
@@ -93,11 +94,11 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
           <div className="flex-1 p-4 flex flex-col min-h-0">
             <div className="flex-1 min-h-0">
               <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[var(--accent)] transition-colors uppercase tracking-wide line-clamp-2">
-                {post.title}
+                {decode(post.title)}
               </h3>
 
               {post.description && (
-                <p className="text-gray-300 text-sm mb-3 line-clamp-2">{post.description}</p>
+                <p className="text-gray-300 text-sm mb-3 line-clamp-2">{decode(post.description)}</p>
               )}
             </div>
 
@@ -137,7 +138,7 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
 }
 
 interface BlogGridProps {
-  posts: BlogMetadata[];
+  posts: NormalizedPost[];
   currentPage?: number;
   totalPages?: number;
 }
@@ -166,9 +167,11 @@ export function BlogGrid({ posts, currentPage, totalPages }: BlogGridProps) {
 
       {/* Grid layout similar to screenshot */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {posts.map((post, index) => (
-          <BlogCard key={post.slug} post={post} featured={index === 0} size={getCardSize(index)} />
-        ))}
+        {posts.map((post, index) => {
+          return (
+            <BlogCard key={post.url} post={post} featured={index === 0} size={getCardSize(index)} />
+          );
+        })}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { SidebarCategories } from "./sidebar-categories";
 import { SidebarNav } from "./sidebar-nav";
 
-export async function Sidebar() {
+export async function BlogSidebar() {
   const navItems = [
     { title: "Home", href: "/" },
     { title: "Categories", href: "/categories" },
@@ -9,7 +9,7 @@ export async function Sidebar() {
   ];
 
   return (
-    <aside className="hidden lg:block w-80 bg-[var(--card)] border-r-4 border-[var(--accent)] p-6 overflow-y-auto fixed left-0 top-16 sm:top-20 bottom-0">
+    <aside className="hidden lg:block w-80 bg-[var(--card)] border-r-4 border-[var(--accent)] p-6 sticky top-20 self-start max-h-[calc(100vh-5rem)] overflow-y-auto">
       <div className="mb-8">
         <h2 className="text-[var(--accent)] font-black text-xl uppercase tracking-wide mb-6">
           Navigation

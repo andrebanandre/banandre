@@ -1,16 +1,17 @@
-import { getAllCategories, formatCategoryForUrl } from "../../lib/blog-utils";
+import { getAllCategories } from "@/lib/wordpress";
 import Link from "next/link";
 
 export async function AllCategoriesDisplay() {
   try {
-    const allCategories = await getAllCategories();
+    // Fetch WordPress categories only
+    const wpCategories = await getAllCategories();
 
     return (
       <div className="flex flex-wrap gap-2">
-        {allCategories.slice(0, 12).map(({ category, count }) => (
-          <Link key={category} href={`/categories/${formatCategoryForUrl(category)}`}>
+        {wpCategories.slice(0, 12).map((cat) => (
+          <Link key={cat.id} href={`/categories/${cat.slug}`}>
             <span className="bg-[var(--muted)] text-white px-2 py-1 text-xs font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-colors cursor-pointer">
-              {category.toUpperCase()} ({count})
+              {cat.name.toUpperCase()} ({cat.count})
             </span>
           </Link>
         ))}
@@ -19,27 +20,8 @@ export async function AllCategoriesDisplay() {
   } catch (error) {
     console.error("Error loading categories:", error);
     return (
-      <div className="flex flex-wrap gap-2">
-        {[
-          "ARTIFICIAL INTELLIGENCE",
-          "SOFTWARE ARCHITECTURE",
-          "DATA SCIENCE",
-          "MACHINE LEARNING",
-          "CLOUD COMPUTING",
-          "CYBERSECURITY",
-          "BLOCKCHAIN",
-          "DEVOPS",
-          "MOBILE DEVELOPMENT",
-          "WEB DEVELOPMENT",
-          "ALGORITHMS",
-          "DATABASES",
-        ].map((category) => (
-          <Link key={category} href={`/categories/${formatCategoryForUrl(category)}`}>
-            <span className="bg-[var(--muted)] text-white px-2 py-1 text-xs font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-colors cursor-pointer">
-              {category} ({Math.floor(Math.random() * 50) + 5})
-            </span>
-          </Link>
-        ))}
+      <div className="text-center py-4">
+        <p className="text-gray-400">Unable to load categories. Please try again later.</p>
       </div>
     );
   }

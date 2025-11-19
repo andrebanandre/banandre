@@ -1,0 +1,34 @@
+main = ".open-next/worker.js"
+name = "banandrecom"
+compatibility_date = "2025-03-25"
+compatibility_flags = ["nodejs_compat"]
+
+[[routes]]
+pattern = "www.banandre.com"
+custom_domain = true
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+persist = true
+head_sampling_rate = 1
+
+[vars]
+WORDPRESS_HOSTNAME = "cms.banandre.com"
+WORDPRESS_PATH_NAME = "/wp-content/uploads/**"
+WORDPRESS_PORT = ""
+WORDPRESS_PROTOCOL = "https"
+WORDPRESS_URL = "https://cms.banandre.com"

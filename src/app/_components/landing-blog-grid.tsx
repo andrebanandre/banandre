@@ -1,19 +1,15 @@
 import { Suspense } from "react";
-import { getAllBlogPosts } from "../../lib/blog-utils";
+import { getAllPosts } from "../../lib/wordpress";
+import { normalizeWordPressPost } from "../../lib/content-types";
 import { ClientBlogGrid } from "./client-blog-grid";
 
 export async function LandingBlogGrid() {
   try {
-    const allPosts = await getAllBlogPosts();
+    // Fetch posts from WordPress
+    const wordpressPosts = await getAllPosts();
+    const allPosts = wordpressPosts.map(normalizeWordPressPost);
 
-    // Sort posts by date (newest first) - if no date, treat as oldest
-    const sortedPosts = allPosts.sort((a, b) => {
-      const dateA = a.date ? new Date(a.date).getTime() : 0;
-      const dateB = b.date ? new Date(b.date).getTime() : 0;
-      return dateB - dateA;
-    });
-
-    if (sortedPosts.length === 0) {
+    if (allPosts.length === 0) {
       return (
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center py-16">
           <h2 className="text-2xl font-bold text-[var(--accent)] mb-4 uppercase tracking-wide">
@@ -36,7 +32,7 @@ export async function LandingBlogGrid() {
           </div>
         }
       >
-        <ClientBlogGrid posts={sortedPosts} />
+        <ClientBlogGrid posts={allPosts} />
       </Suspense>
     );
   } catch (error) {

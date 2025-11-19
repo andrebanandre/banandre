@@ -1,8 +1,9 @@
-import { getAllBlogPosts } from "../../lib/blog-utils";
+import { getAllPosts } from "../../lib/wordpress";
+import { normalizeWordPressPost } from "../../lib/content-types";
 import { siteConfig } from "../config";
 
-// Required for static export compatibility
-export const revalidate = 3600; // Revalidate every hour
+// Required for ISR - revalidate every hour
+export const revalidate = 3600;
 
 const CONFIG = {
   title: siteConfig.title,
@@ -13,21 +14,14 @@ const CONFIG = {
 
 export async function GET() {
   try {
-    const allPosts = await getAllBlogPosts();
+    // Fetch posts from WordPress
+    const wordpressPosts = await getAllPosts();
+    const allPosts = wordpressPosts.map(normalizeWordPressPost);
 
-    // Sort posts by date (newest first)
-    const sortedPosts = allPosts
-      .filter((post) => post.date) // Only include posts with dates
-      .sort((a, b) => {
-        const dateA = new Date(a.date!);
-        const dateB = new Date(b.date!);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-    const postsXml = sortedPosts
+    const postsXml = allPosts
       .map((post) => {
-        const postUrl = `${CONFIG.siteUrl}${post.slug}`;
-        const pubDate = post.date ? new Date(post.date).toUTCString() : new Date().toUTCString();
+        const postUrl = `${CONFIG.siteUrl}${post.url}`;
+        const pubDate = new Date(post.date).toUTCString();
 
         return `    <item>
       <title><![CDATA[${post.title}]]></title>
