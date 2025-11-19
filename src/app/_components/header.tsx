@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { HamburgerMenuIcon, Cross1Icon, MagnifyingGlassIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import {
+  HamburgerMenuIcon,
+  Cross1Icon,
+  MagnifyingGlassIcon,
+  ChevronDownIcon,
+} from "@radix-ui/react-icons";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
 
@@ -53,17 +58,17 @@ export function Header() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (isCategoriesOpen && !target.closest('[data-categories-dropdown]')) {
+      if (isCategoriesOpen && !target.closest("[data-categories-dropdown]")) {
         setIsCategoriesOpen(false);
       }
     };
 
     if (isCategoriesOpen) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isCategoriesOpen]);
 
@@ -90,11 +95,13 @@ export function Header() {
               <div className="relative" data-categories-dropdown>
                 <button
                   onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                  className="px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 text-white hover:text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 rounded flex items-center gap-2"
+                  className="px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] rounded flex items-center gap-2"
                   aria-label="Categories menu"
                 >
                   Categories
-                  <ChevronDownIcon className={`h-4 w-4 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDownIcon
+                    className={`h-4 w-4 transition-transform ${isCategoriesOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {isCategoriesOpen && (
@@ -106,7 +113,7 @@ export function Header() {
                             <Link
                               href={`/categories/${formatCategoryForUrl(category.name)}`}
                               onClick={() => setIsCategoriesOpen(false)}
-                              className="block px-4 py-2 text-sm text-white hover:bg-[var(--accent)] hover:bg-opacity-20 transition-colors"
+                              className="block px-4 py-2 text-sm text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] transition-colors"
                             >
                               <span className="font-bold">{category.name}</span>
                               <span className="text-gray-400 ml-2">({category.count})</span>
@@ -123,7 +130,7 @@ export function Header() {
 
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-2 text-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-10 transition-colors rounded"
+                className="p-2 text-[var(--accent)] hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] transition-colors rounded"
                 aria-label="Toggle search"
               >
                 <MagnifyingGlassIcon className="h-5 w-5" />

@@ -21,7 +21,7 @@ interface WordPressSearchProps {
 
 export function WordPressSearch({
   placeholder = "Search blog posts...",
-  className = ""
+  className = "",
 }: WordPressSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -41,9 +41,7 @@ export function WordPressSearch({
     const timeoutId = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `/api/search?q=${encodeURIComponent(query)}`
-        );
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         if (response.ok) {
           const data = await response.json();
           setResults(data.results || []);
@@ -116,7 +114,7 @@ export function WordPressSearch({
                 <li key={result.id}>
                   <button
                     onClick={() => handleResultClick(result.slug)}
-                    className="w-full px-4 py-3 hover:bg-[var(--accent)] hover:bg-opacity-10 transition-colors duration-150 text-left flex items-start gap-3"
+                    className="w-full px-4 py-3 text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] transition-colors duration-150 text-left flex items-start gap-3 cursor-pointer"
                   >
                     {result.featuredImage && (
                       <div className="flex-shrink-0 w-16 h-16 relative">
@@ -131,11 +129,11 @@ export function WordPressSearch({
                     )}
                     <div className="flex-1 min-w-0">
                       <div
-                        className="text-white font-bold text-sm mb-1 line-clamp-2"
+                        className="text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] font-bold text-sm mb-1 line-clamp-2"
                         dangerouslySetInnerHTML={{ __html: result.title }}
                       />
                       <div
-                        className="text-gray-400 text-xs line-clamp-2"
+                        className="text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] text-xs line-clamp-2"
                         dangerouslySetInnerHTML={{ __html: result.excerpt }}
                       />
                     </div>
