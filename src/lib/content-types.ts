@@ -1,26 +1,8 @@
-// Unified content types for WordPress + MDX hybrid system
+// Content types for WordPress-only system
 import type { Post as WordPressPost, Category, Tag } from "./wordpress.d";
-import type { BlogMetadata as MDXBlogMetadata } from "./blog-utils";
-
-// Source discriminator
-export type ContentSource = "wordpress" | "mdx";
-
-// WordPress Post with source marker
-export interface WordPressPostWithSource extends WordPressPost {
-  source: "wordpress";
-}
-
-// MDX Post with source marker
-export interface MDXPostWithSource extends MDXBlogMetadata {
-  source: "mdx";
-}
-
-// Unified post type (discriminated union)
-export type UnifiedPost = WordPressPostWithSource | MDXPostWithSource;
 
 // Normalized post interface for display components
 export interface NormalizedPost {
-  source: ContentSource;
   title: string;
   description: string;
   excerpt?: string;
@@ -33,16 +15,7 @@ export interface NormalizedPost {
   author?: string;
 }
 
-// Type guards
-export function isWordPressPost(post: UnifiedPost): post is WordPressPostWithSource {
-  return post.source === "wordpress";
-}
-
-export function isMDXPost(post: UnifiedPost): post is MDXPostWithSource {
-  return post.source === "mdx";
-}
-
-// Helper functions to normalize posts for display
+// Helper function to normalize WordPress posts for display
 export function normalizeWordPressPost(post: WordPressPost): NormalizedPost {
   // Extract categories from embedded data
   const categories: string[] = [];
@@ -86,7 +59,6 @@ export function normalizeWordPressPost(post: WordPressPost): NormalizedPost {
     : "";
 
   return {
-    source: "wordpress",
     title: post.title.rendered,
     description: excerpt,
     excerpt: excerpt,
@@ -98,29 +70,6 @@ export function normalizeWordPressPost(post: WordPressPost): NormalizedPost {
     tags,
     author,
   };
-}
-
-export function normalizeMDXPost(post: MDXBlogMetadata): NormalizedPost {
-  return {
-    source: "mdx",
-    title: post.title,
-    description: post.description,
-    image: post.image,
-    slug: post.slug,
-    url: post.slug, // MDX posts already have full path like /blog/2025-11/slug
-    date: post.date || new Date().toISOString(),
-    categories: post.categories,
-    tags: post.tags,
-    author: "Banandre", // Default author for MDX posts
-  };
-}
-
-// Normalize any unified post
-export function normalizePost(post: UnifiedPost): NormalizedPost {
-  if (isWordPressPost(post)) {
-    return normalizeWordPressPost(post);
-  }
-  return normalizeMDXPost(post);
 }
 
 // Sort posts by date (newest first)

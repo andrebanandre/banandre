@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
-import { type BlogMetadata } from "../../lib/blog-utils";
 import { type NormalizedPost } from "../../lib/content-types";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 interface BlogCardProps {
-  post: BlogMetadata | NormalizedPost;
+  post: NormalizedPost;
   featured?: boolean;
   size?: "small" | "medium" | "large" | "featured";
 }
@@ -56,7 +55,7 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
         transition: { duration: 0.1 },
       }}
     >
-      <Link href={"url" in post ? post.url : post.slug} className="block h-full">
+      <Link href={post.url} className="block h-full">
         <div className="h-full flex flex-col relative">
           {/* Image Cover - Full width, no gaps */}
           {post.image && (
@@ -138,7 +137,7 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
 }
 
 interface BlogGridProps {
-  posts: (BlogMetadata | NormalizedPost)[];
+  posts: NormalizedPost[];
   currentPage?: number;
   totalPages?: number;
 }
@@ -168,9 +167,8 @@ export function BlogGrid({ posts, currentPage, totalPages }: BlogGridProps) {
       {/* Grid layout similar to screenshot */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {posts.map((post, index) => {
-          const key = "url" in post ? post.url : post.slug;
           return (
-            <BlogCard key={key} post={post} featured={index === 0} size={getCardSize(index)} />
+            <BlogCard key={post.url} post={post} featured={index === 0} size={getCardSize(index)} />
           );
         })}
       </div>

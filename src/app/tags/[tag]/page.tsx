@@ -1,5 +1,5 @@
-import { parseTagFromUrl } from "../../../lib/blog-utils";
-import { getCombinedPostsByTag, getAllCombinedTags } from "../../../lib/blog-aggregator";
+import { getAllTags, getTagBySlug, getPostsByTagPaginated } from "../../../lib/wordpress";
+import { normalizeWordPressPost } from "../../../lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Tag } from "../../_components/tag";
@@ -10,7 +10,7 @@ import {
   generateBreadcrumbSchema,
   safeJsonLdStringify,
 } from "../../../lib/json-ld";
-import { Head } from "nextra/components";
+import { formatTagForUrl } from "../../../lib/url-utils";
 import { siteConfig } from "../../config";
 
 interface TagPageProps {
@@ -20,35 +20,31 @@ interface TagPageProps {
 }
 
 export async function generateStaticParams() {
-  const tags = await getAllCombinedTags();
+  const tags = await getAllTags();
 
-  // Only generate static params for tags that have at least one post
-  const validTags = [];
-  for (const { tag } of tags) {
-    try {
-      const posts = await getCombinedPostsByTag(tag);
-      if (posts.length > 0) {
-        validTags.push({
-          tag: tag.toLowerCase().replace(/[^a-z0-9]/g, ""),
-        });
-      }
-    } catch (error) {
-      // Skip tags that cause errors
-      console.warn(`Skipping tag ${tag} due to error:`, error);
-    }
-  }
-
-  return validTags;
+  return tags.map((tag) => ({
+    tag: formatTagForUrl(tag.name),
+  }));
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
   try {
     const { tag: urlTag } = await params;
-    const displayTag = await parseTagFromUrl(urlTag);
-    const posts = await getCombinedPostsByTag(displayTag);
+
+    // Get the WordPress tag by slug
+    const tag = await getTagBySlug(urlTag);
+    if (!tag) {
+      return {
+        title: `Tag Not Found - ${siteConfig.name}`,
+        description: "Tag not found",
+      };
+    }
+
+    const displayTag = tag.name;
+    const { data: wordpressPosts } = await getPostsByTagPaginated(tag.id, 1, 100);
 
     const title = `#${displayTag} - ${siteConfig.name}`;
-    const description = `Articles tagged with ${displayTag}. ${posts.length} article${posts.length !== 1 ? "s" : ""} found.`;
+    const description = `Articles tagged with ${displayTag}. ${wordpressPosts.length} article${wordpressPosts.length !== 1 ? "s" : ""} found.`;
 
     return {
       title,
@@ -104,9 +100,19 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 
 export default async function TagPage({ params }: TagPageProps) {
   const { tag: urlTag } = await params;
-  const displayTag = await parseTagFromUrl(urlTag);
 
-  const posts = await getCombinedPostsByTag(displayTag);
+  // Get the WordPress tag by slug
+  const tag = await getTagBySlug(urlTag);
+
+  if (!tag) {
+    notFound();
+  }
+
+  const displayTag = tag.name;
+
+  // Fetch posts with this tag
+  const { data: wordpressPosts } = await getPostsByTagPaginated(tag.id, 1, 100);
+  const posts = wordpressPosts.map(normalizeWordPressPost);
 
   if (posts.length === 0) {
     notFound();
@@ -122,7 +128,7 @@ export default async function TagPage({ params }: TagPageProps) {
 
   return (
     <>
-      <Head>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -135,7 +141,7 @@ export default async function TagPage({ params }: TagPageProps) {
             __html: safeJsonLdStringify(breadcrumbSchema),
           }}
         />
-      </Head>
+      </head>
       <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">

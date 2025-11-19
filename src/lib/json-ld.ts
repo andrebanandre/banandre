@@ -1,5 +1,5 @@
 import type { Blog, WebSite, Organization, Person, BreadcrumbList, WithContext } from "schema-dts";
-import type { BlogMetadata } from "./blog-utils";
+import type { NormalizedPost } from "./content-types";
 
 const SITE_URL = "https://www.banandre.com";
 const SITE_NAME = "Banandre - No One Cares About Code";
@@ -151,7 +151,7 @@ export function generateBreadcrumbSchema(
   };
 }
 
-export function generateCategoryPageSchema(category: string, posts: BlogMetadata[]) {
+export function generateCategoryPageSchema(category: string, posts: NormalizedPost[]) {
   const categoryUrl = `${SITE_URL}/categories/${category.toLowerCase().replace(/\s+/g, "-")}`;
 
   return {
@@ -178,7 +178,7 @@ export function generateCategoryPageSchema(category: string, posts: BlogMetadata
   };
 }
 
-export function generateTagPageSchema(tag: string, posts: BlogMetadata[]) {
+export function generateTagPageSchema(tag: string, posts: NormalizedPost[]) {
   const tagUrl = `${SITE_URL}/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`;
 
   return {
@@ -205,7 +205,7 @@ export function generateTagPageSchema(tag: string, posts: BlogMetadata[]) {
   };
 }
 
-export function generateArticleSchema(post: BlogMetadata) {
+export function generateArticleSchema(post: NormalizedPost) {
   const articleUrl = `${SITE_URL}${post.slug}`;
   const publishDate = post.date ? new Date(post.date).toISOString() : new Date().toISOString();
 

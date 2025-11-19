@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { BlogGrid } from "./blog-card";
 import { Pagination } from "./pagination";
-import { type BlogMetadata } from "../../lib/blog-utils";
 import { type NormalizedPost } from "../../lib/content-types";
 
 interface ClientCategoryGridProps {
-  posts: (BlogMetadata | NormalizedPost)[];
+  posts: NormalizedPost[];
   baseUrl: string;
 }
 

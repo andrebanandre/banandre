@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
-import { getAllCombinedPosts, getAllCombinedCategories, getAllCombinedTags } from "../lib/blog-aggregator";
-import { formatCategoryForUrl, formatTagForUrl } from "../lib/blog-utils";
+import { getAllPosts, getAllCategories, getAllTags } from "../lib/wordpress";
+import { normalizeWordPressPost } from "../lib/content-types";
+import { formatCategoryForUrl, formatTagForUrl } from "../lib/url-utils";
 import { siteConfig } from "./config";
 
 export const revalidate = 3600; // Revalidate every hour
@@ -9,12 +10,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
   try {
-    // Fetch all posts, categories, and tags from both sources
-    const [allPosts, allCategories, allTags] = await Promise.all([
-      getAllCombinedPosts(),
-      getAllCombinedCategories(),
-      getAllCombinedTags(),
+    // Fetch all posts, categories, and tags from WordPress
+    const [wordpressPosts, allCategories, allTags] = await Promise.all([
+      getAllPosts(),
+      getAllCategories(),
+      getAllTags(),
     ]);
+
+    // Normalize WordPress posts
+    const allPosts = wordpressPosts.map(normalizeWordPressPost);
 
     // Homepage
     const routes: MetadataRoute.Sitemap = [
@@ -34,9 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
 
-    allCategories.forEach(({ category }) => {
+    allCategories.forEach((category) => {
       routes.push({
-        url: `${baseUrl}/categories/${formatCategoryForUrl(category)}`,
+        url: `${baseUrl}/categories/${formatCategoryForUrl(category.name)}`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.7,
@@ -51,24 +55,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
 
-    allTags.forEach(({ tag }) => {
+    allTags.forEach((tag) => {
       routes.push({
-        url: `${baseUrl}/tags/${formatTagForUrl(tag)}`,
+        url: `${baseUrl}/tags/${formatTagForUrl(tag.name)}`,
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.6,
       });
     });
 
-    // Blog posts - WordPress posts get higher priority
+    // Blog posts from WordPress
     allPosts.forEach((post) => {
-      const isWordPress = post.source === "wordpress";
-
       routes.push({
         url: `${baseUrl}${post.url}`,
         lastModified: new Date(post.date),
         changeFrequency: "weekly",
-        priority: isWordPress ? 0.9 : 0.8, // WordPress posts get slightly higher priority
+        priority: 0.9,
       });
     });
 

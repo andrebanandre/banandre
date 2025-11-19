@@ -1,12 +1,13 @@
 import { Suspense } from "react";
-import { getAllCombinedPosts } from "../../lib/blog-aggregator";
+import { getAllPosts } from "../../lib/wordpress";
+import { normalizeWordPressPost } from "../../lib/content-types";
 import { ClientBlogGrid } from "./client-blog-grid";
 
 export async function LandingBlogGrid() {
   try {
-    // Fetch posts from both WordPress and MDX sources
-    // Posts are already sorted: WordPress first (newest to oldest), then MDX (newest to oldest)
-    const allPosts = await getAllCombinedPosts();
+    // Fetch posts from WordPress
+    const wordpressPosts = await getAllPosts();
+    const allPosts = wordpressPosts.map(normalizeWordPressPost);
 
     if (allPosts.length === 0) {
       return (

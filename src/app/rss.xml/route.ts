@@ -1,4 +1,5 @@
-import { getAllCombinedPosts } from "../../lib/blog-aggregator";
+import { getAllPosts } from "../../lib/wordpress";
+import { normalizeWordPressPost } from "../../lib/content-types";
 import { siteConfig } from "../config";
 
 // Required for ISR - revalidate every hour
@@ -13,9 +14,9 @@ const CONFIG = {
 
 export async function GET() {
   try {
-    // Fetch posts from both WordPress and MDX sources
-    // Posts are already sorted: WordPress first (newest to oldest), then MDX (newest to oldest)
-    const allPosts = await getAllCombinedPosts();
+    // Fetch posts from WordPress
+    const wordpressPosts = await getAllPosts();
+    const allPosts = wordpressPosts.map(normalizeWordPressPost);
 
     const postsXml = allPosts
       .map((post) => {

@@ -1,26 +1,17 @@
-"use client";
-
 import Link from "next/link";
+import { getAllCategories } from "@/lib/wordpress";
+import { formatCategoryForUrl } from "@/lib/url-utils";
 
-// Client-side version of formatCategoryForUrl
-function formatCategoryForUrl(category: string): string {
-  return category
-    .toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with dashes
-    .replace(/[^a-z0-9-]/g, ""); // Remove all non-alphanumeric except dashes
-}
+export async function SidebarCategories() {
+  const categories = await getAllCategories();
 
-export function SidebarCategories() {
-  const categories = [
-    "ARTIFICIAL INTELLIGENCE",
-    "SOFTWARE ARCHITECTURE",
-    "SOFTWARE DEVELOPMENT",
-    "ENGINEERING MANAGEMENT",
-    "PRODUCT MANAGEMENT",
-  ];
+  // Sort by count and take top 10
+  const topCategories = categories
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
 
   return (
-    <div className="mb-6 relative z-20">
+    <div className="mb-6">
       <div className="mb-4">
         <h3 className="text-[var(--accent)] font-black text-sm uppercase tracking-wide mb-2">
           Categories
@@ -29,17 +20,18 @@ export function SidebarCategories() {
       </div>
 
       <div className="space-y-2">
-        {categories.map((category) => (
-          <Link key={category} href={`/categories/${formatCategoryForUrl(category)}`}>
+        {topCategories.map((category) => (
+          <Link key={category.id} href={`/categories/${formatCategoryForUrl(category.name)}`}>
             <div
               className="
-              text-xs font-semibold flex items-center group
+              text-xs font-semibold flex items-center justify-between group
               transition-all duration-200 py-1.5 px-3 rounded-md cursor-pointer
               hover:bg-[var(--accent)] hover:bg-opacity-10 hover:text-[var(--blue-accent)]
-              text-white hover:translate-x-1 relative z-30 pointer-events-auto
+              text-white hover:translate-x-1
             "
             >
-              <span className="uppercase tracking-wide truncate">{category}</span>
+              <span className="uppercase tracking-wide truncate">{category.name}</span>
+              <span className="text-[var(--accent)] text-xs ml-2">({category.count})</span>
             </div>
           </Link>
         ))}

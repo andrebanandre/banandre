@@ -1,32 +1,5 @@
-import nextra from "nextra";
 import type { NextConfig } from "next";
-import rehypeMeta from "rehype-meta";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
-// Set up Nextra with its configuration
-const withNextra = nextra({
-  search: true,
-  mdxOptions: {
-    remarkPlugins: [],
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "wrap",
-          properties: {
-            className: ["anchor"],
-          },
-        },
-      ],
-      // Remove rehype-meta as it doesn't work properly with Nextra static exports
-    ],
-  },
-  defaultShowCopyCode: true,
-});
-
-// Export the final Next.js config with Nextra included
 const nextConfig: NextConfig = {
   // Removed output: "export" to enable SSR/ISR for WordPress integration
   outputFileTracingRoot: process.cwd(),
@@ -92,4 +65,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextra(nextConfig);
+export default nextConfig;

@@ -10,6 +10,8 @@ import { Category } from "@/app/_components/category";
 import { Tag } from "@/app/_components/tag";
 import { ScrollToTop } from "@/app/_components/scroll-to-top";
 import { BlogCard } from "@/app/_components/blog-card";
+import { BlogSidebar } from "@/app/_components/blog-sidebar";
+import { Footer } from "@/app/_components/footer";
 import { normalizeWordPressPost } from "@/lib/content-types";
 import type { Post } from "@/lib/wordpress.d";
 import { siteConfig } from "@/app/config";
@@ -231,9 +233,9 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
         />
 
         <div className="min-h-screen">
-          {/* Hero Section with Featured Image */}
+          {/* Full-Width Hero Section with Featured Image */}
           {featuredImage && (
-            <div className="relative w-full h-[400px] md:h-[500px] mb-8">
+            <div className="relative w-full h-[400px] md:h-[500px]">
               <Image
                 src={featuredImage.source_url}
                 alt={featuredImage.alt_text || cleanTitle}
@@ -243,7 +245,7 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-7xl mx-auto">
                   {categories.length > 0 && (
                     <div className="mb-4">
                       <Category category={categories[0].name} slug={categories[0].slug} />
@@ -253,13 +255,30 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
                     {cleanTitle}
                   </h1>
                   <p className="text-lg text-white/90">{cleanExcerpt}</p>
+                  {/* Meta Information in Hero */}
+                  <div className="flex items-center gap-4 text-sm text-white/80 mt-4">
+                    <time dateTime={post.date}>{date}</time>
+                    {author && (
+                      <>
+                        <span>•</span>
+                        <span>by {author.name}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Article Content */}
-          <article className="max-w-4xl mx-auto px-4 md:px-6 py-8">
+          {/* Two-Column Layout: Sidebar + Content */}
+          <div className="max-w-7xl mx-auto">
+            <div className="flex gap-6">
+              {/* Sidebar - Desktop only */}
+              <BlogSidebar />
+
+              {/* Main Content Area */}
+              <div className="flex-1 min-w-0">
+                <article className="max-w-4xl mx-auto px-4 md:px-6 py-8">
             {/* Article Header (if no featured image) */}
             {!featuredImage && (
               <header className="mb-8">
@@ -275,16 +294,18 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
               </header>
             )}
 
-            {/* Meta Information */}
-            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b">
-              <time dateTime={post.date}>{date}</time>
-              {author && (
-                <>
-                  <span>•</span>
-                  <span>by {author.name}</span>
-                </>
-              )}
-            </div>
+            {/* Meta Information (only if no featured image, otherwise shown in hero) */}
+            {!featuredImage && (
+              <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b">
+                <time dateTime={post.date}>{date}</time>
+                {author && (
+                  <>
+                    <span>•</span>
+                    <span>by {author.name}</span>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* WordPress Content */}
             <div className="prose prose-lg max-w-none mb-12">
@@ -310,37 +331,43 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
             )}
           </article>
 
-          {/* Related Posts */}
-          {relatedPosts.length > 0 && (
-            <section className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-              <h2 className="text-2xl font-bold text-[var(--accent)] mb-8 uppercase tracking-wide">
-                Related Articles
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {relatedPosts.map((relatedPost) => {
-                  const normalizedPost = normalizeWordPressPost(relatedPost);
-                  return (
-                    <BlogCard
-                      key={relatedPost.id}
-                      post={normalizedPost}
-                      size="medium"
-                    />
-                  );
-                })}
-              </div>
-            </section>
-          )}
+                {/* Related Posts */}
+                {relatedPosts.length > 0 && (
+                  <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
+                    <h2 className="text-2xl font-bold text-[var(--accent)] mb-8 uppercase tracking-wide">
+                      Related Articles
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {relatedPosts.map((relatedPost) => {
+                        const normalizedPost = normalizeWordPressPost(relatedPost);
+                        return (
+                          <BlogCard
+                            key={relatedPost.id}
+                            post={normalizedPost}
+                            size="medium"
+                          />
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
 
-          {/* Scroll to Top */}
-          <ScrollToTop />
+                {/* Scroll to Top */}
+                <ScrollToTop />
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <Footer />
         </div>
       </>
     );
-  } catch (error) {
-    console.error("Error rendering WordPress post:", error);
-    notFound();
+    } catch (error) {
+      console.error("Error rendering WordPress post:", error);
+      notFound();
+    }
   }
-}
 
 // Enable dynamic rendering (no build needed for new posts)
 export const dynamic = 'force-dynamic';

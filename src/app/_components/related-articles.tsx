@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { type BlogMetadata } from "../../lib/blog-utils";
+import { type NormalizedPost } from "../../lib/content-types";
 import { BlogCard } from "./blog-card";
 
 interface RelatedArticlesClientProps {
-  relatedPosts: (BlogMetadata & { sharedTags: string[] })[];
+  relatedPosts: (NormalizedPost & { sharedTags: string[] })[];
 }
 
 export function RelatedArticlesClient({ relatedPosts }: RelatedArticlesClientProps) {
