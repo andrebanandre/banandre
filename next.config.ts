@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Handle /blog/YYYY-MM/slug -> /blog/slug
+        source: '/blog/:year(\\d{4})-:month(\\d{2})/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true, // 301 redirect
+      },
+      {
+        // Handle /YYYY-MM/slug -> /blog/slug (in case some old links don't have /blog/)
         source: '/:year(\\d{4})-:month(\\d{2})/:slug*',
         destination: '/blog/:slug*',
         permanent: true, // 301 redirect
