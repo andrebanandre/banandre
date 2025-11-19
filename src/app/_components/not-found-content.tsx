@@ -25,7 +25,7 @@ export function NotFoundContent() {
       opacity: 1,
       rotate: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 200,
         damping: 20,
       },
@@ -53,7 +53,7 @@ export function NotFoundContent() {
       opacity: 1,
       rotate: 360,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         bounce: 0.6,
         duration: 1.5,
       },
@@ -116,10 +116,10 @@ export function NotFoundContent() {
           className="space-y-6 bg-[var(--card)] p-8 border-4 border-[var(--foreground)] shadow-[8px_8px_0px_var(--accent)]"
         >
           <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-tight">
-            You've slipped on a bad link
+            You&apos;ve slipped on a bad link
           </h2>
           <p className="text-xl text-gray-400 font-mono">
-            The page you're looking for has peeled away or never existed.
+            The page you&apos;re looking for has peeled away or never existed.
           </p>
 
           {/* Action Buttons */}
