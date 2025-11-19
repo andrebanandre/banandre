@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Redirect old WordPress date-based URLs to new structure
+  async redirects() {
+    return [
+      {
+        source: '/:year(\\d{4})-:month(\\d{2})/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
   // Removed output: "export" to enable SSR/ISR for WordPress integration
   outputFileTracingRoot: process.cwd(),
   // Allow more time for slow external data sources during SSR/ISR
