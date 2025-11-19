@@ -7,7 +7,11 @@ import {
   Cross1Icon,
   MagnifyingGlassIcon,
   ChevronDownIcon,
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+  LinkedInLogoIcon,
 } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
 
@@ -128,13 +132,55 @@ export function Header() {
                 )}
               </div>
 
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-2 text-[var(--accent)] hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] transition-colors rounded"
-                aria-label="Toggle search"
-              >
-                <MagnifyingGlassIcon className="h-5 w-5" />
-              </button>
+              {/* Social Icons */}
+              <div className="flex items-center gap-4">
+                <motion.a
+                  href="https://github.com/andrebanandre/banandre"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[var(--accent)] transition-colors"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <GitHubLogoIcon className="w-5 h-5" />
+                </motion.a>
+                <motion.a
+                  href="https://x.com/andre_banandre"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[var(--accent)] transition-colors"
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <TwitterLogoIcon className="w-5 h-5" />
+                </motion.a>
+                <motion.a
+                  href="https://www.linkedin.com/in/andrii-fedorenko-65905863/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[var(--accent)] transition-colors"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LinkedInLogoIcon className="w-5 h-5" />
+                </motion.a>
+              </div>
+
+              <div className="border-l-2 border-gray-200 pl-6 ml-2 flex items-center">
+                <button
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  className="p-2 text-[var(--accent)] transition-colors cursor-pointer"
+                  aria-label="Toggle search"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5, color: "white" }}
+                    whileTap={{ scale: 0.9 }}
+                    className="flex items-center justify-center"
+                  >
+                    <MagnifyingGlassIcon className="h-5 w-5" />
+                  </motion.div>
+                </button>
+              </div>
             </nav>
 
             {/* Mobile menu button */}

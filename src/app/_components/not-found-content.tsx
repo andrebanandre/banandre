@@ -91,7 +91,7 @@ export function NotFoundContent() {
           >
             404
           </motion.h1>
-          
+
           {/* Floating Banana */}
           <motion.div
             className="absolute top-0 right-0 md:-right-10 md:top-10 w-32 h-32 md:w-48 md:h-48"
@@ -111,7 +111,10 @@ export function NotFoundContent() {
         </motion.div>
 
         {/* Text Content */}
-        <motion.div variants={itemVariants} className="space-y-6 bg-[var(--card)] p-8 border-4 border-[var(--foreground)] shadow-[8px_8px_0px_var(--accent)]">
+        <motion.div
+          variants={itemVariants}
+          className="space-y-6 bg-[var(--card)] p-8 border-4 border-[var(--foreground)] shadow-[8px_8px_0px_var(--accent)]"
+        >
           <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-tight">
             You've slipped on a bad link
           </h2>
@@ -124,24 +127,24 @@ export function NotFoundContent() {
             <Link href="/" passHref>
               <motion.button
                 className="w-full sm:w-auto px-8 py-4 bg-[var(--accent)] text-[var(--blue-accent)] font-black text-lg uppercase tracking-wider border-2 border-[var(--foreground)] shadow-[4px_4px_0px_var(--foreground)] flex items-center justify-center gap-2"
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={{
+                  scale: 1.05,
                   boxShadow: "6px 6px 0px var(--foreground)",
                   translateY: -2,
-                  translateX: -2
+                  translateX: -2,
                 }}
-                whileTap={{ 
+                whileTap={{
                   scale: 0.95,
                   boxShadow: "0px 0px 0px var(--foreground)",
                   translateY: 2,
-                  translateX: 2
+                  translateX: 2,
                 }}
               >
                 <HomeIcon className="w-6 h-6" />
                 Go Home
               </motion.button>
             </Link>
-            
+
             <button
               onClick={() => window.history.back()}
               className="w-full sm:w-auto px-8 py-4 bg-[var(--background)] text-[var(--foreground)] font-bold text-lg uppercase tracking-wider border-2 border-[var(--foreground)] shadow-[4px_4px_0px_var(--accent)] flex items-center justify-center gap-2 hover:bg-[var(--muted)] transition-colors"

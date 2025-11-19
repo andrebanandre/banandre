@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { decode } from "html-entities";
 import {
   getPostBySlug,
   getPostsPaginated,
@@ -16,6 +17,7 @@ import { Footer } from "@/app/_components/footer";
 import { normalizeWordPressPost } from "@/lib/content-types";
 import type { Post } from "@/lib/wordpress.d";
 import { siteConfig } from "@/app/config";
+import "../blog-styles.css";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -48,8 +50,8 @@ export async function generateMetadata({
     }
 
     // Extract clean text from HTML
-    const cleanExcerpt = post.excerpt.rendered.replace(/<[^>]*>/g, "").trim();
-    const cleanTitle = post.title.rendered.replace(/<[^>]*>/g, "").trim();
+    const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
+    const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
 
     // Get featured image
     const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
@@ -156,8 +158,8 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
     });
 
     // Get clean title and excerpt
-    const cleanTitle = post.title.rendered.replace(/<[^>]*>/g, "").trim();
-    const cleanExcerpt = post.excerpt.rendered.replace(/<[^>]*>/g, "").trim();
+    const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
+    const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
 
     // Fetch related posts (same category, excluding current post)
     let relatedPosts: Post[] = [];

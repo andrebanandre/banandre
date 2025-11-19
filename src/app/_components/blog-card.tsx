@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { decode } from "html-entities";
 
 import { type NormalizedPost } from "../../lib/content-types";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
@@ -93,11 +94,11 @@ export function BlogCard({ post, featured = false, size = "medium" }: BlogCardPr
           <div className="flex-1 p-4 flex flex-col min-h-0">
             <div className="flex-1 min-h-0">
               <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[var(--accent)] transition-colors uppercase tracking-wide line-clamp-2">
-                {post.title}
+                {decode(post.title)}
               </h3>
 
               {post.description && (
-                <p className="text-gray-300 text-sm mb-3 line-clamp-2">{post.description}</p>
+                <p className="text-gray-300 text-sm mb-3 line-clamp-2">{decode(post.description)}</p>
               )}
             </div>
 
