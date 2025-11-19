@@ -197,19 +197,161 @@
     }
 }
 
-/* SEO Text Enhancements */
-.wordpress-content .content-group h1,
-.wordpress-content .content-group h2,
-.wordpress-content .content-group h3 {
-    margin-top: 0;
-    line-height: 1.3;
+/* Typography & Reading Experience */
+.wordpress-content h1,
+.wordpress-content h2,
+.wordpress-content h3,
+.wordpress-content h4,
+.wordpress-content h5,
+.wordpress-content h6 {
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    line-height: 1.2;
+    color: var(--wp--preset--color--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.wordpress-content h1 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+}
+
+.wordpress-content h2 {
+    font-size: clamp(1.75rem, 4vw, 2rem);
+}
+
+.wordpress-content h3 {
+    font-size: clamp(1.5rem, 3vw, 1.75rem);
+}
+
+.wordpress-content h4 {
+    font-size: 1.5rem;
+}
+
+.wordpress-content p {
+    font-size: 1.125rem;
+    /* 18px */
+    line-height: 1.8;
+    margin-bottom: 1.5em;
+    color: var(--wp--preset--color--primary);
+    max-width: 65ch;
+}
+
+/* Links */
+.wordpress-content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.wordpress-content a:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 0 2px;
+    margin: 0 -2px;
+}
+
+/* Lists */
+.wordpress-content ul,
+.wordpress-content ol {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    padding-left: 1.5em;
+    margin: 1.5em 0;
+    max-width: 65ch;
     color: var(--wp--preset--color--primary);
 }
 
-.wordpress-content .content-group p {
+.wordpress-content li {
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+}
+
+.wordpress-content ul {
+    list-style-type: disc;
+}
+
+.wordpress-content ol {
+    list-style-type: decimal;
+}
+
+/* Blockquotes */
+.wordpress-content blockquote {
+    border-left: 4px solid var(--accent);
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    background: var(--card);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    font-size: 1.25rem;
+    font-style: italic;
     line-height: 1.6;
-    margin-bottom: var(--wp--preset--spacing--30);
     color: var(--wp--preset--color--primary);
+}
+
+.wordpress-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* Code blocks */
+.wordpress-content pre {
+    background: #1e1e1e;
+    /* Darker background for code */
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    /* Important for mobile */
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #e6e6e6;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wordpress-content code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    color: var(--accent);
+    /* Highlight inline code */
+}
+
+.wordpress-content pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    /* Inherit from pre */
+    border-radius: 0;
+    font-size: inherit;
+}
+
+/* Images */
+.wordpress-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin: 2rem 0;
+}
+
+.wordpress-content figure {
+    margin: 2rem 0;
+    max-width: 100%;
+}
+
+.wordpress-content figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-style: italic;
 }
 
 /* Semantic HTML enhancements */
@@ -217,10 +359,31 @@
     display: block;
 }
 
-.wordpress-content .content-group ul,
-.wordpress-content .content-group ol {
-    padding-left: var(--wp--preset--spacing--40);
-    margin: var(--wp--preset--spacing--30) 0;
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+
+    .wordpress-content p,
+    .wordpress-content ul,
+    .wordpress-content ol {
+        font-size: 1rem;
+        /* Slightly smaller on mobile */
+    }
+
+    .wordpress-content blockquote {
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-size: 1.125rem;
+    }
+
+    .wordpress-content pre {
+        padding: 1rem;
+        margin: 1.5rem -1rem;
+        /* Negative margin to stretch on small screens */
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        width: calc(100% + 2rem);
+    }
 }
 
 /* Brutalist Post Grid Layout for Blog (Scoped if used inside content, but usually this is for lists) */
