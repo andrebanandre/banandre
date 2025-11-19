@@ -190,36 +190,52 @@ export async function getAllPosts(filterParams?: {
   category?: string | number;
   search?: string;
 }): Promise<Post[]> {
-  const query: Record<string, string | number | boolean> = {
-    _embed: true,
-    per_page: 100,
-  };
+  const allPosts: Post[] = [];
+  let page = 1;
+  let hasMore = true;
 
-  if (filterParams?.search) {
-    query.search = filterParams.search;
+  while (hasMore) {
+    const query: Record<string, string | number | boolean> = {
+      _embed: true,
+      per_page: 100,
+      page,
+    };
 
-    if (filterParams?.author) {
-      query.author = filterParams.author;
+    if (filterParams?.search) {
+      query.search = filterParams.search;
+
+      if (filterParams?.author) {
+        query.author = filterParams.author;
+      }
+      if (filterParams?.tag) {
+        query.tags = filterParams.tag;
+      }
+      if (filterParams?.category) {
+        query.categories = filterParams.category;
+      }
+    } else {
+      if (filterParams?.author) {
+        query.author = filterParams.author;
+      }
+      if (filterParams?.tag) {
+        query.tags = filterParams.tag;
+      }
+      if (filterParams?.category) {
+        query.categories = filterParams.category;
+      }
     }
-    if (filterParams?.tag) {
-      query.tags = filterParams.tag;
-    }
-    if (filterParams?.category) {
-      query.categories = filterParams.category;
-    }
-  } else {
-    if (filterParams?.author) {
-      query.author = filterParams.author;
-    }
-    if (filterParams?.tag) {
-      query.tags = filterParams.tag;
-    }
-    if (filterParams?.category) {
-      query.categories = filterParams.category;
-    }
+
+    const response = await wordpressFetchWithPagination<Post[]>(
+      "/wp-json/wp/v2/posts",
+      query
+    );
+
+    allPosts.push(...response.data);
+    hasMore = page < response.headers.totalPages;
+    page++;
   }
 
-  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", query);
+  return allPosts;
 }
 
 export async function getPostById(id: number): Promise<Post> {

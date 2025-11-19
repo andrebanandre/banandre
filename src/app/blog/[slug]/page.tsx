@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   getPostBySlug,
   getPostsPaginated,
+  getAllPostSlugs,
 } from "@/lib/wordpress";
 import { WordPressPostRenderer } from "@/app/_components/wordpress-post-renderer";
 import { Category } from "@/app/_components/category";
@@ -20,8 +21,16 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Dynamic rendering - pages are generated on-demand at runtime
-// No static params needed - WordPress posts appear immediately without rebuild
+// Generate static paths for all blog posts at build time
+export async function generateStaticParams() {
+  try {
+    const slugs = await getAllPostSlugs();
+    return slugs;
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
 
 // Generate metadata for SEO
 export async function generateMetadata({
@@ -368,6 +377,3 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
       notFound();
     }
   }
-
-// Enable dynamic rendering (no build needed for new posts)
-export const dynamic = 'force-dynamic';
