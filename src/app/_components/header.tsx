@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
+import { getCategories } from "@/lib/wordpress";
 
 interface Category {
   id: number;
@@ -43,13 +44,19 @@ export function Header() {
   };
 
   useEffect(() => {
-    // Fetch categories
-    fetch("/api/categories")
-      .then((res) => res.json())
+    // Fetch categories using the WordPress library
+    getCategories()
       .then((data) => {
-        if (data.categories) {
-          setCategories(data.categories);
-        }
+        // Sort by count (most used first)
+        const sortedCategories = data
+          .sort((a, b) => b.count - a.count)
+          .map((category) => ({
+            id: category.id,
+            name: category.name,
+            slug: category.slug,
+            count: category.count,
+          }));
+        setCategories(sortedCategories);
       })
       .catch((err) => console.error("Failed to fetch categories:", err));
 

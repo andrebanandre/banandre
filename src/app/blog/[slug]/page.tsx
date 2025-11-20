@@ -2,22 +2,28 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { decode } from "html-entities";
+import { cache } from "react";
 import {
   getPostBySlug,
-  getPostsPaginated,
   getAllPostSlugs,
 } from "@/lib/wordpress";
 import { WordPressPostRenderer } from "@/app/_components/wordpress-post-renderer";
 import { Category } from "@/app/_components/category";
 import { Tag } from "@/app/_components/tag";
 import { ScrollToTop } from "@/app/_components/scroll-to-top";
-import { BlogCard } from "@/app/_components/blog-card";
 import { BlogSidebar } from "@/app/_components/blog-sidebar";
 import { Footer } from "@/app/_components/footer";
-import { normalizeWordPressPost } from "@/lib/content-types";
-import type { Post } from "@/lib/wordpress.d";
+import { RelatedPosts } from "@/app/_components/related-posts";
 import { siteConfig } from "@/app/config";
 import "../blog-styles.css";
+
+// Enable ISR - revalidate every hour
+export const revalidate = 3600;
+
+// Cache post data to prevent duplicate API calls
+const getPostData = cache(async (slug: string) => {
+  return await getPostBySlug(slug);
+});
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -41,7 +47,7 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    const post = await getPostBySlug(slug);
+    const post = await getPostData(slug);
 
     if (!post) {
       return {
@@ -127,8 +133,8 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
   const { slug } = await params;
 
   try {
-    // Fetch the post by slug
-    const post = await getPostBySlug(slug);
+    // Fetch the post by slug (cached)
+    const post = await getPostData(slug);
 
     if (!post) {
       notFound();
@@ -160,21 +166,6 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
     // Get clean title and excerpt
     const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
     const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
-
-    // Fetch related posts (same category, excluding current post)
-    let relatedPosts: Post[] = [];
-    if (post.categories.length > 0) {
-      try {
-        const relatedResponse = await getPostsPaginated(1, 4, {
-          categories: post.categories[0],
-        });
-        relatedPosts = relatedResponse.data
-          .filter((p) => p.id !== post.id)
-          .slice(0, 3);
-      } catch (error) {
-        console.warn("Failed to fetch related posts:", error);
-      }
-    }
 
     // Generate JSON-LD schemas
     const articleSchema = {
@@ -342,25 +333,12 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
             )}
           </article>
 
-                {/* Related Posts */}
-                {relatedPosts.length > 0 && (
-                  <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
-                    <h2 className="text-2xl font-bold text-[var(--accent)] mb-8 uppercase tracking-wide">
-                      Related Articles
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {relatedPosts.map((relatedPost) => {
-                        const normalizedPost = normalizeWordPressPost(relatedPost);
-                        return (
-                          <BlogCard
-                            key={relatedPost.id}
-                            post={normalizedPost}
-                            size="medium"
-                          />
-                        );
-                      })}
-                    </div>
-                  </section>
+                {/* Related Posts - Client Side */}
+                {post.categories.length > 0 && (
+                  <RelatedPosts
+                    currentPostId={post.id}
+                    categoryId={post.categories[0]}
+                  />
                 )}
 
                 {/* Scroll to Top */}

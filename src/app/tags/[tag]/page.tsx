@@ -2,6 +2,7 @@ import { getAllTags, getTagBySlug, getPostsByTagPaginated } from "../../../lib/w
 import { normalizeWordPressPost } from "../../../lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { Tag } from "../../_components/tag";
 import { BlogGrid } from "../../_components/blog-card";
 import type { Metadata } from "next";
@@ -12,6 +13,20 @@ import {
 } from "../../../lib/json-ld";
 import { formatTagForUrl } from "../../../lib/url-utils";
 import { siteConfig } from "../../config";
+
+// Enable ISR - revalidate every hour
+export const revalidate = 3600;
+
+// Cache tag data to prevent duplicate API calls
+const getTagData = cache(async (urlTag: string) => {
+  const tag = await getTagBySlug(urlTag);
+  if (!tag) return null;
+
+  const { data: wordpressPosts } = await getPostsByTagPaginated(tag.id, 1, 100);
+  const posts = wordpressPosts.map(normalizeWordPressPost);
+
+  return { tag, posts };
+});
 
 interface TagPageProps {
   params: Promise<{
@@ -31,17 +46,17 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   try {
     const { tag: urlTag } = await params;
 
-    // Get the WordPress tag by slug
-    const tag = await getTagBySlug(urlTag);
-    if (!tag) {
+    // Use cached function to prevent duplicate API calls
+    const data = await getTagData(urlTag);
+    if (!data) {
       return {
         title: `Tag Not Found - ${siteConfig.name}`,
         description: "Tag not found",
       };
     }
 
+    const { tag, posts: wordpressPosts } = data;
     const displayTag = tag.name;
-    const { data: wordpressPosts } = await getPostsByTagPaginated(tag.id, 1, 100);
 
     const title = `#${displayTag} - ${siteConfig.name}`;
     const description = `Articles tagged with ${displayTag}. ${wordpressPosts.length} article${wordpressPosts.length !== 1 ? "s" : ""} found.`;
@@ -101,22 +116,14 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 export default async function TagPage({ params }: TagPageProps) {
   const { tag: urlTag } = await params;
 
-  // Get the WordPress tag by slug
-  const tag = await getTagBySlug(urlTag);
-
-  if (!tag) {
+  // Use cached function to prevent duplicate API calls
+  const data = await getTagData(urlTag);
+  if (!data || data.posts.length === 0) {
     notFound();
   }
 
+  const { tag, posts } = data;
   const displayTag = tag.name;
-
-  // Fetch posts with this tag
-  const { data: wordpressPosts } = await getPostsByTagPaginated(tag.id, 1, 100);
-  const posts = wordpressPosts.map(normalizeWordPressPost);
-
-  if (posts.length === 0) {
-    notFound();
-  }
 
   // Generate JSON-LD schemas
   const tagSchema = generateTagPageSchema(displayTag, posts);

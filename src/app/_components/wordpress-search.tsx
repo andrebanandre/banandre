@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import { searchPosts } from "@/lib/wordpress";
 
 interface SearchResult {
   id: number;
@@ -41,12 +42,17 @@ export function WordPressSearch({
     const timeoutId = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data.results || []);
-          setIsOpen(true);
-        }
+        const posts = await searchPosts(query, 10);
+        const results = posts.map((post) => ({
+          id: post.id,
+          title: post.title.rendered,
+          excerpt: post.excerpt.rendered,
+          slug: post.slug,
+          featuredImage: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
+          date: post.date,
+        }));
+        setResults(results);
+        setIsOpen(true);
       } catch (error) {
         console.error("Search error:", error);
         setResults([]);

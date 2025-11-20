@@ -15,7 +15,21 @@ import {
   safeJsonLdStringify,
 } from "../../../lib/json-ld";
 import { siteConfig } from "../../config";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
+
+// Enable ISR - revalidate every hour
+export const revalidate = 3600;
+
+// Cache category data to prevent duplicate API calls
+const getCategoryData = cache(async (urlCategory: string) => {
+  const category = await getCategoryBySlug(urlCategory);
+  if (!category) return null;
+
+  const wpPosts = await getPostsByCategorySlug(urlCategory);
+  const posts = wpPosts && wpPosts.length > 0 ? wpPosts.map(normalizeWordPressPost) : [];
+
+  return { category, posts };
+});
 
 interface CategoryPageProps {
   params: Promise<{
@@ -37,27 +51,17 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   try {
     const { category: urlCategory } = await params;
 
-    // Fetch the category from WordPress to get the display name
-    const category = await getCategoryBySlug(urlCategory);
-    if (!category) {
+    // Use cached function to prevent duplicate API calls
+    const data = await getCategoryData(urlCategory);
+    if (!data) {
       return {
         title: `Category - ${siteConfig.name}`,
         description: "Category not found",
       };
     }
 
+    const { category, posts } = data;
     const displayCategory = category.name;
-
-    // Fetch WordPress posts for this category
-    let posts: ReturnType<typeof normalizeWordPressPost>[] = [];
-    try {
-      const wpPosts = await getPostsByCategorySlug(urlCategory);
-      if (wpPosts && wpPosts.length > 0) {
-        posts = wpPosts.map(normalizeWordPressPost);
-      }
-    } catch (error) {
-      console.warn(`No posts found for category: ${urlCategory}`, error);
-    }
 
     const title = `${displayCategory} - ${siteConfig.name}`;
     const description = `Articles in ${displayCategory}. ${posts.length} article${posts.length !== 1 ? "s" : ""} found.`;
@@ -124,28 +128,14 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: urlCategory } = await params;
 
-  // Fetch the category from WordPress to get the display name
-  const category = await getCategoryBySlug(urlCategory);
-  if (!category) {
+  // Use cached function to prevent duplicate API calls
+  const data = await getCategoryData(urlCategory);
+  if (!data || data.posts.length === 0) {
     notFound();
   }
 
+  const { category, posts } = data;
   const displayCategory = category.name;
-
-  // Fetch WordPress posts for this category only
-  let posts: ReturnType<typeof normalizeWordPressPost>[] = [];
-  try {
-    const wpPosts = await getPostsByCategorySlug(urlCategory);
-    if (wpPosts && wpPosts.length > 0) {
-      posts = wpPosts.map(normalizeWordPressPost);
-    }
-  } catch (error) {
-    console.error(`Error fetching posts for category: ${urlCategory}`, error);
-  }
-
-  if (posts.length === 0) {
-    notFound();
-  }
 
   // Generate JSON-LD schemas
   const categorySchema = generateCategoryPageSchema(displayCategory, posts);

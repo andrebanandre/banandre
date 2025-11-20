@@ -27,6 +27,7 @@ persist = true
 head_sampling_rate = 1
 
 [vars]
+NEXT_PUBLIC_WORDPRESS_URL = "https://www.cms.banandre.com"
 WORDPRESS_HOSTNAME = "cms.banandre.com"
 WORDPRESS_PATH_NAME = "/wp-content/uploads/**"
 WORDPRESS_PORT = ""

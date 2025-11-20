@@ -1,13 +1,14 @@
 import { Suspense } from "react";
-import { getAllPosts } from "../../lib/wordpress";
+import { getPostsPaginated } from "../../lib/wordpress";
 import { normalizeWordPressPost } from "../../lib/content-types";
 import { ClientBlogGrid } from "./client-blog-grid";
 
 export async function LandingBlogGrid() {
   try {
-    // Fetch posts from WordPress
-    const wordpressPosts = await getAllPosts();
-    const allPosts = wordpressPosts.map(normalizeWordPressPost);
+    // Fetch only first page of posts (12 posts) to reduce CPU usage
+    // Client component will handle pagination
+    const response = await getPostsPaginated(1, 12);
+    const allPosts = response.data.map(normalizeWordPressPost);
 
     if (allPosts.length === 0) {
       return (
