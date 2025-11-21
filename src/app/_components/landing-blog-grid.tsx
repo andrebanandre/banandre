@@ -6,9 +6,10 @@ import { ClientBlogGrid } from "./client-blog-grid";
 export async function LandingBlogGrid() {
   try {
     // Fetch only first page of posts (12 posts) to reduce CPU usage
-    // Client component will handle pagination
+    // Pass total pages count for pagination
     const response = await getPostsPaginated(1, 12);
     const allPosts = response.data.map(normalizeWordPressPost);
+    const totalPages = response.headers.totalPages;
 
     if (allPosts.length === 0) {
       return (
@@ -21,7 +22,7 @@ export async function LandingBlogGrid() {
       );
     }
 
-    // Pass all posts to client component for client-side pagination
+    // Pass initial posts and total pages to client component
     return (
       <Suspense
         fallback={
@@ -33,7 +34,7 @@ export async function LandingBlogGrid() {
           </div>
         }
       >
-        <ClientBlogGrid posts={allPosts} />
+        <ClientBlogGrid initialPosts={allPosts} totalPages={totalPages} />
       </Suspense>
     );
   } catch (error) {

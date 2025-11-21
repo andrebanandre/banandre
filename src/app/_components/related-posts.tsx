@@ -18,9 +18,8 @@ export function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
   useEffect(() => {
     async function fetchRelatedPosts() {
       try {
-        const posts = await getPostsByCategoryClient(categoryId, 4, currentPostId);
-        // Only take the first 3 posts
-        setRelatedPosts(posts.slice(0, 3));
+        const posts = await getPostsByCategoryClient(categoryId, 5, currentPostId);
+        setRelatedPosts(posts);
       } catch (error) {
         console.warn("Failed to fetch related posts:", error);
         setRelatedPosts([]);
@@ -40,7 +39,7 @@ export function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
           Related Articles
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
               className="h-48 bg-[var(--card)] border-2 border-[var(--accent)] rounded animate-pulse"
@@ -63,13 +62,7 @@ export function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {relatedPosts.map((relatedPost) => {
           const normalizedPost = normalizeWordPressPost(relatedPost);
-          return (
-            <BlogCard
-              key={relatedPost.id}
-              post={normalizedPost}
-              size="medium"
-            />
-          );
+          return <BlogCard key={relatedPost.id} post={normalizedPost} size="medium" />;
         })}
       </div>
     </section>

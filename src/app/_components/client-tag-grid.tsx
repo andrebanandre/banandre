@@ -6,15 +6,22 @@ import { BlogGrid } from "./blog-card";
 import { Pagination } from "./pagination";
 import { BlogGridSkeleton } from "./blog-card-skeleton";
 import { type NormalizedPost } from "../../lib/content-types";
-import { getPostsPaginated } from "../../lib/wordpress";
+import { getPostsByTagSlug } from "../../lib/wordpress";
 import { normalizeWordPressPost } from "../../lib/content-types";
 
-interface ClientBlogGridProps {
+interface ClientTagGridProps {
   initialPosts: NormalizedPost[];
   totalPages: number;
+  tagSlug: string;
+  baseUrl: string;
 }
 
-export function ClientBlogGrid({ initialPosts, totalPages }: ClientBlogGridProps) {
+export function ClientTagGrid({
+  initialPosts,
+  totalPages,
+  tagSlug,
+  baseUrl,
+}: ClientTagGridProps) {
   const searchParams = useSearchParams();
   const postsPerPage = 12;
 
@@ -41,11 +48,11 @@ export function ClientBlogGrid({ initialPosts, totalPages }: ClientBlogGridProps
     const fetchPagePosts = async () => {
       setIsLoading(true);
       try {
-        const response = await getPostsPaginated(validPage, postsPerPage);
+        const response = await getPostsByTagSlug(tagSlug, validPage, postsPerPage);
         const normalizedPosts = response.data.map(normalizeWordPressPost);
         setPosts(normalizedPosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching tag posts:", error);
         setPosts([]);
       } finally {
         setIsLoading(false);
@@ -53,20 +60,20 @@ export function ClientBlogGrid({ initialPosts, totalPages }: ClientBlogGridProps
     };
 
     fetchPagePosts();
-  }, [searchParams, totalPages, postsPerPage, initialPosts]);
+  }, [searchParams, totalPages, postsPerPage, initialPosts, tagSlug]);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-16">
+    <>
       {isLoading ? (
         <BlogGridSkeleton count={12} />
       ) : (
-        <BlogGrid posts={posts} currentPage={currentPage} totalPages={totalPages} />
+        <BlogGrid posts={posts} />
       )}
 
       {/* Only show pagination if there are more pages */}
       {totalPages > 1 && (
-        <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/" />
+        <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={baseUrl} />
       )}
-    </div>
+    </>
   );
 }

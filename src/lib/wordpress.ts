@@ -332,18 +332,31 @@ export async function getPostsByAuthorSlug(
 }
 
 export async function getPostsByCategorySlug(
-  categorySlug: string
-): Promise<Post[]> {
+  categorySlug: string,
+  page: number = 1,
+  perPage: number = 12
+): Promise<WordPressResponse<Post[]>> {
   const category = await getCategoryBySlug(categorySlug);
-  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", {
+  return wordpressFetchWithPagination<Post[]>("/wp-json/wp/v2/posts", {
     categories: category.id,
     _embed: true,
+    per_page: perPage,
+    page,
   });
 }
 
-export async function getPostsByTagSlug(tagSlug: string): Promise<Post[]> {
+export async function getPostsByTagSlug(
+  tagSlug: string,
+  page: number = 1,
+  perPage: number = 12
+): Promise<WordPressResponse<Post[]>> {
   const tag = await getTagBySlug(tagSlug);
-  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { tags: tag.id });
+  return wordpressFetchWithPagination<Post[]>("/wp-json/wp/v2/posts", {
+    tags: tag.id,
+    _embed: true,
+    per_page: perPage,
+    page,
+  });
 }
 
 export async function getFeaturedMediaById(id: number): Promise<FeaturedMedia> {

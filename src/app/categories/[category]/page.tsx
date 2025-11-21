@@ -25,10 +25,12 @@ const getCategoryData = cache(async (urlCategory: string) => {
   const category = await getCategoryBySlug(urlCategory);
   if (!category) return null;
 
-  const wpPosts = await getPostsByCategorySlug(urlCategory);
-  const posts = wpPosts && wpPosts.length > 0 ? wpPosts.map(normalizeWordPressPost) : [];
+  // Fetch first page with pagination info
+  const response = await getPostsByCategorySlug(urlCategory, 1, 12);
+  const posts = response.data.map(normalizeWordPressPost);
+  const totalPages = response.headers.totalPages;
 
-  return { category, posts };
+  return { category, posts, totalPages };
 });
 
 interface CategoryPageProps {
@@ -134,7 +136,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const { category, posts } = data;
+  const { category, posts, totalPages } = data;
   const displayCategory = category.name;
 
   // Generate JSON-LD schemas
@@ -180,7 +182,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
 
           <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
-            <ClientCategoryGrid posts={posts} baseUrl={`/categories/${urlCategory}`} />
+            <ClientCategoryGrid
+              initialPosts={posts}
+              totalPages={totalPages}
+              categorySlug={urlCategory}
+              baseUrl={`/categories/${urlCategory}`}
+            />
           </Suspense>
         </div>
       </div>

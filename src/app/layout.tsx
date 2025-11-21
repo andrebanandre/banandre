@@ -14,7 +14,7 @@ import {
 import "./globals.css";
 import "./sidebar.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://banandre.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.banandre.com";
 
 export const metadata: Metadata = {
   title: {

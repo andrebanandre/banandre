@@ -5,7 +5,6 @@ export async function Sidebar() {
   const navItems = [
     { title: "Home", href: "/" },
     { title: "Categories", href: "/categories" },
-    { title: "Tags", href: "/tags" },
   ];
 
   return (
