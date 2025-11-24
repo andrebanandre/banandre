@@ -4,23 +4,20 @@
 // origin https://github.com/9d8dev/next-wp/blob/main/lib/wordpress.ts
 
 import querystring from "query-string";
-import type {
-  Post,
-  Category,
-  Tag,
-  Page,
-  Author,
-  FeaturedMedia,
-} from "./wordpress.d";
+import type { Post, Category, Tag, Page, Author, FeaturedMedia } from "./wordpress.d";
 
-const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL;
+const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
 if (!baseUrl) {
   throw new Error("NEXT_PUBLIC_WORDPRESS_URL environment variable is not defined");
 }
 
 class WordPressAPIError extends Error {
-  constructor(message: string, public status: number, public endpoint: string) {
+  constructor(
+    message: string,
+    public status: number,
+    public endpoint: string
+  ) {
     super(message);
     this.name = "WordPressAPIError";
   }
@@ -42,9 +39,7 @@ async function wordpressFetch<T>(
   path: string,
   query?: Record<string, string | number | boolean>
 ): Promise<T> {
-  const url = `${baseUrl}${path}${
-    query ? `?${querystring.stringify(query)}` : ""
-  }`;
+  const url = `${baseUrl}${path}${query ? `?${querystring.stringify(query)}` : ""}`;
   const userAgent = "Next.js WordPress Client";
 
   const response = await fetch(url, {
@@ -73,9 +68,7 @@ async function wordpressFetchWithPagination<T>(
   path: string,
   query?: Record<string, string | number | boolean>
 ): Promise<WordPressResponse<T>> {
-  const url = `${baseUrl}${path}${
-    query ? `?${querystring.stringify(query)}` : ""
-  }`;
+  const url = `${baseUrl}${path}${query ? `?${querystring.stringify(query)}` : ""}`;
   const userAgent = "Next.js WordPress Client";
 
   const response = await fetch(url, {
@@ -150,9 +143,7 @@ export async function getPostsPaginated(
   // Add page-specific cache tag for granular invalidation
   cacheTags.push(`posts-page-${page}`);
 
-  const url = `${baseUrl}/wp-json/wp/v2/posts${
-    query ? `?${querystring.stringify(query)}` : ""
-  }`;
+  const url = `${baseUrl}/wp-json/wp/v2/posts${query ? `?${querystring.stringify(query)}` : ""}`;
   const userAgent = "Next.js WordPress Client";
 
   const response = await fetch(url, {
@@ -225,10 +216,7 @@ export async function getAllPosts(filterParams?: {
       }
     }
 
-    const response = await wordpressFetchWithPagination<Post[]>(
-      "/wp-json/wp/v2/posts",
-      query
-    );
+    const response = await wordpressFetchWithPagination<Post[]>("/wp-json/wp/v2/posts", query);
 
     allPosts.push(...response.data);
     hasMore = page < response.headers.totalPages;
@@ -251,6 +239,7 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 export async function getAllCategories(): Promise<Category[]> {
   return wordpressFetch<Category[]>("/wp-json/wp/v2/categories", {
     _embed: true,
+    hide_empty: true,
   });
 }
 
@@ -287,9 +276,7 @@ export async function getTagById(id: number): Promise<Tag> {
 }
 
 export async function getTagBySlug(slug: string): Promise<Tag> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags", { slug }).then(
-    (tags) => tags[0]
-  );
+  return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags", { slug }).then((tags) => tags[0]);
 }
 
 export async function getAllPages(): Promise<Page[]> {
@@ -301,9 +288,7 @@ export async function getPageById(id: number): Promise<Page> {
 }
 
 export async function getPageBySlug(slug: string): Promise<Page> {
-  return wordpressFetch<Page[]>("/wp-json/wp/v2/pages", { slug }).then(
-    (pages) => pages[0]
-  );
+  return wordpressFetch<Page[]>("/wp-json/wp/v2/pages", { slug }).then((pages) => pages[0]);
 }
 
 export async function getAllAuthors(): Promise<Author[]> {
@@ -315,18 +300,14 @@ export async function getAuthorById(id: number): Promise<Author> {
 }
 
 export async function getAuthorBySlug(slug: string): Promise<Author> {
-  return wordpressFetch<Author[]>("/wp-json/wp/v2/users", { slug }).then(
-    (users) => users[0]
-  );
+  return wordpressFetch<Author[]>("/wp-json/wp/v2/users", { slug }).then((users) => users[0]);
 }
 
 export async function getPostsByAuthor(authorId: number): Promise<Post[]> {
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { author: authorId });
 }
 
-export async function getPostsByAuthorSlug(
-  authorSlug: string
-): Promise<Post[]> {
+export async function getPostsByAuthorSlug(authorSlug: string): Promise<Post[]> {
   const author = await getAuthorBySlug(authorSlug);
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { author: author.id });
 }
@@ -391,14 +372,11 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
   let hasMore = true;
 
   while (hasMore) {
-    const response = await wordpressFetchWithPagination<Post[]>(
-      "/wp-json/wp/v2/posts",
-      {
-        per_page: 100,
-        page,
-        _fields: "slug", // Only fetch slug field for performance
-      }
-    );
+    const response = await wordpressFetchWithPagination<Post[]>("/wp-json/wp/v2/posts", {
+      per_page: 100,
+      page,
+      _fields: "slug", // Only fetch slug field for performance
+    });
 
     const posts = response.data;
     allSlugs.push(...posts.map((post) => ({ slug: post.slug })));
@@ -462,62 +440,11 @@ export { WordPressAPIError };
 // These can be used in client components
 
 /**
- * Client-safe function to fetch categories directly from WordPress
- * Works in both server and client components
- * Includes 5-minute client-side cache to reduce redundant requests
- */
-export async function getCategories(): Promise<Category[]> {
-  // Check if running in browser
-  if (typeof window !== "undefined") {
-    const { clientCache } = await import("./client-cache");
-    return clientCache.get("categories", async () => {
-      const url = `${baseUrl}/wp-json/wp/v2/categories?_embed=true`;
-      const response = await fetch(url, {
-        headers: {
-          "User-Agent": "Next.js WordPress Client",
-        },
-      });
-
-      if (!response.ok) {
-        throw new WordPressAPIError(
-          `WordPress API request failed: ${response.statusText}`,
-          response.status,
-          url
-        );
-      }
-
-      return response.json();
-    });
-  }
-
-  // Server-side: no caching
-  const url = `${baseUrl}/wp-json/wp/v2/categories?_embed=true`;
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Next.js WordPress Client",
-    },
-  });
-
-  if (!response.ok) {
-    throw new WordPressAPIError(
-      `WordPress API request failed: ${response.statusText}`,
-      response.status,
-      url
-    );
-  }
-
-  return response.json();
-}
-
-/**
  * Client-safe function to search posts directly from WordPress
  * Works in both server and client components
  * Includes 2-minute client-side cache for search results
  */
-export async function searchPosts(
-  query: string,
-  perPage: number = 10
-): Promise<Post[]> {
+export async function searchPosts(query: string, perPage: number = 10): Promise<Post[]> {
   const cacheKey = `search:${query}:${perPage}`;
 
   // Check if running in browser

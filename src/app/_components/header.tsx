@@ -14,7 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
-import { getCategories } from "@/lib/wordpress";
+import { getAllCategories } from "@/lib/wordpress";
 
 interface Category {
   id: number;
@@ -45,7 +45,7 @@ export function Header() {
 
   useEffect(() => {
     // Fetch categories using the WordPress library
-    getCategories()
+    getAllCategories()
       .then((data) => {
         // Sort by count (most used first)
         const sortedCategories = data
