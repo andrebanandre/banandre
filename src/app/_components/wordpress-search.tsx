@@ -4,14 +4,17 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { searchPosts } from "@/lib/wordpress";
 
 interface SearchResult {
   id: number;
-  title: string;
-  excerpt: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
   slug: string;
-  featuredImage?: string;
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+    }>;
+  };
   date: string;
 }
 
@@ -42,16 +45,17 @@ export function WordPressSearch({
     const timeoutId = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const posts = await searchPosts(query, 10);
-        const results = posts.map((post) => ({
-          id: post.id,
-          title: post.title.rendered,
-          excerpt: post.excerpt.rendered,
-          slug: post.slug,
-          featuredImage: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
-          date: post.date,
-        }));
-        setResults(results);
+        // Use Next.js API route instead of calling WordPress directly
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(query)}&perPage=10`
+        );
+
+        if (!response.ok) {
+          throw new Error("Search failed");
+        }
+
+        const posts: SearchResult[] = await response.json();
+        setResults(posts);
         setIsOpen(true);
       } catch (error) {
         console.error("Search error:", error);
@@ -122,11 +126,11 @@ export function WordPressSearch({
                     onClick={() => handleResultClick(result.slug)}
                     className="w-full px-4 py-3 text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] transition-colors duration-150 text-left flex items-start gap-3 cursor-pointer"
                   >
-                    {result.featuredImage && (
+                    {result._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
                       <div className="flex-shrink-0 w-16 h-16 relative">
                         <Image
-                          src={result.featuredImage}
-                          alt={stripHtml(result.title)}
+                          src={result._embedded["wp:featuredmedia"][0].source_url}
+                          alt={stripHtml(result.title.rendered)}
                           fill
                           className="object-cover rounded"
                           sizes="64px"
@@ -136,11 +140,11 @@ export function WordPressSearch({
                     <div className="flex-1 min-w-0">
                       <div
                         className="text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] font-bold text-sm mb-1 line-clamp-2"
-                        dangerouslySetInnerHTML={{ __html: result.title }}
+                        dangerouslySetInnerHTML={{ __html: result.title.rendered }}
                       />
                       <div
                         className="text-white hover:text-[var(--blue-accent)] hover:bg-[var(--accent-hover)] text-xs line-clamp-2"
-                        dangerouslySetInnerHTML={{ __html: result.excerpt }}
+                        dangerouslySetInnerHTML={{ __html: result.excerpt.rendered }}
                       />
                     </div>
                   </button>

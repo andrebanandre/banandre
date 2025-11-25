@@ -1,20 +1,22 @@
-import { getAllPosts } from "../../lib/wordpress";
-import { normalizeWordPressPost, getUniqueTagsFromPosts } from "../../lib/content-types";
-import { formatTagForUrl } from "../../lib/url-utils";
+import { getAllTags } from "../../lib/wordpress";
 import Link from "next/link";
 
 export async function AllTagsDisplay() {
   try {
-    const wordpressPosts = await getAllPosts();
-    const posts = wordpressPosts.map(normalizeWordPressPost);
-    const allTags = getUniqueTagsFromPosts(posts);
+    // Get tags directly from WordPress API to access both name and slug
+    const tags = await getAllTags();
+
+    // Sort by count (most used first)
+    const sortedTags = tags
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 12);
 
     return (
       <div className="flex flex-wrap gap-2">
-        {allTags.slice(0, 12).map(({ tag, count }) => (
-          <Link key={tag} href={`/tags/${formatTagForUrl(tag)}`}>
+        {sortedTags.map((tag) => (
+          <Link key={tag.id} href={`/tags/${tag.slug}`}>
             <span className="bg-[var(--muted)] text-white px-2 py-1 text-xs font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-colors cursor-pointer">
-              {tag.toUpperCase()} ({count})
+              {tag.name.toUpperCase()} ({tag.count})
             </span>
           </Link>
         ))}
@@ -24,26 +26,7 @@ export async function AllTagsDisplay() {
     console.error("Error loading tags:", error);
     return (
       <div className="flex flex-wrap gap-2">
-        {[
-          "INTERVIEW",
-          "MUSIC",
-          "CULTURE",
-          "FASHION",
-          "LIFESTYLE",
-          "HEALTH",
-          "FESTIVAL",
-          "PERFORMANCE",
-          "ESSAY",
-          "TIPS AND TRICKS",
-          "ART",
-          "CINEMA",
-        ].map((tag) => (
-          <Link key={tag} href={`/tags/${formatTagForUrl(tag)}`}>
-            <span className="bg-[var(--muted)] text-white px-2 py-1 text-xs font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-colors cursor-pointer">
-              {tag} ({Math.floor(Math.random() * 50) + 5})
-            </span>
-          </Link>
-        ))}
+        <span className="text-gray-400">Unable to load tags</span>
       </div>
     );
   }

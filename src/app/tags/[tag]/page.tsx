@@ -37,8 +37,9 @@ interface TagPageProps {
 export async function generateStaticParams() {
   const tags = await getAllTags();
 
+  // Use WordPress slug directly instead of formatting the name
   return tags.map((tag) => ({
-    tag: formatTagForUrl(tag.name),
+    tag: tag.slug,
   }));
 }
 

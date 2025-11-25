@@ -3,9 +3,13 @@
  * These functions don't use Node.js APIs and can be imported in Client Components
  */
 
-// Format tag for URL (lowercase, no special chars)
+// Format tag for URL (lowercase, spaces to dashes, no special chars)
+// Note: WordPress tags already have slugs - prefer using tag.slug directly
 export function formatTagForUrl(tag: string): string {
-  return tag.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return tag
+    .toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^a-z0-9-]/g, ""); // Remove all non-alphanumeric except dashes
 }
 
 // Format category for URL (lowercase, spaces to dashes, no special chars)

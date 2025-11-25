@@ -11,6 +11,7 @@ import {
   generateBlogSchema,
   safeJsonLdStringify,
 } from "../lib/json-ld";
+import { getAllCategories } from "../lib/wordpress";
 import "./globals.css";
 import "./sidebar.css";
 
@@ -77,6 +78,17 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
   const organizationSchema = generateOrganizationSchema();
   const blogSchema = generateBlogSchema();
 
+  // Fetch categories server-side for SEO
+  const categories = await getAllCategories().catch(() => []);
+  const sortedCategories = categories
+    .sort((a, b) => b.count - a.count)
+    .map((category) => ({
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+      count: category.count,
+    }));
+
   return (
     <html lang="en" dir="ltr">
       <head>
@@ -116,7 +128,7 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
         />
       </head>
       <body style={{ margin: 0 }}>
-        <Header />
+        <Header categories={sortedCategories} />
         <ConditionalLayout sidebar={<Sidebar />} footer={<Footer />}>
           {children}
         </ConditionalLayout>

@@ -268,7 +268,11 @@ export async function getTagsByPost(postId: number): Promise<Tag[]> {
 }
 
 export async function getAllTags(): Promise<Tag[]> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags");
+  return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags", {
+    _embed: true,
+    hide_empty: true,
+    per_page: 100,
+  });
 }
 
 export async function getTagById(id: number): Promise<Tag> {

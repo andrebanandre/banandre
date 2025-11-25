@@ -3,9 +3,13 @@
 import Link from "next/link";
 import { motion, easeInOut, easeOut } from "framer-motion";
 
-// Format tag for URL (lowercase, no special chars)
+// Format tag for URL (lowercase, spaces to dashes, no special chars)
+// Note: WordPress tags already have slugs - prefer using tag.slug directly
 function formatTagForUrl(tag: string): string {
-  return tag.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return tag
+    .toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^a-z0-9-]/g, ""); // Remove all non-alphanumeric except dashes
 }
 
 interface TagProps {

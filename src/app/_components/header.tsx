@@ -14,7 +14,6 @@ import {
 import { motion } from "framer-motion";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
-import { getAllCategories } from "@/lib/wordpress";
 
 interface Category {
   id: number;
@@ -23,11 +22,14 @@ interface Category {
   count: number;
 }
 
-export function Header() {
+interface HeaderProps {
+  categories: Category[];
+}
+
+export function Header({ categories }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -44,22 +46,6 @@ export function Header() {
   };
 
   useEffect(() => {
-    // Fetch categories using the WordPress library
-    getAllCategories()
-      .then((data) => {
-        // Sort by count (most used first)
-        const sortedCategories = data
-          .sort((a, b) => b.count - a.count)
-          .map((category) => ({
-            id: category.id,
-            name: category.name,
-            slug: category.slug,
-            count: category.count,
-          }));
-        setCategories(sortedCategories);
-      })
-      .catch((err) => console.error("Failed to fetch categories:", err));
-
     return () => {
       document.body.style.overflow = "unset";
     };

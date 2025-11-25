@@ -7,7 +7,8 @@ import { normalizeWordPressPost } from "@/lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Category } from "../../_components/category";
-import { ClientCategoryGrid } from "../../_components/client-category-grid";
+import { BlogGrid } from "../../_components/blog-card";
+import { Pagination } from "../../_components/pagination";
 import type { Metadata } from "next";
 import {
   generateCategoryPageSchema,
@@ -21,12 +22,12 @@ import { Suspense, cache } from "react";
 export const revalidate = 3600;
 
 // Cache category data to prevent duplicate API calls
-const getCategoryData = cache(async (urlCategory: string) => {
+const getCategoryData = cache(async (urlCategory: string, page: number) => {
   const category = await getCategoryBySlug(urlCategory);
   if (!category) return null;
 
-  // Fetch first page with pagination info
-  const response = await getPostsByCategorySlug(urlCategory, 1, 12);
+  // Fetch requested page with pagination info
+  const response = await getPostsByCategorySlug(urlCategory, page, 12);
   const posts = response.data.map(normalizeWordPressPost);
   const totalPages = response.headers.totalPages;
 
@@ -37,6 +38,7 @@ interface CategoryPageProps {
   params: Promise<{
     category: string;
   }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -49,12 +51,14 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: CategoryPageProps): Promise<Metadata> {
   try {
     const { category: urlCategory } = await params;
+    const searchParamsResolved = await searchParams;
+    const page = searchParamsResolved.page ? parseInt(searchParamsResolved.page, 10) : 1;
 
     // Use cached function to prevent duplicate API calls
-    const data = await getCategoryData(urlCategory);
+    const data = await getCategoryData(urlCategory, page);
     if (!data) {
       return {
         title: `Category - ${siteConfig.name}`,
@@ -127,11 +131,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   }
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { category: urlCategory } = await params;
+  const searchParamsResolved = await searchParams;
+  const page = searchParamsResolved.page ? parseInt(searchParamsResolved.page, 10) : 1;
 
   // Use cached function to prevent duplicate API calls
-  const data = await getCategoryData(urlCategory);
+  const data = await getCategoryData(urlCategory, page);
   if (!data || data.posts.length === 0) {
     notFound();
   }
@@ -177,17 +183,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </div>
 
             <p className="text-gray-200 text-lg">
-              {posts.length} article{posts.length !== 1 ? "s" : ""} found
+              Showing page {page} of {totalPages}
             </p>
           </div>
 
           <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
-            <ClientCategoryGrid
-              initialPosts={posts}
-              totalPages={totalPages}
-              categorySlug={urlCategory}
-              baseUrl={`/categories/${urlCategory}`}
-            />
+            <BlogGrid posts={posts} />
+
+            {/* Only show pagination if there are more pages */}
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                baseUrl={`/categories/${urlCategory}`}
+              />
+            )}
           </Suspense>
         </div>
       </div>
