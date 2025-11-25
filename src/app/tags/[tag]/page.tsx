@@ -36,11 +36,11 @@ interface TagPageProps {
 export async function generateStaticParams() {
   const tags = await getAllTags();
 
-  // Only pre-generate top 20 most used tags
+  // Only pre-generate top 50 most used tags
   // Others will be generated on-demand with ISR
   return tags
     .sort((a, b) => b.count - a.count)
-    .slice(0, 20)
+    .slice(0, 50)
     .map((tag) => ({
       tag: tag.slug,
     }));

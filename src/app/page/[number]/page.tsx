@@ -73,8 +73,8 @@ export async function generateStaticParams() {
   const response = await getPostsPaginated(1, 12);
   const totalPages = response.headers.totalPages;
 
-  // Pre-generate first 5 pages (adjust as needed)
-  const pagesToGenerate = Math.min(totalPages, 5);
+  // Pre-generate first 10 pages (adjust as needed)
+  const pagesToGenerate = Math.min(totalPages, 10);
 
   return Array.from({ length: pagesToGenerate - 1 }, (_, i) => ({
     number: String(i + 2), // Start from page 2 since page 1 is the root

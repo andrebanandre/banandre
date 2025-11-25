@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchPosts } from "@/lib/wordpress";
 
-// Edge runtime for Cloudflare Workers
-export const runtime = "edge";
-
 // Cache the response for 2 minutes
 export const revalidate = 120;
 
