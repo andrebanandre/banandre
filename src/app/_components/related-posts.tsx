@@ -1,70 +1,43 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { getPostsByCategoryClient } from "@/lib/wordpress";
+// Server Component - Fetches related posts server-side for better SEO and performance
+import { getPostsByCategoryPaginated } from "@/lib/wordpress";
 import { BlogCard } from "./blog-card";
 import { normalizeWordPressPost } from "@/lib/content-types";
-import type { Post } from "@/lib/wordpress.d";
 
 interface RelatedPostsProps {
   currentPostId: number;
   categoryId: number;
 }
 
-export function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
-  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export async function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
+  try {
+    // Fetch related posts from the same category, server-side
+    const response = await getPostsByCategoryPaginated(categoryId, 1, 5);
 
-  useEffect(() => {
-    async function fetchRelatedPosts() {
-      try {
-        const posts = await getPostsByCategoryClient(categoryId, 5, currentPostId);
-        setRelatedPosts(posts);
-      } catch (error) {
-        console.warn("Failed to fetch related posts:", error);
-        setRelatedPosts([]);
-      } finally {
-        setIsLoading(false);
-      }
+    // Filter out current post and limit to 4 related posts
+    const relatedPosts = response.data
+      .filter((post) => post.id !== currentPostId)
+      .slice(0, 4)
+      .map(normalizeWordPressPost);
+
+    // Don't render if no related posts
+    if (relatedPosts.length === 0) {
+      return null;
     }
 
-    fetchRelatedPosts();
-  }, [currentPostId, categoryId]);
-
-  // Don't render anything if loading or no posts
-  if (isLoading) {
     return (
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
         <h2 className="text-2xl font-bold text-[var(--accent)] mb-8 uppercase tracking-wide">
           Related Articles
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="h-48 bg-[var(--card)] border-2 border-[var(--accent)] rounded animate-pulse"
-            />
+          {relatedPosts.map((relatedPost) => (
+            <BlogCard key={relatedPost.slug} post={relatedPost} size="medium" />
           ))}
         </div>
       </section>
     );
-  }
-
-  if (relatedPosts.length === 0) {
+  } catch (error) {
+    console.warn("Failed to fetch related posts:", error);
     return null;
   }
-
-  return (
-    <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
-      <h2 className="text-2xl font-bold text-[var(--accent)] mb-8 uppercase tracking-wide">
-        Related Articles
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {relatedPosts.map((relatedPost) => {
-          const normalizedPost = normalizeWordPressPost(relatedPost);
-          return <BlogCard key={relatedPost.id} post={normalizedPost} size="medium" />;
-        })}
-      </div>
-    </section>
-  );
 }
