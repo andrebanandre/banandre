@@ -6,20 +6,23 @@ import {
 import { normalizeWordPressPost } from "@/lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Category } from "../../_components/category";
-import { BlogGrid } from "../../_components/blog-card";
-import { Pagination } from "../../_components/pagination";
+import { Category } from "../../../_components/category";
+import { BlogGrid } from "../../../_components/blog-card";
+import { Pagination } from "../../../_components/pagination";
 import type { Metadata } from "next";
 import {
   generateCategoryPageSchema,
   generateBreadcrumbSchema,
   safeJsonLdStringify,
-} from "../../../lib/json-ld";
-import { siteConfig } from "../../config";
+} from "../../../../lib/json-ld";
+import { siteConfig } from "../../../config";
 import { Suspense, cache } from "react";
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600;
+
+// Allow dynamic params for routes not in generateStaticParams
+export const dynamicParams = true;
 
 // Cache category data to prevent duplicate API calls
 const getCategoryData = cache(async (urlCategory: string, page: number) => {
@@ -37,25 +40,30 @@ const getCategoryData = cache(async (urlCategory: string, page: number) => {
 interface CategoryPageProps {
   params: Promise<{
     category: string;
+    page?: string[];
   }>;
-  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateStaticParams() {
   // Fetch WordPress categories only
   const wpCategories = await getAllCategories();
 
-  // Use WordPress slug directly instead of formatting the name
+  // Generate static params for first page only
+  // Other pages will be generated on-demand with ISR
   return wpCategories.map((cat) => ({
     category: cat.slug,
+    page: undefined, // This generates /categories/[category]
   }));
 }
 
-export async function generateMetadata({ params, searchParams }: CategoryPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   try {
-    const { category: urlCategory } = await params;
-    const searchParamsResolved = await searchParams;
-    const page = searchParamsResolved.page ? parseInt(searchParamsResolved.page, 10) : 1;
+    const resolvedParams = await params;
+    const urlCategory = resolvedParams.category;
+    // Extract page number from optional catch-all route
+    // /categories/ai → page = 1
+    // /categories/ai/2 → page = 2
+    const page = resolvedParams.page?.[0] ? parseInt(resolvedParams.page[0], 10) : 1;
 
     // Use cached function to prevent duplicate API calls
     const data = await getCategoryData(urlCategory, page);
@@ -131,10 +139,13 @@ export async function generateMetadata({ params, searchParams }: CategoryPagePro
   }
 }
 
-export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const { category: urlCategory } = await params;
-  const searchParamsResolved = await searchParams;
-  const page = searchParamsResolved.page ? parseInt(searchParamsResolved.page, 10) : 1;
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const resolvedParams = await params;
+  const urlCategory = resolvedParams.category;
+  // Extract page number from optional catch-all route
+  // /categories/ai → page = 1
+  // /categories/ai/2 → page = 2
+  const page = resolvedParams.page?.[0] ? parseInt(resolvedParams.page[0], 10) : 1;
 
   // Use cached function to prevent duplicate API calls
   const data = await getCategoryData(urlCategory, page);

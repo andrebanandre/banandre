@@ -49,8 +49,16 @@ export function Pagination({ currentPage, totalPages, baseUrl = "/" }: Paginatio
   };
 
   const getPageUrl = (page: number) => {
+    // Page 1 uses the base URL
     if (page === 1) return baseUrl;
-    return `${baseUrl}?page=${page}`;
+
+    // For homepage pagination: /page/2, /page/3, etc.
+    if (baseUrl === "/") {
+      return `/page/${page}`;
+    }
+
+    // For category pagination: /categories/ai/2, /categories/ai/3, etc.
+    return `${baseUrl}/${page}`;
   };
 
   const shouldShowPrevious = currentPage > 1;

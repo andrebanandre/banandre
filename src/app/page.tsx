@@ -62,13 +62,10 @@ export const metadata: Metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-interface HomePageProps {
-  searchParams: Promise<{ page?: string }>;
-}
-
-export default async function HomePage({ searchParams }: HomePageProps) {
-  const params = await searchParams;
-  const page = params.page ? parseInt(params.page, 10) : 1;
+export default async function HomePage() {
+  // Homepage always shows page 1
+  // Pagination is handled by /page/[number] routes
+  const page = 1;
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header Section - Like screenshot */}
