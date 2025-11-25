@@ -29,11 +29,14 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Generate static paths for all blog posts at build time
+// Generate static paths for most recent blog posts at build time
+// Cloudflare Workers has limits, so we only pre-generate 50 most recent posts
+// Others will be generated on-demand with ISR (revalidate: 3600)
 export async function generateStaticParams() {
   try {
     const slugs = await getAllPostSlugs();
-    return slugs;
+    // Only pre-generate first 50 posts to avoid Cloudflare build timeouts
+    return slugs.slice(0, 50);
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];

@@ -11,7 +11,6 @@ import {
   generateBreadcrumbSchema,
   safeJsonLdStringify,
 } from "../../../lib/json-ld";
-import { formatTagForUrl } from "../../../lib/url-utils";
 import { siteConfig } from "../../config";
 
 // Enable ISR - revalidate every hour
@@ -37,10 +36,14 @@ interface TagPageProps {
 export async function generateStaticParams() {
   const tags = await getAllTags();
 
-  // Use WordPress slug directly instead of formatting the name
-  return tags.map((tag) => ({
-    tag: tag.slug,
-  }));
+  // Only pre-generate top 20 most used tags
+  // Others will be generated on-demand with ISR
+  return tags
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 20)
+    .map((tag) => ({
+      tag: tag.slug,
+    }));
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
