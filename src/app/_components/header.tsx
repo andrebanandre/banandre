@@ -8,9 +8,9 @@ import {
   MagnifyingGlassIcon,
   ChevronDownIcon,
   GitHubLogoIcon,
-  TwitterLogoIcon,
   LinkedInLogoIcon,
 } from "@radix-ui/react-icons";
+import { XLogoIcon } from "./x-logo";
 import { motion } from "framer-motion";
 import { WordPressSearch } from "./wordpress-search";
 import { formatCategoryForUrl } from "@/lib/url-utils";
@@ -145,7 +145,7 @@ export function Header({ categories }: HeaderProps) {
                   whileHover={{ scale: 1.1, rotate: -5 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <TwitterLogoIcon className="w-5 h-5" />
+                  <XLogoIcon className="w-5 h-5" />
                 </motion.a>
                 <motion.a
                   href="https://www.linkedin.com/in/andrii-fedorenko-65905863/"

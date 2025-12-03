@@ -2,10 +2,10 @@
 
 import {
   GitHubLogoIcon,
-  TwitterLogoIcon,
   LinkedInLogoIcon,
   EnvelopeClosedIcon,
 } from "@radix-ui/react-icons";
+import { XLogoIcon } from "./x-logo";
 import { motion, easeInOut, easeOut } from "framer-motion";
 
 export function Footer() {
@@ -189,7 +189,7 @@ export function Footer() {
             </motion.h3>
             <div className="flex space-x-4">
               {[
-                { icon: TwitterLogoIcon, href: "https://x.com/andre_banandre", label: "X" },
+                { icon: XLogoIcon, href: "https://x.com/andre_banandre", label: "X" },
                 {
                   icon: LinkedInLogoIcon,
                   href: "https://www.linkedin.com/in/andrii-fedorenko-65905863/",
@@ -275,7 +275,7 @@ export function Footer() {
             {currentYear} BANANDRE
           </motion.div>
           <div className="flex items-center space-x-6 text-sm">
-            {/* <motion.a 
+            <motion.a 
               href="/privacy" 
               className="text-gray-400 hover:text-[var(--accent)] transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
@@ -284,13 +284,13 @@ export function Footer() {
               Privacy Policy
             </motion.a>
             <motion.a 
-              href="/terms" 
+              href="/impressum" 
               className="text-gray-400 hover:text-[var(--accent)] transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              Terms of Service
-            </motion.a> */}
+              Impressum
+            </motion.a>
             <motion.div
               className="text-gray-500 font-mono text-xs"
               animate={{
