@@ -185,7 +185,7 @@ function SneakyBanana() {
       }
     }, 1000);
     return () => clearInterval(checkInterval);
-  }, []);
+  }, [isVisible]);
 
   // Auto-hide after animation
   useEffect(() => {
