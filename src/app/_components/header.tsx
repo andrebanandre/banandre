@@ -7,8 +7,6 @@ import {
   Cross1Icon,
   MagnifyingGlassIcon,
   ChevronDownIcon,
-  GitHubLogoIcon,
-  LinkedInLogoIcon,
 } from "@radix-ui/react-icons";
 import { XLogoIcon } from "./x-logo";
 import { motion } from "framer-motion";
@@ -128,16 +126,6 @@ export function Header({ categories }: HeaderProps) {
               {/* Social Icons */}
               <div className="flex items-center gap-4">
                 <motion.a
-                  href="https://github.com/andrebanandre/banandre"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-[var(--accent)] transition-colors"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <GitHubLogoIcon className="w-5 h-5" />
-                </motion.a>
-                <motion.a
                   href="https://x.com/andre_banandre"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -146,16 +134,6 @@ export function Header({ categories }: HeaderProps) {
                   whileTap={{ scale: 0.9 }}
                 >
                   <XLogoIcon className="w-5 h-5" />
-                </motion.a>
-                <motion.a
-                  href="https://www.linkedin.com/in/andrii-fedorenko-65905863/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-[var(--accent)] transition-colors"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <LinkedInLogoIcon className="w-5 h-5" />
                 </motion.a>
               </div>
 

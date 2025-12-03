@@ -284,6 +284,14 @@ export function Footer() {
               Privacy Policy
             </motion.a>
             <motion.a 
+              href="/terms" 
+              className="text-gray-400 hover:text-[var(--accent)] transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              Terms
+            </motion.a>
+            <motion.a 
               href="/impressum" 
               className="text-gray-400 hover:text-[var(--accent)] transition-colors duration-200"
               whileHover={{ scale: 1.05 }}

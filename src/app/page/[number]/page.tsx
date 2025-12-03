@@ -1,6 +1,5 @@
 import { LandingBlogGrid } from "../../_components/landing-blog-grid";
 import { AllCategoriesDisplay } from "../../_components/all-categories";
-import { FallingBananasTitle } from "../../_components/falling-bananas";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
@@ -90,13 +89,7 @@ export default async function PaginatedPage({ params }: PageProps) {
       {/* Header Section */}
       <section className="py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            {/* Falling Bananas Title */}
-            <div className="flex-1">
-              <FallingBananasTitle />
-            </div>
-          </div>
-
+          
           {/* Category navigation from actual blog posts */}
           <div className="mb-8">
             <AllCategoriesDisplay />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { FC, ReactNode } from "react";
 import GoogleAnalytics from "./_components/google-analytics";
+import { CookieBanner } from "./_components/cookie-banner";
 import { Header } from "./_components/header";
 import { Sidebar } from "./_components/sidebar";
 import { Footer } from "./_components/footer";
@@ -133,6 +134,7 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
           {children}
         </ConditionalLayout>
         <GoogleAnalytics />
+        <CookieBanner />
       </body>
     </html>
   );

@@ -68,26 +68,11 @@ export default async function HomePage() {
   const page = 1;
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <FallingBananasTitle />
+      
       {/* Header Section - Like screenshot */}
       <section className="py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            {/* Falling Bananas Title */}
-            <div className="flex-1">
-              <FallingBananasTitle />
-            </div>
-
-            {/* Read Our Blog Button */}
-            {/* <div className="hidden md:block ml-8">
-              <Link href="/tags">
-                <button className="bg-[var(--muted)] text-white px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-[var(--blue-accent)] transition-all duration-200 flex items-center space-x-2">
-                  <span>All Articles</span>
-                  <ArrowRightIcon className="w-4 h-4" />
-                </button>
-              </Link>
-            </div> */}
-          </div>
-
           {/* Navigation Bar like in screenshot */}
           {/* <div className="border-t-2 border-b-2 border-white py-2 mb-8">
             <div className="flex flex-wrap gap-6 text-white text-sm font-bold uppercase tracking-wider">
