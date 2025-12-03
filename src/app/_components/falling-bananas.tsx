@@ -27,11 +27,12 @@ function FallingBanana() {
   function generateBananaState(): BananaState {
     const isOpen = Math.random() > 0.7; // 30% chance for banana-open
     const shouldExplode = Math.random() > 0.6; // 40% chance to explode
-    
+
     // Determine depth and associated properties
     const depthRoll = Math.random();
     let depth: BananaDepth = "mid";
-    if (depthRoll < 0.3) depth = "back"; // 30% background
+    if (depthRoll < 0.3)
+      depth = "back"; // 30% background
     else if (depthRoll > 0.8) depth = "front"; // 20% foreground
 
     // Duration depends on depth (parallax effect)
@@ -66,8 +67,8 @@ function FallingBanana() {
     if (state.shouldExplode) {
       // Start explosion just before animation completes
       // Adjust timing based on depth/speed
-      const explosionTime = state.duration * 1000 - 300; 
-      
+      const explosionTime = state.duration * 1000 - 300;
+
       const explosionTimeout = setTimeout(() => {
         setState((prev) => ({ ...prev, isExploding: true, isVisible: false }));
 
@@ -93,20 +94,20 @@ function FallingBanana() {
         return {
           size: 32,
           className: "opacity-60 blur-[1px] z-0",
-          zIndex: 0
+          zIndex: 0,
         };
       case "front":
         return {
           size: 64,
           className: "z-20 drop-shadow-xl",
-          zIndex: 20
+          zIndex: 20,
         };
       case "mid":
       default:
         return {
           size: 48,
           className: "z-10 opacity-90",
-          zIndex: 10
+          zIndex: 10,
         };
     }
   };
@@ -148,7 +149,7 @@ function FallingBanana() {
           {Array.from({ length: 6 }, (_, i) => (
             <div
               key={i}
-              className={`absolute rounded-full bg-yellow-400 ${state.depth === 'back' ? 'w-2 h-2' : 'w-3 h-3'}`}
+              className={`absolute rounded-full bg-yellow-400 ${state.depth === "back" ? "w-2 h-2" : "w-3 h-3"}`}
               style={{
                 animation: `explode${i} 0.6s ease-out forwards`,
               }}
@@ -174,7 +175,8 @@ function SneakyBanana() {
 
   useEffect(() => {
     const checkInterval = setInterval(() => {
-      if (!isVisible && Math.random() < 0.05) { // 5% chance every second
+      if (!isVisible && Math.random() < 0.05) {
+        // 5% chance every second
         setIsVisible(true);
         setPosition({
           x: 10 + Math.random() * 80, // Keep roughly in center
@@ -183,7 +185,7 @@ function SneakyBanana() {
       }
     }, 1000);
     return () => clearInterval(checkInterval);
-  }, [isVisible]);
+  }, []);
 
   // Auto-hide after animation
   useEffect(() => {
@@ -214,7 +216,7 @@ function SneakyBanana() {
 export function FallingBananasTitle() {
   // Generate static array for hydration consistency
   const bananaCount = 20; // Increased count for better density
-  
+
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 1000], [0, 400]);
   const titleY = useTransform(scrollY, [0, 1000], [0, 200]);
@@ -224,61 +226,128 @@ export function FallingBananasTitle() {
       <style jsx global>{`
         /* Sway Patterns */
         @keyframes fallSway0 {
-          0% { transform: translate(0, -120px) rotate(0deg); }
-          25% { transform: translate(20px, 20vh) rotate(90deg); }
-          50% { transform: translate(-15px, 50vh) rotate(180deg); }
-          75% { transform: translate(10px, 80vh) rotate(270deg); }
-          100% { transform: translate(0, 110vh) rotate(360deg); }
+          0% {
+            transform: translate(0, -120px) rotate(0deg);
+          }
+          25% {
+            transform: translate(20px, 20vh) rotate(90deg);
+          }
+          50% {
+            transform: translate(-15px, 50vh) rotate(180deg);
+          }
+          75% {
+            transform: translate(10px, 80vh) rotate(270deg);
+          }
+          100% {
+            transform: translate(0, 110vh) rotate(360deg);
+          }
         }
-        
+
         @keyframes fallSway1 {
-          0% { transform: translate(0, -120px) rotate(0deg); }
-          30% { transform: translate(-25px, 30vh) rotate(-60deg); }
-          60% { transform: translate(20px, 60vh) rotate(-120deg); }
-          100% { transform: translate(-10px, 110vh) rotate(-360deg); }
+          0% {
+            transform: translate(0, -120px) rotate(0deg);
+          }
+          30% {
+            transform: translate(-25px, 30vh) rotate(-60deg);
+          }
+          60% {
+            transform: translate(20px, 60vh) rotate(-120deg);
+          }
+          100% {
+            transform: translate(-10px, 110vh) rotate(-360deg);
+          }
         }
 
         @keyframes fallSway2 {
-          0% { transform: translate(0, -120px) rotate(45deg); }
-          40% { transform: translate(15px, 40vh) rotate(100deg); }
-          80% { transform: translate(-15px, 90vh) rotate(200deg); }
-          100% { transform: translate(0, 110vh) rotate(280deg); }
+          0% {
+            transform: translate(0, -120px) rotate(45deg);
+          }
+          40% {
+            transform: translate(15px, 40vh) rotate(100deg);
+          }
+          80% {
+            transform: translate(-15px, 90vh) rotate(200deg);
+          }
+          100% {
+            transform: translate(0, 110vh) rotate(280deg);
+          }
         }
 
         @keyframes fallSneaky {
-          0% { transform: translateY(-120px) rotate(0deg) scale(1); }
-          50% { transform: translateY(40vh) rotate(180deg) scale(1.2); }
-          100% { transform: translateY(110vh) rotate(360deg) scale(1); }
+          0% {
+            transform: translateY(-120px) rotate(0deg) scale(1);
+          }
+          50% {
+            transform: translateY(40vh) rotate(180deg) scale(1.2);
+          }
+          100% {
+            transform: translateY(110vh) rotate(360deg) scale(1);
+          }
         }
 
         /* Explosion Particles */
-        @keyframes explode0 { to { transform: translate(40px, -40px) scale(0); opacity: 0; } }
-        @keyframes explode1 { to { transform: translate(-40px, -40px) scale(0); opacity: 0; } }
-        @keyframes explode2 { to { transform: translate(50px, 10px) scale(0); opacity: 0; } }
-        @keyframes explode3 { to { transform: translate(-50px, 10px) scale(0); opacity: 0; } }
-        @keyframes explode4 { to { transform: translate(20px, 40px) scale(0); opacity: 0; } }
-        @keyframes explode5 { to { transform: translate(-20px, 40px) scale(0); opacity: 0; } }
+        @keyframes explode0 {
+          to {
+            transform: translate(40px, -40px) scale(0);
+            opacity: 0;
+          }
+        }
+        @keyframes explode1 {
+          to {
+            transform: translate(-40px, -40px) scale(0);
+            opacity: 0;
+          }
+        }
+        @keyframes explode2 {
+          to {
+            transform: translate(50px, 10px) scale(0);
+            opacity: 0;
+          }
+        }
+        @keyframes explode3 {
+          to {
+            transform: translate(-50px, 10px) scale(0);
+            opacity: 0;
+          }
+        }
+        @keyframes explode4 {
+          to {
+            transform: translate(20px, 40px) scale(0);
+            opacity: 0;
+          }
+        }
+        @keyframes explode5 {
+          to {
+            transform: translate(-20px, 40px) scale(0);
+            opacity: 0;
+          }
+        }
 
         @keyframes flash {
-          0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.5); }
-          100% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+          0% {
+            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(0.5);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(3);
+          }
         }
       `}</style>
 
       <div className="w-full relative overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-[#252525] h-[40vh] min-h-[300px] md:h-[50vh] select-none">
-        
         {/* Background pattern/grid for texture */}
-        <motion.div 
-             className="absolute inset-0 opacity-10" 
-             style={{ 
-               backgroundImage: 'radial-gradient(#444 1px, transparent 1px)', 
-               backgroundSize: '30px 30px',
-               y: backgroundY
-             }}>
-        </motion.div>
+        <motion.div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: "radial-gradient(#444 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+            y: backgroundY,
+          }}
+        ></motion.div>
 
         {/* Title Container */}
-        <motion.div 
+        <motion.div
           style={{ y: titleY }}
           className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-4"
         >
@@ -293,7 +362,7 @@ export function FallingBananasTitle() {
         ))}
 
         <SneakyBanana />
-        
+
         {/* Gradient Overlay at bottom for smooth fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#181818] to-transparent z-20 pointer-events-none"></div>
       </div>
