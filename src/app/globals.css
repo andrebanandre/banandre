@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700;900&display=swap");
 
 :root {
   --background: #181818;
@@ -21,7 +20,7 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-card: var(--card);
-  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 

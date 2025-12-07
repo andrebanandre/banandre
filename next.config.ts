@@ -52,10 +52,9 @@ const nextConfig: NextConfig = {
     ],
     // Optimize images for better performance
     unoptimized: false,
-  },
-  eslint: {
-    // Only run ESLint on specific directories during production builds
-    dirs: ["src", "pages", "app", "components", "lib"],
+    // Allow local IP addresses for development (localhost WordPress)
+    // Only enabled in development for security
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
   },
   // Ensure proper TypeScript compilation
   typescript: {
@@ -68,6 +67,8 @@ const nextConfig: NextConfig = {
     // Use modern JavaScript features without transpilation for supported browsers
     esmExternals: true,
   },
+  // Add empty turbopack config to allow webpack config for backward compatibility
+  turbopack: {},
   // Disable core-js polyfills for modern browsers
   webpack: (config, { dev, isServer }) => {
     if (!isServer && !dev) {

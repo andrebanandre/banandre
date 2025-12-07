@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchPosts } from "@/lib/wordpress";
 
+// Force dynamic rendering for search API (uses query parameters)
+export const dynamic = 'force-dynamic';
+
 // Cache the response for 2 minutes
 export const revalidate = 120;
 
