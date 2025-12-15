@@ -337,11 +337,11 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
             )}
           </article>
 
-                {/* Related Posts - Client Side */}
-                {post.categories.length > 0 && (
+                {/* Related Posts - Server Side with Tag-based matching */}
+                {tags.length > 0 && (
                   <RelatedPosts
                     currentPostId={post.id}
-                    categoryId={post.categories[0]}
+                    tagSlugs={tags.map((tag) => tag.slug)}
                   />
                 )}
 

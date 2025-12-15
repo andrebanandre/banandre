@@ -77,8 +77,8 @@ export interface Post extends WPEntity {
   tags: number[];
   meta: Record<string, unknown>;
   _embedded?: {
-    'wp:featuredmedia'?: FeaturedMedia[];
-    'wp:term'?: Array<(Category | Tag)[]>;
+    "wp:featuredmedia"?: FeaturedMedia[];
+    "wp:term"?: Array<(Category | Tag)[]>;
     author?: Author[];
     [key: string]: unknown[] | undefined;
   };
@@ -239,4 +239,49 @@ export interface FilterBarProps {
   onAuthorChange?: (authorId: Author["id"] | undefined) => void;
   onTagChange?: (tagId: Tag["id"] | undefined) => void;
   onCategoryChange?: (categoryId: Category["id"] | undefined) => void;
+}
+
+// Related Posts API Types
+export interface RelatedPostTag {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface RelatedPostCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface RelatedPostAuthor {
+  id: number;
+  name: string;
+}
+
+export interface RelatedPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  modified: string;
+  link: string;
+  featured_image: string;
+  categories: RelatedPostCategory[];
+  tags: RelatedPostTag[];
+  author: RelatedPostAuthor;
+}
+
+export interface RelatedPostsQuery {
+  tags: string[];
+  max: number;
+  excluded_ids: number[];
+}
+
+export interface RelatedPostsResponse {
+  success: boolean;
+  count: number;
+  query: RelatedPostsQuery;
+  posts: RelatedPost[];
 }

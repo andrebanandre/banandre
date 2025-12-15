@@ -103,7 +103,7 @@ async function wordpressFetchWithPagination<T>(
 // New function for paginated posts
 export async function getPostsPaginated(
   page: number = 1,
-  perPage: number = 9,
+  perPage: number = 6,
   filterParams?: {
     author?: string | number;
     tag?: string | number;
@@ -188,7 +188,7 @@ export async function getAllPosts(filterParams?: {
   while (hasMore) {
     const query: Record<string, string | number | boolean> = {
       _embed: true,
-      per_page: 100,
+      per_page: 20,
       page,
     };
 
@@ -237,10 +237,25 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 }
 
 export async function getAllCategories(): Promise<Category[]> {
-  return wordpressFetch<Category[]>("/wp-json/wp/v2/categories", {
-    _embed: true,
-    hide_empty: true,
+  const url = `${baseUrl}/wp-json/wp/v2/categories?_embed=true&hide_empty=true`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Next.js WordPress Client" },
+    next: {
+      tags: ["wordpress", "categories"],
+      revalidate: 7200, // 2 hours cache (categories rarely change)
+    },
   });
+
+  if (!response.ok) {
+    throw new WordPressAPIError(
+      `WordPress API request failed: ${response.statusText}`,
+      response.status,
+      url
+    );
+  }
+
+  return response.json();
 }
 
 export async function getCategoryById(id: number): Promise<Category> {
@@ -268,11 +283,25 @@ export async function getTagsByPost(postId: number): Promise<Tag[]> {
 }
 
 export async function getAllTags(): Promise<Tag[]> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags", {
-    _embed: true,
-    hide_empty: true,
-    per_page: 100,
+  const url = `${baseUrl}/wp-json/wp/v2/tags?_embed=true&hide_empty=true&per_page=100`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Next.js WordPress Client" },
+    next: {
+      tags: ["wordpress", "tags"],
+      revalidate: 7200, // 2 hours cache (tags rarely change)
+    },
   });
+
+  if (!response.ok) {
+    throw new WordPressAPIError(
+      `WordPress API request failed: ${response.statusText}`,
+      response.status,
+      url
+    );
+  }
+
+  return response.json();
 }
 
 export async function getTagById(id: number): Promise<Tag> {
@@ -396,7 +425,7 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
 export async function getPostsByCategoryPaginated(
   categoryId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 6
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -411,7 +440,7 @@ export async function getPostsByCategoryPaginated(
 export async function getPostsByTagPaginated(
   tagId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 6
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -426,7 +455,7 @@ export async function getPostsByTagPaginated(
 export async function getPostsByAuthorPaginated(
   authorId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 6
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -497,3 +526,53 @@ export async function searchPosts(query: string, perPage: number = 10): Promise<
   return response.json();
 }
 
+
+
+
+/**
+ * Fetches related posts using the custom blog-writer API endpoint
+ * This endpoint provides optimized related posts based on tag matching
+ * @param tagSlugs - Array of tag slugs to match
+ * @param max - Maximum number of posts to return
+ * @param excludedIds - Optional array of post IDs to exclude
+ * @returns RelatedPostsResponse with matched posts and query info
+ */
+export async function getRelatedPostsByTags(
+  tagSlugs: string[],
+  max: number = 5,
+  excludedIds: number[] = []
+): Promise<import("./wordpress.d").RelatedPostsResponse> {
+  const query: Record<string, any> = {
+    tags: tagSlugs.join(","),
+    max,
+  };
+
+  if (excludedIds.length > 0) {
+    query.exclude = excludedIds.join(",");
+  }
+
+  const url = `${baseUrl}/wp-json/blog-writer/v1/related-posts${
+    query ? `?${querystring.stringify(query)}` : ""
+  }`;
+  const userAgent = "Next.js WordPress Client";
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": userAgent,
+    },
+    next: {
+      tags: ["wordpress", "related-posts"],
+      revalidate: 3600, // 1 hour cache
+    },
+  });
+
+  if (!response.ok) {
+    throw new WordPressAPIError(
+      `WordPress API request failed: ${response.statusText}`,
+      response.status,
+      url
+    );
+  }
+
+  return response.json();
+}

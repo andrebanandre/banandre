@@ -1,28 +1,47 @@
 // Server Component - Fetches related posts server-side for better SEO and performance
-import { getPostsByCategoryPaginated } from "@/lib/wordpress";
+import { getRelatedPostsByTags } from "@/lib/wordpress";
 import { BlogCard } from "./blog-card";
-import { normalizeWordPressPost } from "@/lib/content-types";
+import type { RelatedPost } from "@/lib/wordpress.d";
+import type { NormalizedPost } from "@/lib/content-types";
 
 interface RelatedPostsProps {
   currentPostId: number;
-  categoryId: number;
+  tagSlugs: string[];
 }
 
-export async function RelatedPosts({ currentPostId, categoryId }: RelatedPostsProps) {
+// Convert RelatedPost to NormalizedPost format compatible with BlogCard
+function convertRelatedPost(post: RelatedPost): NormalizedPost {
+  return {
+    title: post.title,
+    description: post.excerpt,
+    excerpt: post.excerpt,
+    image: post.featured_image || undefined,
+    slug: post.slug,
+    url: `/blog/${post.slug}`,
+    date: post.date,
+    categories: post.categories.map((cat) => cat.name),
+    tags: post.tags.map((tag) => tag.name),
+    author: post.author.name,
+  };
+}
+
+export async function RelatedPosts({ currentPostId, tagSlugs }: RelatedPostsProps) {
   try {
-    // Fetch related posts from the same category, server-side
-    const response = await getPostsByCategoryPaginated(categoryId, 1, 5);
-
-    // Filter out current post and limit to 4 related posts
-    const relatedPosts = response.data
-      .filter((post) => post.id !== currentPostId)
-      .slice(0, 4)
-      .map(normalizeWordPressPost);
-
-    // Don't render if no related posts
-    if (relatedPosts.length === 0) {
+    // Don't fetch if no tags
+    if (!tagSlugs || tagSlugs.length === 0) {
       return null;
     }
+
+    // Fetch related posts using the tag-based endpoint
+    const response = await getRelatedPostsByTags(tagSlugs, 5, [currentPostId]);
+
+    // Don't render if no related posts
+    if (!response.success || response.posts.length === 0) {
+      return null;
+    }
+
+    // Limit to 4 related posts
+    const relatedPosts = response.posts.slice(0, 4).map(convertRelatedPost);
 
     return (
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
