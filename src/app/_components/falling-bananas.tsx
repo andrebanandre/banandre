@@ -351,8 +351,15 @@ export function FallingBananasTitle() {
           style={{ y: titleY }}
           className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-4"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight text-center">
-            BANANDRE
+          <h1 className="relative w-full max-w-[300px] md:max-w-[500px] lg:max-w-[700px]">
+            <Image
+              src="/banandre_wiggle.png"
+              alt="BANANDRE"
+              width={2051}
+              height={363}
+              priority
+              className="w-full h-auto drop-shadow-2xl"
+            />
           </h1>
         </motion.div>
 
