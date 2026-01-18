@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { decode } from "html-entities";
-import { cache } from "react";
 import {
   getPostBySlug,
   getAllPostSlugs,
@@ -17,16 +16,13 @@ import { RelatedPosts } from "@/app/_components/related-posts";
 import { siteConfig } from "@/app/config";
 import "../blog-styles.css";
 
-// Enable ISR - revalidate every hour
-export const revalidate = 3600;
-
 // Allow dynamic params for routes not in generateStaticParams
 export const dynamicParams = true;
 
-// Cache post data to prevent duplicate API calls
-const getPostData = cache(async (slug: string) => {
+// Fetch post data
+async function getPostData(slug: string) {
   return await getPostBySlug(slug);
-});
+}
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;

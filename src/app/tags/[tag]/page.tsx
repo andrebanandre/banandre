@@ -2,7 +2,6 @@ import { getAllTags, getTagBySlug, getPostsByTagPaginated } from "../../../lib/w
 import { normalizeWordPressPost } from "../../../lib/content-types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import { Tag } from "../../_components/tag";
 import { BlogGrid } from "../../_components/blog-card";
 import type { Metadata } from "next";
@@ -13,14 +12,11 @@ import {
 } from "../../../lib/json-ld";
 import { siteConfig } from "../../config";
 
-// Enable ISR - revalidate every hour
-export const revalidate = 3600;
-
 // Allow dynamic params for routes not in generateStaticParams
 export const dynamicParams = true;
 
-// Cache tag data to prevent duplicate API calls
-const getTagData = cache(async (urlTag: string) => {
+// Fetch tag data
+async function getTagData(urlTag: string) {
   const tag = await getTagBySlug(urlTag);
   if (!tag) return null;
 
@@ -28,7 +24,7 @@ const getTagData = cache(async (urlTag: string) => {
   const posts = wordpressPosts.map(normalizeWordPressPost);
 
   return { tag, posts };
-});
+}
 
 interface TagPageProps {
   params: Promise<{

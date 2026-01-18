@@ -6,9 +6,6 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
 import { siteConfig } from "./config";
 
-// Enable ISR - revalidate every hour
-export const revalidate = 3600;
-
 export const metadata: Metadata = {
   title: `${siteConfig.name} - ${siteConfig.title}`,
   description: siteConfig.description,

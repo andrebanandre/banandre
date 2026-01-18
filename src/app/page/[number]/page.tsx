@@ -6,9 +6,6 @@ import type { Metadata } from "next";
 import { siteConfig } from "../../config";
 import { getPostsPaginated } from "../../../lib/wordpress";
 
-// Enable ISR - revalidate every hour
-export const revalidate = 3600;
-
 // Allow dynamic params for routes not in generateStaticParams
 export const dynamicParams = true;
 

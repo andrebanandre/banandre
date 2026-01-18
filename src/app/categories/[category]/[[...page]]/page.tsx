@@ -16,16 +16,13 @@ import {
   safeJsonLdStringify,
 } from "../../../../lib/json-ld";
 import { siteConfig } from "../../../config";
-import { Suspense, cache } from "react";
-
-// Enable ISR - revalidate every hour
-export const revalidate = 3600;
+import { Suspense } from "react";
 
 // Allow dynamic params for routes not in generateStaticParams
 export const dynamicParams = true;
 
-// Cache category data to prevent duplicate API calls
-const getCategoryData = cache(async (urlCategory: string, page: number) => {
+// Fetch category data
+async function getCategoryData(urlCategory: string, page: number) {
   const category = await getCategoryBySlug(urlCategory);
   if (!category) return null;
 
@@ -35,7 +32,7 @@ const getCategoryData = cache(async (urlCategory: string, page: number) => {
   const totalPages = response.headers.totalPages;
 
   return { category, posts, totalPages };
-});
+}
 
 interface CategoryPageProps {
   params: Promise<{

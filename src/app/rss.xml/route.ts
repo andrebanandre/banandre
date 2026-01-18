@@ -2,9 +2,6 @@ import { getAllPosts } from "../../lib/wordpress";
 import { normalizeWordPressPost } from "../../lib/content-types";
 import { siteConfig } from "../config";
 
-// Required for ISR - revalidate every hour
-export const revalidate = 3600;
-
 const CONFIG = {
   title: siteConfig.title,
   siteUrl: siteConfig.url,

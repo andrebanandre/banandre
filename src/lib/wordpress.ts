@@ -46,10 +46,6 @@ async function wordpressFetch<T>(
     headers: {
       "User-Agent": userAgent,
     },
-    next: {
-      tags: ["wordpress"],
-      revalidate: 3600, // 1 hour cache
-    },
   });
 
   if (!response.ok) {
@@ -74,10 +70,6 @@ async function wordpressFetchWithPagination<T>(
   const response = await fetch(url, {
     headers: {
       "User-Agent": userAgent,
-    },
-    next: {
-      tags: ["wordpress"],
-      revalidate: 3600, // 1 hour cache
     },
   });
 
@@ -120,28 +112,18 @@ export async function getPostsPaginated(
     page,
   };
 
-  // Build cache tags based on filters
-  const cacheTags = ["wordpress", "posts"];
-
   if (filterParams?.search) {
     query.search = filterParams.search;
-    cacheTags.push("posts-search");
   }
   if (filterParams?.author) {
     query.author = filterParams.author;
-    cacheTags.push(`posts-author-${filterParams.author}`);
   }
   if (filterParams?.tag) {
     query.tags = filterParams.tag;
-    cacheTags.push(`posts-tag-${filterParams.tag}`);
   }
   if (filterParams?.category) {
     query.categories = filterParams.category;
-    cacheTags.push(`posts-category-${filterParams.category}`);
   }
-
-  // Add page-specific cache tag for granular invalidation
-  cacheTags.push(`posts-page-${page}`);
 
   const url = `${baseUrl}/wp-json/wp/v2/posts${query ? `?${querystring.stringify(query)}` : ""}`;
   const userAgent = "Next.js WordPress Client";
@@ -149,10 +131,6 @@ export async function getPostsPaginated(
   const response = await fetch(url, {
     headers: {
       "User-Agent": userAgent,
-    },
-    next: {
-      tags: cacheTags,
-      revalidate: 3600, // 1 hour cache
     },
   });
 
@@ -241,10 +219,6 @@ export async function getAllCategories(): Promise<Category[]> {
 
   const response = await fetch(url, {
     headers: { "User-Agent": "Next.js WordPress Client" },
-    next: {
-      tags: ["wordpress", "categories"],
-      revalidate: 7200, // 2 hours cache (categories rarely change)
-    },
   });
 
   if (!response.ok) {
@@ -287,10 +261,6 @@ export async function getAllTags(): Promise<Tag[]> {
 
   const response = await fetch(url, {
     headers: { "User-Agent": "Next.js WordPress Client" },
-    next: {
-      tags: ["wordpress", "tags"],
-      revalidate: 7200, // 2 hours cache (tags rarely change)
-    },
   });
 
   if (!response.ok) {
@@ -475,39 +445,8 @@ export { WordPressAPIError };
 /**
  * Client-safe function to search posts directly from WordPress
  * Works in both server and client components
- * Includes 2-minute client-side cache for search results
  */
 export async function searchPosts(query: string, perPage: number = 10): Promise<Post[]> {
-  const cacheKey = `search:${query}:${perPage}`;
-
-  // Check if running in browser
-  if (typeof window !== "undefined") {
-    const { clientCache } = await import("./client-cache");
-    return clientCache.get(
-      cacheKey,
-      async () => {
-        const url = `${baseUrl}/wp-json/wp/v2/posts?search=${encodeURIComponent(query)}&per_page=${perPage}&_embed=true`;
-        const response = await fetch(url, {
-          headers: {
-            "User-Agent": "Next.js WordPress Client",
-          },
-        });
-
-        if (!response.ok) {
-          throw new WordPressAPIError(
-            `WordPress API request failed: ${response.statusText}`,
-            response.status,
-            url
-          );
-        }
-
-        return response.json();
-      },
-      2 * 60 * 1000 // 2 minutes cache for search results
-    );
-  }
-
-  // Server-side: no caching
   const url = `${baseUrl}/wp-json/wp/v2/posts?search=${encodeURIComponent(query)}&per_page=${perPage}&_embed=true`;
   const response = await fetch(url, {
     headers: {
@@ -559,10 +498,6 @@ export async function getRelatedPostsByTags(
   const response = await fetch(url, {
     headers: {
       "User-Agent": userAgent,
-    },
-    next: {
-      tags: ["wordpress", "related-posts"],
-      revalidate: 3600, // 1 hour cache
     },
   });
 

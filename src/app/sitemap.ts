@@ -3,8 +3,6 @@ import { getAllPosts, getAllCategories, getAllTags, getPostsPaginated } from "..
 import { normalizeWordPressPost } from "../lib/content-types";
 import { siteConfig } from "./config";
 
-export const revalidate = 3600; // Revalidate every hour
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
