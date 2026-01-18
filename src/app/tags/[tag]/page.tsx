@@ -16,6 +16,9 @@ import { siteConfig } from "../../config";
 // Enable ISR - revalidate every hour
 export const revalidate = 3600;
 
+// Allow dynamic params for routes not in generateStaticParams
+export const dynamicParams = true;
+
 // Cache tag data to prevent duplicate API calls
 const getTagData = cache(async (urlTag: string) => {
   const tag = await getTagBySlug(urlTag);

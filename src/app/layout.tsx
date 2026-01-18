@@ -105,8 +105,6 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
         <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
         <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
 
-        {/* Security */}
-        <link rel="canonical" href="https://www.banandre.com" />
 
         {/* Structured Data */}
         <script

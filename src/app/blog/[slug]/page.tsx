@@ -20,6 +20,9 @@ import "../blog-styles.css";
 // Enable ISR - revalidate every hour
 export const revalidate = 3600;
 
+// Allow dynamic params for routes not in generateStaticParams
+export const dynamicParams = true;
+
 // Cache post data to prevent duplicate API calls
 const getPostData = cache(async (slug: string) => {
   return await getPostBySlug(slug);

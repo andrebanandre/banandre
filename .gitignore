@@ -44,3 +44,5 @@ _pagefind/
 
 # open-next
 .open-next
+
+/cms/dump
