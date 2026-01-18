@@ -90,6 +90,9 @@ export async function generateMetadata({
       title: cleanTitle,
       description: cleanExcerpt,
       authors: [{ name: authorName }],
+      alternates: {
+        canonical: url,
+      },
       openGraph: {
         type: "article",
         title: cleanTitle,
