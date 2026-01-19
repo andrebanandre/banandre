@@ -10,7 +10,7 @@ import {
 } from "@radix-ui/react-icons";
 import { XLogoIcon } from "./x-logo";
 import { motion } from "framer-motion";
-import { WordPressSearch } from "./wordpress-search";
+import { SearchModal } from "./search-modal";
 import { formatCategoryForUrl } from "@/lib/url-utils";
 
 interface Category {
@@ -48,6 +48,22 @@ export function Header({ categories }: HeaderProps) {
       document.body.style.overflow = "unset";
     };
   }, []);
+
+  // Keyboard shortcut (Cmd+K / Ctrl+K) to open search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+      if (e.key === "Escape" && isSearchOpen) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchOpen]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -168,23 +184,31 @@ export function Header({ categories }: HeaderProps) {
             </button>
           </div>
 
-          {/* Desktop Search Bar */}
-          {isSearchOpen && (
-            <div className="hidden md:block pb-4">
-              <WordPressSearch placeholder="Search blog posts..." />
-            </div>
-          )}
         </div>
       </header>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        categories={categories}
+      />
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="fixed inset-x-0 top-16 sm:top-20 bottom-0 z-40 md:hidden bg-[var(--background)] border-b-4 border-[var(--accent)] overflow-y-auto">
           <div className="px-4 py-6 space-y-4">
-            {/* Mobile Search */}
-            <div className="mb-4">
-              <WordPressSearch placeholder="Search blog posts..." />
-            </div>
+            {/* Mobile Search Button */}
+            <button
+              onClick={() => {
+                closeMenu();
+                setIsSearchOpen(true);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-wide text-white bg-[var(--card)] border-4 border-[var(--accent)] hover:bg-[var(--accent)] hover:bg-opacity-20 transition-colors"
+            >
+              <MagnifyingGlassIcon className="h-5 w-5 text-[var(--accent)]" />
+              Search posts...
+            </button>
 
             {/* Categories List */}
             <div className="mb-6">
