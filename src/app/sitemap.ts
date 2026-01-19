@@ -90,6 +90,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(post.date),
         changeFrequency: "weekly",
         priority: 0.9,
+        // Include featured image if available for better SEO
+        ...(post.image && { images: [post.image] }),
       });
     });
 
