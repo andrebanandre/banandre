@@ -13,6 +13,7 @@ import { ScrollToTop } from "@/app/_components/scroll-to-top";
 import { BlogSidebar } from "@/app/_components/blog-sidebar";
 import { Footer } from "@/app/_components/footer";
 import { RelatedPosts } from "@/app/_components/related-posts";
+import { ShareButtons } from "@/app/_components/share-buttons";
 import { siteConfig } from "@/app/config";
 import "../blog-styles.css";
 
@@ -62,6 +63,16 @@ export async function generateMetadata({
     const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
     const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
 
+    // Truncate title to ~60 characters for SEO (fits ~580 pixels)
+    const seoTitle = cleanTitle.length > 60
+      ? cleanTitle.substring(0, 57) + "..."
+      : cleanTitle;
+
+    // Truncate description to ~155 characters for SEO (fits ~1000 pixels)
+    const seoDescription = cleanExcerpt.length > 155
+      ? cleanExcerpt.substring(0, 152) + "..."
+      : cleanExcerpt;
+
     // Get featured image
     const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
@@ -83,16 +94,16 @@ export async function generateMetadata({
     const url = `${siteConfig.url}/blog/${slug}`;
 
     return {
-      title: cleanTitle,
-      description: cleanExcerpt,
+      title: seoTitle,
+      description: seoDescription,
       authors: [{ name: authorName }],
       alternates: {
         canonical: url,
       },
       openGraph: {
         type: "article",
-        title: cleanTitle,
-        description: cleanExcerpt,
+        title: seoTitle,
+        description: seoDescription,
         url: url,
         siteName: siteConfig.name,
         images: featuredImage
@@ -122,8 +133,8 @@ export async function generateMetadata({
         card: "summary_large_image",
         site: "@andre_banandre",
         creator: "@andre_banandre",
-        title: cleanTitle,
-        description: cleanExcerpt,
+        title: seoTitle,
+        description: seoDescription,
         images: featuredImage ? [featuredImage] : [siteConfig.ogImage],
       },
     };
@@ -337,6 +348,14 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
                 ))}
               </div>
             )}
+
+            {/* Social Sharing */}
+            <div className="mt-8 pt-8 border-t">
+              <ShareButtons
+                url={`${siteConfig.url}/blog/${slug}`}
+                title={cleanTitle}
+              />
+            </div>
           </article>
 
                 {/* Related Posts - Server Side with Tag-based matching */}

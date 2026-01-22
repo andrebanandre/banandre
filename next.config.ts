@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Disable X-Powered-By header for security
+  poweredByHeader: false,
   // Redirect old WordPress date-based URLs to new structure
   async redirects() {
     return [
