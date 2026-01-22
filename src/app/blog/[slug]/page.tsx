@@ -63,16 +63,6 @@ export async function generateMetadata({
     const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
     const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
 
-    // Truncate title to ~60 characters for SEO (fits ~580 pixels)
-    const seoTitle = cleanTitle.length > 60
-      ? cleanTitle.substring(0, 57) + "..."
-      : cleanTitle;
-
-    // Truncate description to ~155 characters for SEO (fits ~1000 pixels)
-    const seoDescription = cleanExcerpt.length > 155
-      ? cleanExcerpt.substring(0, 152) + "..."
-      : cleanExcerpt;
-
     // Get featured image
     const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
@@ -94,16 +84,16 @@ export async function generateMetadata({
     const url = `${siteConfig.url}/blog/${slug}`;
 
     return {
-      title: seoTitle,
-      description: seoDescription,
+      title: cleanTitle,
+      description: cleanExcerpt,
       authors: [{ name: authorName }],
       alternates: {
         canonical: url,
       },
       openGraph: {
         type: "article",
-        title: seoTitle,
-        description: seoDescription,
+        title: cleanTitle,
+        description: cleanExcerpt,
         url: url,
         siteName: siteConfig.name,
         images: featuredImage
@@ -133,8 +123,8 @@ export async function generateMetadata({
         card: "summary_large_image",
         site: "@andre_banandre",
         creator: "@andre_banandre",
-        title: seoTitle,
-        description: seoDescription,
+        title: cleanTitle,
+        description: cleanExcerpt,
         images: featuredImage ? [featuredImage] : [siteConfig.ogImage],
       },
     };
