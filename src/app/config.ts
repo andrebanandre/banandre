@@ -1,3 +1,8 @@
+export const sitemapConfig = {
+  postsPerSitemap: 500, // Posts per sitemap file
+  revalidate: 21600, // 6 hours in seconds
+};
+
 export const siteConfig = {
   name: "Banandre",
   title: "No One Cares About Code.",

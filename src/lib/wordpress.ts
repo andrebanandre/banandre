@@ -476,6 +476,144 @@ export async function searchPosts(query: string, perPage: number = 10): Promise<
  * @param excludedIds - Optional array of post IDs to exclude
  * @returns RelatedPostsResponse with matched posts and query info
  */
+// Sitemap-optimized types
+export interface SitemapPost {
+  id: number;
+  slug: string;
+  date: string;
+  modified: string;
+  featured_media_url?: string;
+}
+
+/**
+ * Get total post count without fetching all posts
+ * Uses HEAD request pattern or minimal query
+ */
+export async function getPostCount(): Promise<number> {
+  const url = `${baseUrl}/wp-json/wp/v2/posts?per_page=1`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Next.js WordPress Client" },
+  });
+
+  if (!response.ok) {
+    throw new WordPressAPIError(
+      `WordPress API request failed: ${response.statusText}`,
+      response.status,
+      url
+    );
+  }
+
+  return parseInt(response.headers.get("X-WP-Total") || "0", 10);
+}
+
+/**
+ * Optimized function for sitemap generation
+ * Fetches only required fields with larger batch size
+ * Note: _embed must be used without _fields restriction for featured media to work
+ */
+export async function getPostsForSitemap(
+  page: number = 1,
+  perPage: number = 100
+): Promise<WordPressResponse<SitemapPost[]>> {
+  const url = `${baseUrl}/wp-json/wp/v2/posts?per_page=${perPage}&page=${page}&_embed=true`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Next.js WordPress Client" },
+  });
+
+  if (!response.ok) {
+    throw new WordPressAPIError(
+      `WordPress API request failed: ${response.statusText}`,
+      response.status,
+      url
+    );
+  }
+
+  const data = await response.json();
+
+  // Transform to extract featured media URL
+  const posts: SitemapPost[] = data.map((post: any) => ({
+    id: post.id,
+    slug: post.slug,
+    date: post.date,
+    modified: post.modified,
+    featured_media_url: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
+  }));
+
+  return {
+    data: posts,
+    headers: {
+      total: parseInt(response.headers.get("X-WP-Total") || "0", 10),
+      totalPages: parseInt(response.headers.get("X-WP-TotalPages") || "0", 10),
+    },
+  };
+}
+
+/**
+ * Get the newest post date at a specific offset
+ * Used to get the lastmod date for each sitemap batch
+ */
+export async function getNewestPostDateAtOffset(offset: number): Promise<string | null> {
+  // WordPress API uses 1-based pagination, offset maps to page
+  const page = Math.floor(offset / 100) + 1;
+  const positionInPage = offset % 100;
+
+  const url = `${baseUrl}/wp-json/wp/v2/posts?per_page=100&page=${page}&_fields=date,modified&orderby=date&order=desc`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Next.js WordPress Client" },
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const posts = await response.json();
+  if (posts.length > positionInPage) {
+    const post = posts[positionInPage];
+    return post.modified || post.date;
+  }
+
+  return null;
+}
+
+/**
+ * Get all posts for sitemap in a single batch range
+ */
+export async function getPostsBatchForSitemap(
+  offset: number,
+  limit: number
+): Promise<SitemapPost[]> {
+  const perPage = 100;
+  const allPosts: SitemapPost[] = [];
+  const startPage = Math.floor(offset / perPage) + 1;
+  const endOffset = offset + limit;
+
+  let currentOffset = offset;
+  let page = startPage;
+
+  while (currentOffset < endOffset) {
+    const response = await getPostsForSitemap(page, perPage);
+    const posts = response.data;
+
+    if (posts.length === 0) break;
+
+    // Calculate which posts from this page we need
+    const pageStartOffset = (page - 1) * perPage;
+    const skipFromStart = Math.max(0, currentOffset - pageStartOffset);
+    const takeCount = Math.min(posts.length - skipFromStart, endOffset - currentOffset);
+
+    allPosts.push(...posts.slice(skipFromStart, skipFromStart + takeCount));
+    currentOffset += takeCount;
+    page++;
+
+    if (page > response.headers.totalPages) break;
+  }
+
+  return allPosts;
+}
+
 export async function getRelatedPostsByTags(
   tagSlugs: string[],
   max: number = 5,
