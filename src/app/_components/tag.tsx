@@ -14,12 +14,13 @@ function formatTagForUrl(tag: string): string {
 
 interface TagProps {
   tag: string;
+  slug?: string;
   className?: string;
   showHash?: boolean;
 }
 
-export function Tag({ tag, className = "", showHash = true }: TagProps) {
-  const formattedTag = formatTagForUrl(tag);
+export function Tag({ tag, slug, className = "", showHash = true }: TagProps) {
+  const formattedTag = slug || formatTagForUrl(tag);
 
   // Animation variants for individual tags
   const tagVariants = {

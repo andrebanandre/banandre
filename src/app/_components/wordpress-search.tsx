@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import { transformMediaUrlClient } from "@/lib/wordpress";
 
 interface SearchResult {
   id: number;
@@ -129,7 +130,7 @@ export function WordPressSearch({
                     {result._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
                       <div className="flex-shrink-0 w-16 h-16 relative">
                         <Image
-                          src={result._embedded["wp:featuredmedia"][0].source_url}
+                          src={transformMediaUrlClient(result._embedded["wp:featuredmedia"][0].source_url) || result._embedded["wp:featuredmedia"][0].source_url}
                           alt={stripHtml(result.title.rendered)}
                           fill
                           className="object-cover rounded"

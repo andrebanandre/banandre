@@ -1,6 +1,5 @@
 import { getAllTags, getTagBySlug, getPostsByTagPaginated } from "../../../lib/wordpress";
 import { normalizeWordPressPost } from "../../../lib/content-types";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Tag } from "../../_components/tag";
 import { BlogGrid } from "../../_components/blog-card";
@@ -132,39 +131,29 @@ export default async function TagPage({ params }: TagPageProps) {
   const tagSchema = generateTagPageSchema(displayTag, posts);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "/" },
-    { name: "Tags", url: "/tags" },
     { name: `#${displayTag}`, url: `/tags/${urlTag}` },
   ]);
 
   return (
     <>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: safeJsonLdStringify(tagSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: safeJsonLdStringify(breadcrumbSchema),
-          }}
-        />
-      </head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLdStringify(tagSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLdStringify(breadcrumbSchema),
+        }}
+      />
       <div className="min-h-screen bg-[var(--background)] px-6 md:px-12 py-8 lg:py-16">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <Link
-              href="/tags"
-              className="text-[var(--accent)] hover:text-white transition-colors mb-4 inline-block"
-            >
-              ← Back to all tags
-            </Link>
-
             <div className="flex items-center gap-4 mb-6">
               <h1 className="display-title text-white text-shadow-brutal">Tagged with</h1>
-              <Tag tag={displayTag} />
+              <Tag tag={displayTag} slug={urlTag} />
             </div>
 
             <p className="text-gray-200 text-lg">

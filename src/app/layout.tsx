@@ -91,7 +91,7 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
     }));
 
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" data-scroll-behavior="smooth">
       <head>
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />

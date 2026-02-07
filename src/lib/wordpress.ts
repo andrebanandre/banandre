@@ -12,6 +12,78 @@ if (!baseUrl) {
   throw new Error("NEXT_PUBLIC_WORDPRESS_URL environment variable is not defined");
 }
 
+/**
+ * Transform a single WordPress media URL to use the proxy
+ * @param url - The WordPress media URL
+ * @param absolute - If true, returns absolute URL with site domain; if false, returns relative path
+ * e.g., https://wordpress.banandre.com/wp-content/uploads/...
+ *   -> /wp-content/uploads/... (relative)
+ *   -> https://www.banandre.com/wp-content/uploads/... (absolute)
+ */
+export function transformMediaUrl(
+  url: string | undefined,
+  absolute: boolean = false
+): string | undefined {
+  if (!url || !baseUrl) return url;
+
+  // Check if it's a WordPress URL and extract the path
+  if (url.startsWith(baseUrl)) {
+    const path = url.slice(baseUrl.length);
+    if (path.startsWith("/wp-content/uploads/")) {
+      if (absolute) {
+        // Import siteConfig dynamically to avoid circular dependency
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.banandre.com";
+        return `${siteUrl}${path}`;
+      }
+      return path;
+    }
+  }
+
+  return url;
+}
+
+/**
+ * Client-safe version of transformMediaUrl
+ * Can be used in client components - reads env var directly
+ */
+export function transformMediaUrlClient(url: string | undefined): string | undefined {
+  if (!url) return url;
+
+  const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  if (!wpUrl) return url;
+
+  // Check if it's a WordPress URL and extract the path
+  if (url.startsWith(wpUrl)) {
+    const path = url.slice(wpUrl.length);
+    if (path.startsWith("/wp-content/uploads/")) {
+      return path;
+    }
+  }
+
+  return url;
+}
+
+/**
+ * Transform WordPress content URLs to use the proxy
+ * Replaces WordPress domain URLs with relative paths that go through the Next.js proxy
+ * e.g., https://wordpress.banandre.com/wp-content/uploads/... -> /wp-content/uploads/...
+ */
+export function transformContentUrls(content: string): string {
+  if (!baseUrl) return content;
+
+  // Escape special regex characters in the base URL
+  const escapedBaseUrl = baseUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  // Replace all occurrences of the WordPress URL with relative paths
+  // Matches: https://wordpress.banandre.com/wp-content/uploads/...
+  const wpUrlPattern = new RegExp(
+    `${escapedBaseUrl}(/wp-content/uploads/[^"'\\s)>]+)`,
+    "gi"
+  );
+
+  return content.replace(wpUrlPattern, "$1");
+}
+
 class WordPressAPIError extends Error {
   constructor(
     message: string,
@@ -209,7 +281,10 @@ export async function getPostById(id: number): Promise<Post> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
-  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { slug, _embed: true }).then(
+  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", {
+    slug,
+    _embed: "wp:featuredmedia,wp:term",
+  }).then(
     (posts) => posts[0]
   );
 }
@@ -486,6 +561,22 @@ export interface SitemapPost {
 }
 
 /**
+ * Convert WordPress media URL to proxied URL through main domain
+ * e.g., https://wordpress.banandre.com/wp-content/uploads/... -> /wp-content/uploads/...
+ */
+function toProxiedMediaUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+
+  // Extract the /wp-content/uploads/... path from the WordPress URL
+  const wpContentMatch = url.match(/\/wp-content\/uploads\/.+$/);
+  if (wpContentMatch) {
+    return wpContentMatch[0];
+  }
+
+  return url;
+}
+
+/**
  * Get total post count without fetching all posts
  * Uses HEAD request pattern or minimal query
  */
@@ -532,13 +623,15 @@ export async function getPostsForSitemap(
 
   const data = await response.json();
 
-  // Transform to extract featured media URL
+  // Transform to extract featured media URL and convert to proxied URL
   const posts: SitemapPost[] = data.map((post: any) => ({
     id: post.id,
     slug: post.slug,
     date: post.date,
     modified: post.modified,
-    featured_media_url: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
+    featured_media_url: toProxiedMediaUrl(
+      post._embedded?.["wp:featuredmedia"]?.[0]?.source_url
+    ),
   }));
 
   return {

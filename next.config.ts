@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Proxy WordPress uploads through main domain for CDN caching and SEO
+  async rewrites() {
+    const wordpressUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://wordpress.banandre.com';
+    return [
+      {
+        source: '/wp-content/uploads/:path*',
+        destination: `${wordpressUrl}/wp-content/uploads/:path*`,
+      },
+    ];
+  },
   // Removed output: "export" to enable SSR/ISR for WordPress integration
   outputFileTracingRoot: process.cwd(),
   // Allow more time for slow external data sources during SSR/ISR

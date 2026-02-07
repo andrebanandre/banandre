@@ -3,22 +3,22 @@
 "use client";
 
 import React from "react";
-import { Post } from "@/lib/wordpress.d";
 
 interface WordPressPostRendererProps {
-  post: Post;
+  /** Pre-transformed HTML content (URLs already proxied on server) */
+  content: string;
   className?: string;
 }
 
 export function WordPressPostRenderer({
-  post,
+  content,
   className = "",
 }: WordPressPostRendererProps) {
   return (
     <article
       className={`wordpress-content prose prose-lg max-w-none ${className}`}
       dangerouslySetInnerHTML={{
-        __html: post.content.rendered,
+        __html: content,
       }}
     />
   );

@@ -76,7 +76,7 @@ export default async function HomePage() {
               <Link href="/" className="hover:text-[var(--accent)] transition-colors">Home</Link>
               <Link href="/demo" className="hover:text-[var(--accent)] transition-colors">Editorial</Link>
               <Link href="/docs" className="hover:text-[var(--accent)] transition-colors">Essentials</Link>
-              <Link href="/tags" className="hover:text-[var(--accent)] transition-colors">Blog</Link>
+              <Link href="/categories" className="hover:text-[var(--accent)] transition-colors">Blog</Link>
             </div>
           </div> */}
 

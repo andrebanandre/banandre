@@ -1,5 +1,6 @@
 // Content types for WordPress-only system
 import type { Post as WordPressPost, Category, Tag } from "./wordpress.d";
+import { transformMediaUrl } from "./wordpress";
 
 // Normalized post interface for display components
 export interface NormalizedPost {
@@ -41,10 +42,10 @@ export function normalizeWordPressPost(post: WordPressPost): NormalizedPost {
     }
   }
 
-  // Extract featured image
+  // Extract featured image (transform to proxy URL)
   let image: string | undefined;
   if (post._embedded?.["wp:featuredmedia"]?.[0]) {
-    image = post._embedded["wp:featuredmedia"][0].source_url;
+    image = transformMediaUrl(post._embedded["wp:featuredmedia"][0].source_url);
   }
 
   // Extract author name

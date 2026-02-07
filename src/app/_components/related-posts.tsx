@@ -1,5 +1,5 @@
 // Server Component - Fetches related posts server-side for better SEO and performance
-import { getRelatedPostsByTags } from "@/lib/wordpress";
+import { getRelatedPostsByTags, transformMediaUrl } from "@/lib/wordpress";
 import { BlogCard } from "./blog-card";
 import type { RelatedPost } from "@/lib/wordpress.d";
 import type { NormalizedPost } from "@/lib/content-types";
@@ -15,7 +15,7 @@ function convertRelatedPost(post: RelatedPost): NormalizedPost {
     title: post.title,
     description: post.excerpt,
     excerpt: post.excerpt,
-    image: post.featured_image || undefined,
+    image: transformMediaUrl(post.featured_image) || undefined,
     slug: post.slug,
     url: `/blog/${post.slug}`,
     date: post.date,

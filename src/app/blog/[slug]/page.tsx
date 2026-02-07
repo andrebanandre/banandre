@@ -5,6 +5,8 @@ import { decode } from "html-entities";
 import {
   getPostBySlug,
   getAllPostSlugs,
+  transformMediaUrl,
+  transformContentUrls,
 } from "@/lib/wordpress";
 import { WordPressPostRenderer } from "@/app/_components/wordpress-post-renderer";
 import { Category } from "@/app/_components/category";
@@ -63,11 +65,11 @@ export async function generateMetadata({
     const cleanExcerpt = decode(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
     const cleanTitle = decode(post.title.rendered.replace(/<[^>]*>/g, "").trim());
 
-    // Get featured image
-    const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
-
-    // Get author
-    const authorName = post._embedded?.author?.[0]?.name || "Banandre";
+    // Get featured image (transform to absolute proxied URL for OG/Twitter)
+    const featuredImage = transformMediaUrl(
+      post._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
+      true // absolute URL for metadata
+    );
 
     // Get categories
     const categories =
@@ -86,7 +88,7 @@ export async function generateMetadata({
     return {
       title: cleanTitle,
       description: cleanExcerpt,
-      authors: [{ name: authorName }],
+      authors: [{ name: siteConfig.name }],
       alternates: {
         canonical: url,
       },
@@ -115,7 +117,7 @@ export async function generateMetadata({
             ],
         publishedTime: post.date,
         modifiedTime: post.modified,
-        authors: [authorName],
+        authors: [siteConfig.name],
         tags: tags,
         section: categories[0],
       },
@@ -148,9 +150,16 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
     }
 
     // Extract data from embedded responses
-    const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0];
-    const author = post._embedded?.author?.[0];
-
+    const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0];
+    // Transform featured image URL to use proxy (relative for Image component)
+    const featuredImage = featuredMedia
+      ? {
+          ...featuredMedia,
+          source_url: transformMediaUrl(featuredMedia.source_url) || featuredMedia.source_url,
+        }
+      : undefined;
+    // Absolute URL for JSON-LD schema
+    const featuredImageAbsolute = transformMediaUrl(featuredMedia?.source_url, true);
     // Extract categories
     const categories =
       post._embedded?.["wp:term"]
@@ -180,13 +189,13 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
       "@type": "BlogPosting",
       headline: cleanTitle,
       description: cleanExcerpt,
-      image: featuredImage?.source_url || siteConfig.ogImage,
+      image: featuredImageAbsolute || siteConfig.ogImage,
       url: `${siteConfig.url}/blog/${slug}`,
       datePublished: post.date,
       dateModified: post.modified,
       author: {
         "@type": "Person",
-        name: author?.name || siteConfig.name,
+        name: siteConfig.name,
         url: siteConfig.url,
       },
       publisher: {
@@ -244,7 +253,7 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
         <div className="min-h-screen">
           {/* Full-Width Hero Section with Featured Image */}
           {featuredImage && (
-            <div className="relative w-full h-[400px] md:h-[500px]">
+            <div className="relative w-full min-h-[420px] md:min-h-[560px]">
               <Image
                 src={featuredImage.source_url}
                 alt={featuredImage.alt_text || cleanTitle}
@@ -253,8 +262,8 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
-                <div className="max-w-7xl mx-auto">
+              <div className="relative z-10 mx-auto flex min-h-[420px] md:min-h-[560px] w-full max-w-7xl items-end px-6 pb-6 pt-24 md:px-12 md:pb-12 md:pt-32">
+                <div className="w-full max-w-4xl">
                   {categories.length > 0 && (
                     <div className="mb-4">
                       <Category category={categories[0].name} slug={categories[0].slug} />
@@ -267,12 +276,6 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
                   {/* Meta Information in Hero */}
                   <div className="flex items-center gap-4 text-sm text-white/80 mt-4">
                     <time dateTime={post.date}>{date}</time>
-                    {author && (
-                      <>
-                        <span>•</span>
-                        <span>by {author.name}</span>
-                      </>
-                    )}
                   </div>
                 </div>
               </div>
@@ -307,25 +310,19 @@ export default async function WordPressBlogPostPage({ params }: BlogPostPageProp
             {!featuredImage && (
               <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b">
                 <time dateTime={post.date}>{date}</time>
-                {author && (
-                  <>
-                    <span>•</span>
-                    <span>by {author.name}</span>
-                  </>
-                )}
               </div>
             )}
 
             {/* WordPress Content */}
             <div className="prose prose-lg max-w-none mb-12">
-              <WordPressPostRenderer post={post} />
+              <WordPressPostRenderer content={transformContentUrls(post.content.rendered)} />
             </div>
 
             {/* Tags */}
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t">
                 {tags.map((tag) => (
-                  <Tag key={tag.id} tag={tag.name} />
+                  <Tag key={tag.id} tag={tag.name} slug={tag.slug} />
                 ))}
               </div>
             )}

@@ -11,6 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { decode } from "html-entities";
+import { transformMediaUrlClient } from "@/lib/wordpress";
 
 interface SearchResult {
   id: number;
@@ -236,8 +237,8 @@ export function SearchModal({ isOpen, onClose, categories }: SearchModalProps) {
                                 ?.source_url ? (
                                 <Image
                                   src={
-                                    post._embedded["wp:featuredmedia"][0]
-                                      .source_url
+                                    transformMediaUrlClient(post._embedded["wp:featuredmedia"][0].source_url) ||
+                                    post._embedded["wp:featuredmedia"][0].source_url
                                   }
                                   alt={decode(stripHtml(post.title.rendered))}
                                   fill

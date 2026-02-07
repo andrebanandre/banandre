@@ -103,7 +103,8 @@ async function generatePostsUrls(baseUrl: string, batchIndex: number): Promise<S
     lastmod: new Date(post.modified || post.date).toISOString(),
     changefreq: "weekly" as const,
     priority: 0.9,
-    image: post.featured_media_url,
+    // Prepend baseUrl to proxied image path (e.g., /wp-content/uploads/... -> https://www.banandre.com/wp-content/uploads/...)
+    image: post.featured_media_url ? `${baseUrl}${post.featured_media_url}` : undefined,
   }));
 }
 
