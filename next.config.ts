@@ -62,8 +62,9 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
-    // Optimize images for better performance
-    unoptimized: false,
+    // OpenNext Cloudflare production currently returns 404 for /_next/image.
+    // Serve original image URLs directly to keep images working in production.
+    unoptimized: true,
     // Allow local IP addresses for development (localhost WordPress)
     // Only enabled in development for security
     dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',

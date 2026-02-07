@@ -101,11 +101,6 @@ const RootLayout: FC<{ children: ReactNode }> = async ({ children }) => {
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
 
-        {/* Performance optimizations */}
-        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
-        <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
-
-
         {/* Structured Data */}
         <script
           type="application/ld+json"
