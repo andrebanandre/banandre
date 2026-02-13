@@ -99,7 +99,8 @@ async function generatePostsUrls(baseUrl: string, batchIndex: number): Promise<S
   const posts = await getPostsBatchForSitemap(offset, sitemapConfig.postsPerSitemap);
 
   return posts.map((post) => ({
-    loc: `${baseUrl}/${post.slug}`,
+    // Blog posts are served under /blog/[slug], not at root /[slug]
+    loc: `${baseUrl}/blog/${post.slug}`,
     lastmod: new Date(post.modified || post.date).toISOString(),
     changefreq: "weekly" as const,
     priority: 0.9,
